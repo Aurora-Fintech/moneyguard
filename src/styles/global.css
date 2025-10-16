@@ -10,7 +10,7 @@
   );
   --yellow--plus-shadow: 0px 6px 15px 0px rgba(255, 199, 39, 0.5);
   --red-minus-shadow: 0px 6px 15px 0px rgba(255, 134, 141, 0.5);
-
+  --dropdown-color-gradient: linear-gradient(0deg, rgba(83, 61, 186, 0.7) 0%, rgba(80, 48, 154, 0.7) 43.14%, rgba(106, 70, 165, 0.525) 73.27%, rgba(133, 93, 175, 0.133) 120.03%);
   --form-effects: rgba(0, 0, 0, 0.25);
   --form-borders: rgba(255, 199, 39, 1);
   --font-family-base: "Poppins", sans-serif;
@@ -43,7 +43,7 @@ a {
   text-decoration: none;
   color: inherit;
 }
-.form-text {
+.form-label {
   font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 18px;
@@ -169,7 +169,7 @@ letter-spacing: 0em;
   letter-spacing: 0em;
   color: var(--font-color-white);
 }
-.h1{ /* home statistics*/
+.statistics-header{ /* home statistics*/
   font-family: var(--font-family-base);
 font-weight: 700;
 font-size: 18px;
@@ -203,8 +203,8 @@ color: var(--font-color-white);
   font-family: var(--font-family-base);
 font-weight: 600;
 font-size: 18px;
-line-height: 100%;
-letter-spacing: 0%;
+line-height: 100em;
+letter-spacing: 0em;
 color: var(--font-color-grey);
 }
 .select-category-txt,
