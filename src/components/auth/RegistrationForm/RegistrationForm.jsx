@@ -9,6 +9,7 @@ import {
   selectAuthError,
 } from "../../../features/auth/authSelectors";
 import { register as registerUser } from "../../../features/auth/authOperations";
+import { Link } from "react-router-dom";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -102,6 +103,9 @@ const RegistrationForm = () => {
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Loading..." : "Register"}
       </button>
+      <Link to="/login">
+        <button type="button">Log In</button>
+      </Link>
     </form>
   );
 };
