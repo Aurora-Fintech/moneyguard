@@ -9,7 +9,7 @@ import {
 } from "../../../features/auth/authSelectors";
 import { logIn } from "../../../features/auth/authOperations";
 import { useId } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -74,6 +74,9 @@ const LoginForm = () => {
       {authError && <p style={{ color: "red" }}>{authError}</p>}
 
       <button type="submit">{isLoading ? "Loading..." : "Log In"}</button>
+      <Link to="/register">
+        <button type="button">Register</button>
+      </Link>
     </form>
   );
 };
