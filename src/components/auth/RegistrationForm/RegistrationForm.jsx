@@ -8,9 +8,10 @@ import {
   selectIsLoading,
   selectAuthError,
 } from "../../../features/auth/authSelectors";
+import { register as registerUser } from "../../../features/auth/authOperations";
 
 const registerSchema = Yup.object().shape({
-  name: Yup.string().required("Required"),
+  username: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
@@ -22,7 +23,7 @@ const registerSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  name: "",
+  username: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -33,7 +34,7 @@ const RegistrationForm = () => {
   const isLoading = useSelector(selectIsLoading);
   const authError = useSelector(selectAuthError);
 
-  const nameFieldId = useId();
+  const usernameFieldId = useId();
   const emailFieldId = useId();
   const passwordFieldId = useId();
   const confirmPasswordFieldId = useId();
@@ -52,7 +53,7 @@ const RegistrationForm = () => {
     // eslint-disable-next-line no-unused-vars
     const { confirmPassword, ...userData } = values;
     try {
-      await dispatch(register(values)).unwrap();
+      await dispatch(registerUser(userData)).unwrap();
       reset();
     } catch (error) {
       const errorMessage =
@@ -69,9 +70,9 @@ const RegistrationForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label htmlFor={nameFieldId}>Name</label>
-        <input type="text" id={nameFieldId} {...register("name")} />
-        <p style={{ color: "red" }}>{errors.name?.message}</p>
+        <label htmlFor={usernameFieldId}>Username</label>
+        <input type="text" id={usernameFieldId} {...register("username")} />
+        <p style={{ color: "red" }}>{errors.username?.message}</p>
       </div>
       <p style={{ color: "red" }}>{errors.email?.message}</p>
 
@@ -89,7 +90,11 @@ const RegistrationForm = () => {
 
       <div>
         <label htmlFor={confirmPasswordFieldId}>Confirm password</label>
-        <input type="password" id={confirmPasswordFieldId} />
+        <input
+          type="password"
+          id={confirmPasswordFieldId}
+          {...register("confirmPassword")}
+        />
         <p style={{ color: "red" }}>{errors.confirmPassword?.message}</p>
       </div>
 
