@@ -4,7 +4,17 @@ import RestrictedRoute from "./RestrictedRoute";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegistrationPage from "../pages/RegistrationPage/RegistrationPage";
 import DashboardPage from "../pages/DashboardPage/DashboardPage";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { refreshUser } from "../features/auth/authOperations";
+
 export default function AppRouter() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <Routes>
