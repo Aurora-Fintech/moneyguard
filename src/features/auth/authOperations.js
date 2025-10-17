@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-axios.defaults.baseURL = "https://wallet.b.goit.study/";
+import { userTransactionsApi } from "../../api/userTransactionApi.js";
 
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -11,7 +10,10 @@ export const logIn = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
     try {
-      const response = await axios.post("/api/auth/sign-in", credentials);
+      const response = await userTransactionsApi.post(
+        "/api/auth/sign-in",
+        credentials
+      );
       setAuthHeader(response.data.token);
       return response.data;
     } catch (error) {
@@ -24,7 +26,10 @@ export const register = createAsyncThunk(
   "auth/register",
   async (credentials, thunkAPI) => {
     try {
-      const response = await axios.post("/api/auth/sign-up", credentials);
+      const response = await userTransactionsApi.post(
+        "/api/auth/sign-up",
+        credentials
+      );
       setAuthHeader(response.data.token);
       return response.data;
     } catch (error) {
@@ -48,7 +53,7 @@ export const refreshUser = createAsyncThunk(
     try {
       setAuthHeader(persistedToken);
 
-      const response = await axios.get("/api/users/current");
+      const response = await userTransactionsApi.get("/api/users/current");
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
