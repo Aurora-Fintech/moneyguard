@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logIn } from "./authOperations";
+import { logIn, register } from "./authOperations";
 
 // Yardımcı reducer fonksiyonlar
 
@@ -13,7 +13,7 @@ const handleRejected = (state, action) => {
   state.error = action.payload;
 };
 
-const handleLoginFulfilled = (state, action) => {
+const handleFulfilled = (state, action) => {
   state.user = action.payload.user;
   state.token = action.payload.token;
   state.isLoggedIn = true;
@@ -36,9 +36,14 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Login durumları
       .addCase(logIn.pending, handlePending)
       .addCase(logIn.rejected, handleRejected)
-      .addCase(logIn.fulfilled, handleLoginFulfilled);
+      .addCase(logIn.fulfilled, handleFulfilled)
+      // Register durumları
+      .addCase(register.pending, handlePending)
+      .addCase(register.rejected, handleRejected)
+      .addCase(register.fulfilled, handleFulfilled);
   },
 });
 
