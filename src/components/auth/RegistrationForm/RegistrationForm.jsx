@@ -90,6 +90,7 @@ const RegistrationForm = () => {
       <div>
         <label htmlFor={confirmPasswordFieldId}>Confirm password</label>
         <input type="password" id={confirmPasswordFieldId} />
+        <p style={{ color: "red" }}>{errors.confirmPassword?.message}</p>
       </div>
 
       {authError && <p style={{ color: "red" }}>{authError}</p>}
