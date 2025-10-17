@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { userTransactionsApi } from "../../api/userTransactionApi.js";
+import { setToken } from "../../api/userTransactionApi.js";
 
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -43,18 +44,16 @@ export const register = createAsyncThunk(
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const persistedToken = state.auth.token;
-
-    if (persistedToken === null) {
-      return thunkAPI.rejectWithValue("Unable to fetch user, no token");
+    const savedToken = thunkAPI.getState().auth.token;
+    if (savedToken) {
+      setToken(savedToken);
+    } else {
+      return thunkAPI.rejectWithValue("Token doesn't exist");
     }
 
     try {
-      setAuthHeader(persistedToken);
-
-      const response = await userTransactionsApi.get("/api/users/current");
-      return response.data;
+      const { data } = await userTransactionsApi.get("/api/users/current");
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
