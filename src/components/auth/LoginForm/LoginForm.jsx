@@ -2,6 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectIsLoading,
+  selectAuthError,
+} from "../../../features/auth/authSelectors";
+import { logIn } from "../../../features/auth/authOperations";
+import { useId } from "react";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -14,33 +21,56 @@ const loginSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
+// Varsayılan değerler
+const initialValues = { email: "", password: "" };
+
 const LoginForm = () => {
+  // Redux dispatch ve selector
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
+  const authError = useSelector(selectAuthError);
+
+  const emailFieldId = useId();
+  const passwordFieldId = useId();
+
   // useForm Hook'u ile form yönetimi
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(loginSchema),
+    defaultValues: initialValues,
   });
 
-  const onSubmit = (data) => {
-    console.log("Form submitted", data);
-    // redux mantığı gelecek
+  const onSubmit = async (values) => {
+    try {
+      await dispatch(logIn(values)).unwrap();
+      console.log("Successfully Logged in");
+      reset();
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label htmlFor="email">E-mail</label>
-        <input type="email" id="email" {...register("email")} />
+        <label htmlFor={emailFieldId}>E-mail</label>
+        <input type="email" id={emailFieldId} {...register("email")} />
         <p style={{ color: "red" }}>{errors.email?.message}</p>
       </div>
+
       <div>
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" {...register("password")} />
+        <label htmlFor={passwordFieldId}>Password</label>
+        <input type="password" id={passwordFieldId} {...register("password")} />
         <p style={{ color: "red" }}>{errors.password?.message}</p>
       </div>
-      <button type="submit">Log In</button>
+
+      {authError && <p style={{ color: "red" }}>{authError}</p>}
+
+      <button type="submit">{isLoading ? "Loading..." : "Log In"}</button>
     </form>
   );
 };
