@@ -1,3 +1,27 @@
+:root {
+  --font-color-white: rgba(255, 255, 255, 1);
+  --font-color-purple: rgba(98, 63, 139, 1);
+  --font-color-white-60: rgba(255, 255, 255, 0.6);
+  --button-gradient: linear-gradient(
+    96.76deg,
+    #ffc727 -16.42%,
+    #9e40ba 97.04%,
+    #7000ff 150.71%
+  );
+  --yellow--plus-shadow: 0px 6px 15px 0px rgba(255, 199, 39, 0.5);
+  --red-minus-shadow: 0px 6px 15px 0px rgba(255, 134, 141, 0.5);
+  --dropdown-color-gradient: linear-gradient(0deg, rgba(83, 61, 186, 0.7) 0%, rgba(80, 48, 154, 0.7) 43.14%, rgba(106, 70, 165, 0.525) 73.27%, rgba(133, 93, 175, 0.133) 120.03%);
+  --form-effects: rgba(0, 0, 0, 0.25);
+  --form-borders: rgba(255, 199, 39, 1);
+  --font-family-base: "Poppins", sans-serif;
+  --button-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --font-color-white-40: rgba(255, 255, 255, 0.4);
+  --font-grey: rgba(189, 189, 189, 1);
+  --font-grey-light: rgba(224, 224, 224, 1);
+  --white-light: rgba(251, 251, 251, 1);
+  --red:rgba(255, 134, 141, 1);
+  --yellow:rgba(255, 182, 39, 1);
+}
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,4 +42,212 @@ button {
 a {
   text-decoration: none;
   color: inherit;
+}
+.form-label {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: var(--font-color-white);
+  width: 100%;
+  max-width: 280px;
+}
+.form-button {
+  width: 280px;
+  height: 50px;
+  border-radius: 20px;
+  transform: rotate(0deg);
+  opacity: 1;
+  background: var(--button-gradient);
+  color: var(--font-color-white);
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1em;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: var(--button-shadow);
+}
+.form-button-register {
+  width: 280px;
+  height: 50px;
+  border-radius: 20px;
+  transform: rotate(0deg);
+  opacity: 1;
+  background: var(--font-color-white);
+  color: var(--font-color-purple);
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1em;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: var(--button-shadow);
+}
+.exit-text {
+  /*name*/
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  color: var(--font-color-white-60);
+}
+.statistics-category-name {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  color: var(--white-light);
+}
+.statistics-expenses-txt {
+  font-family: var(--font-family-base);
+font-weight: 600;
+font-size: 14px;
+line-height: 1em;
+letter-spacing: 0em;
+  color: var(--white-light);
+}
+.text,
+.dashboard-balance-txt {
+  /*your balance*/
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  text-transform: uppercase;
+  color: var(--font-color-white-40);
+}
+.dashboard-value {
+  /*24000 */
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  vertical-align: middle;
+  color: var(--font-color-white);
+}
+.home-description{ /*date type */
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  color: var(--font-color-white);
+}
+.home-description ,
+.dropdown-txt,
+.dashboard-description{/* description */
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  color: var(--white-light);
+}
+.dashboard-txt,
+.transaction-txt,
+.statistics-category{ /*dashboard balance currency*/
+   font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  color: var(--font-color-white);
+}
+.statistics-header{ /* home statistics*/
+  font-family: var(--font-family-base);
+font-weight: 700;
+font-size: 18px;
+line-height: 1em;
+letter-spacing: 0em;
+vertical-align: middle;
+color: var(--font-color-white);
+
+}
+.balance-variable{ /*balance variable*/
+  font-family: var(--font-family-base);
+font-weight: 400;
+font-size: 12px;
+line-height: 1em;
+letter-spacing: 0em;
+color: var(--font-color-white);
+}
+.transaction-header,
+.edit-transaction-header{/* add transaction */
+  font-family: var(--font-family-base);
+font-weight: 400;
+font-size: 24px;
+line-height: 1em;
+letter-spacing: 0em;
+text-align: center;
+color: var(--font-color-white);
+}
+.transaction-label,
+.statistics-value,
+.edit-transaction-label{
+  font-family: var(--font-family-base);
+font-weight: 600;
+font-size: 18px;
+line-height: 100em;
+letter-spacing: 0em;
+color: var(--font-color-grey);
+}
+.select-category-txt,
+.logout-text{
+  font-family: var(--font-family-base);
+font-weight: 400;
+font-size: 18px;
+line-height: 1em;
+letter-spacing: 0em;
+color: var(--font-color-white-60);
+
+}
+/* TABLET */
+@media (min-width: 768px) {
+  .form-button {
+    width: 300px;
+    height: 50px;
+  }
+  .form-button-register {
+    width: 300px;
+    height: 50px;
+  }
+  .h3{
+    font-size:16px;
+  }
+  .transaction-header,.edit-transaction-header{
+    font-size: 30px;
+  }
+}
+/* DESKTOP */
+@media (min-width: 1280px) {
+  .form-button {
+    width: 300px;
+    height: 50px;
+  }
+  .h3{
+    font-size:16px;
+  }
+  .form-button-register {
+    width: 300px;
+    height: 50px;
+  }
+  .transaction-header,.edit-transaction-header{
+    font-size: 30px;
+  }
 }
