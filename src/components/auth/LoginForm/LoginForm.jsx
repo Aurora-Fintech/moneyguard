@@ -9,6 +9,7 @@ import {
 } from "../../../features/auth/authSelectors";
 import { logIn } from "../../../features/auth/authOperations";
 import { useId } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -29,6 +30,7 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const authError = useSelector(selectAuthError);
+  const navigate = useNavigate();
 
   const emailFieldId = useId();
   const passwordFieldId = useId();
@@ -49,6 +51,7 @@ const LoginForm = () => {
       await dispatch(logIn(values)).unwrap();
       console.log("Successfully Logged in");
       reset();
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
     }
