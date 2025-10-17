@@ -18,8 +18,8 @@ const registerSchema = Yup.object().shape({
     .max(12, "Password must be at most 12 characters")
     .required("Password is required"),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "şifreler eşleşmelidir")
-    .required("şifre tekrarı zorunludur"),
+    .oneOf([Yup.ref("password"), null], "Passwords must match.")
+    .required("Password repetition is mandatory"),
 });
 
 const initialValues = {
@@ -57,7 +57,7 @@ const RegistrationForm = () => {
       reset();
     } catch (error) {
       const errorMessage =
-        error.message || "An error occured. Please try again.";
+        error.message || "An error occurred. Please try again.";
 
       if (errorMessage.includes("E-mail in use")) {
         console.error("This email is already registered.");
