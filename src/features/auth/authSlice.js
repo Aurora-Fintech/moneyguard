@@ -1,4 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { logIn } from "./authOperations";
+
+// Yardımcı reducer fonksiyonlar
+
+const handlePending = (state) => {
+  state.isLoading = true;
+  state.error = null;
+};
+
+const handleRejected = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
+};
+
+const handleLoginFulfilled = (state, action) => {
+  state.user = action.payload.user;
+  state.token = action.payload.token;
+  state.isLoggedIn = true;
+  state.isLoading = false;
+};
+
+// Slice
 
 const initialState = {
   user: { name: null, email: null },
@@ -11,8 +33,12 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  extraReducers: () => {
-    // extra reducerlar buraya gelecek
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(logIn.pending, handlePending)
+      .addCase(logIn.rejected, handleRejected)
+      .addCase(logIn.fulfilled, handleLoginFulfilled);
   },
 });
 
