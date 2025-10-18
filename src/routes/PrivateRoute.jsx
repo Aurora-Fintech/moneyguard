@@ -8,6 +8,7 @@ import {
 export default function PrivateRoute({ children }) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
+
   if (isRefreshing) {
     return <div>Loading...</div>;
   }
