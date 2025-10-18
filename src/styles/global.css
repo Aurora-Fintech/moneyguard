@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 :root {
   --font-color-white: rgba(255, 255, 255, 1);
   --font-color-purple: rgba(98, 63, 139, 1);
@@ -11,7 +11,13 @@
   );
   --yellow--plus-shadow: 0px 6px 15px 0px rgba(255, 199, 39, 0.5);
   --red-minus-shadow: 0px 6px 15px 0px rgba(255, 134, 141, 0.5);
-  --dropdown-color-gradient: linear-gradient(0deg, rgba(83, 61, 186, 0.7) 0%, rgba(80, 48, 154, 0.7) 43.14%, rgba(106, 70, 165, 0.525) 73.27%, rgba(133, 93, 175, 0.133) 120.03%);
+  --dropdown-color-gradient: linear-gradient(
+    0deg,
+    rgba(83, 61, 186, 0.7) 0%,
+    rgba(80, 48, 154, 0.7) 43.14%,
+    rgba(106, 70, 165, 0.525) 73.27%,
+    rgba(133, 93, 175, 0.133) 120.03%
+  );
   --form-effects: rgba(0, 0, 0, 0.25);
   --form-borders: rgba(255, 199, 39, 1);
   --font-family-base: "Poppins", sans-serif;
@@ -20,8 +26,8 @@
   --font-grey: rgba(189, 189, 189, 1);
   --font-grey-light: rgba(224, 224, 224, 1);
   --white-light: rgba(251, 251, 251, 1);
-  --red:rgba(255, 134, 141, 1);
-  --yellow:rgba(255, 182, 39, 1);
+  --red: rgba(255, 134, 141, 1);
+  --yellow: rgba(255, 182, 39, 1);
 }
 * {
   box-sizing: border-box;
@@ -129,10 +135,10 @@ a {
 }
 .statistics-expenses-txt {
   font-family: var(--font-family-base);
-font-weight: 600;
-font-size: 14px;
-line-height: 1em;
-letter-spacing: 0em;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1em;
+  letter-spacing: 0em;
   color: var(--white-light);
 }
 .text,
@@ -159,7 +165,8 @@ letter-spacing: 0em;
   color: var(--font-color-white);
   margin-bottom: 11px;
 }
-.home-description{ /*date type */
+.home-description {
+  /*date type */
   font-family: var(--font-family-base);
   font-weight: 600;
   font-size: 16px;
@@ -167,9 +174,10 @@ letter-spacing: 0em;
   letter-spacing: 0em;
   color: var(--font-color-white);
 }
-.home-description ,
+.home-description,
 .dropdown-txt,
-.dashboard-description{/* description */
+.dashboard-description {
+  /* description */
   font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 16px;
@@ -180,7 +188,8 @@ letter-spacing: 0em;
 
 .dashboard-txt,
 .transaction-txt,
-.statistics-category{ /*dashboard balance currency*/
+.statistics-category {
+  /*dashboard balance currency*/
   font-family: var(--font-family-base);
   font-weight: 600;
   font-size: 16px;
@@ -189,54 +198,54 @@ letter-spacing: 0em;
   color: var(--font-color-white);
 }
 
-
-.statistics-header{ /* home statistics*/
+.statistics-header {
+  /* home statistics*/
   font-family: var(--font-family-base);
-font-weight: 700;
-font-size: 18px;
-line-height: 1em;
-letter-spacing: 0em;
-vertical-align: middle;
-color: var(--font-color-white);
-
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  vertical-align: middle;
+  color: var(--font-color-white);
 }
-.balance-variable{ /*balance variable*/
+.balance-variable {
+  /*balance variable*/
   font-family: var(--font-family-base);
-font-weight: 400;
-font-size: 12px;
-line-height: 1em;
-letter-spacing: 0em;
-color: var(--font-color-white);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  color: var(--font-color-white);
 }
 .transaction-header,
-.edit-transaction-header{/* add transaction */
+.edit-transaction-header {
+  /* add transaction */
   font-family: var(--font-family-base);
-font-weight: 400;
-font-size: 24px;
-line-height: 1em;
-letter-spacing: 0em;
-text-align: center;
-color: var(--font-color-white);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  text-align: center;
+  color: var(--font-color-white);
 }
 .transaction-label,
 .statistics-value,
-.edit-transaction-label{
+.edit-transaction-label {
   font-family: var(--font-family-base);
-font-weight: 600;
-font-size: 18px;
-line-height: 100em;
-letter-spacing: 0em;
-color: var(--font-color-grey);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100em;
+  letter-spacing: 0em;
+  color: var(--font-color-grey);
 }
 .select-category-txt,
-.logout-text{
+.logout-text {
   font-family: var(--font-family-base);
-font-weight: 400;
-font-size: 18px;
-line-height: 1em;
-letter-spacing: 0em;
-color: var(--font-color-white);
-
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  color: var(--font-color-white);
 }
 /* TABLET */
 @media (min-width: 768px) {
@@ -248,10 +257,11 @@ color: var(--font-color-white);
     width: 300px;
     height: 50px;
   }
-  .h3{
-    font-size:16px;
+  .h3 {
+    font-size: 16px;
   }
-  .transaction-header,.edit-transaction-header{
+  .transaction-header,
+  .edit-transaction-header {
     font-size: 30px;
   }
 }
@@ -261,14 +271,15 @@ color: var(--font-color-white);
     width: 300px;
     height: 50px;
   }
-  .h3{
-    font-size:16px;
+  .h3 {
+    font-size: 16px;
   }
   .form-button-register {
     width: 300px;
     height: 50px;
   }
-  .transaction-header,.edit-transaction-header{
+  .transaction-header,
+  .edit-transaction-header {
     font-size: 30px;
   }
 }
