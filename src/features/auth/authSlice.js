@@ -29,7 +29,6 @@ const handleRefreshFulFilled = (state, action) => {
 
 const handleRefreshRejected = (state) => {
   state.isRefreshing = false;
-  state.token = null;
 };
 
 const handleRefreshPending = (state) => {
