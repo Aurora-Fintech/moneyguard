@@ -1,0 +1,155 @@
+.navContainer {
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+
+.navList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navIcon {
+  width: 44px;
+  height: 44px;
+  color: rgba(255, 255, 255, 0.4);
+}
+.active .navIcon {
+  color: white;
+}
+.navText {
+  display: none;
+}
+
+.mobileOnly {
+  display: block;
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+  .navContainer {
+    margin-bottom: 28px;
+    margin-top: 40px;
+  }
+
+  .navIcon {
+    width: 24px;
+    height: 24px;
+    margin-left: 32px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+  
+  .navList {
+    display: block;
+  }
+
+  .navItem {
+    display: flex;
+    align-items: center;
+  }
+
+  .navButton {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    width: 100%;
+  }
+
+  .navButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .navText {
+    display: inline;
+    margin-left: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .mobileOnly {
+    display: none;
+  }
+
+  .active .navIcon {
+    color: white;
+  }
+
+  .active .navText {
+    color: white;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: 1280px) {
+  .navContainer {
+    margin-bottom: 20px;
+    margin-top: 40px;
+  }
+
+  .navList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .navItem {
+    margin-bottom: 12px;
+  }
+
+  .navButton {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    width: 100%;
+  }
+
+  .navButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .navIcon {
+    width: 24px;
+    height: 24px;
+    margin-right: 16px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .navText {
+    display: inline;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .active .navIcon {
+    color: white;
+  }
+
+  .active .navText {
+    color: white;
+  }
+
+  .navItemSeparator {
+    margin-bottom: 28px;
+  }
+}

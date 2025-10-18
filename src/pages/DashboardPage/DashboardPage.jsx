@@ -1,3 +1,11 @@
+import React from "react";
+import LeftSidebar from "../../components/LeftSidebar/LeftSidebar.jsx";
+import styles from "../../components/LeftSidebar/LeftSidebar.module.css";
+
 export default function DashboardPage() {
-  return <h1>Dashboard</h1>;
+  return (
+    <div className={styles.mainLayout}>
+      <LeftSidebar />
+    </div>
+  );
 }
