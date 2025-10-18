@@ -129,6 +129,62 @@ const LoginForm = () => {
           </div>
         </form>
       </div>
+    <div className={css.authCard}>
+      <form onSubmit={handleSubmit(onSubmit)} className={css.loginForm}>
+        <div className={css.loginInputWrapper}>
+          <label htmlFor={emailFieldId} className={css.visuallyHidden}>
+            E-mail
+          </label>
+
+          <img
+            src={emailIcon}
+            alt="Email icon"
+            className={css.loginInputIcon}
+          />
+
+          <input
+            type="email"
+            id={emailFieldId}
+            placeholder="E-mail"
+            {...register("email")}
+            className={css.loginFormInput}
+          />
+          <p style={{ color: "red" }}>{errors.email?.message}</p>
+        </div>
+
+        <div className={css.loginInputWrapper}>
+          <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
+            Password
+          </label>
+
+          <img
+            src={passwordIcon}
+            alt="Password icon"
+            className={css.loginInputIcon}
+          />
+
+          <input
+            type="password"
+            id={passwordFieldId}
+            placeholder="Password"
+            {...register("password")}
+            className={css.loginFormInput}
+          />
+          <p style={{ color: "red" }}>{errors.password?.message}</p>
+        </div>
+
+        {authError && <p style={{ color: "red" }}>{authError}</p>}
+        <div className={css.loginButtonWrapper}>
+          <button type="submit" className="form-button">
+            {isLoading ? "Loading..." : "LOG IN"}
+          </button>
+          <Link to="/register">
+            <button type="button" className="form-button-register">
+              REGISTER
+            </button>
+          </Link>
+        </div>
+      </form>
     </div>
   );
 };
