@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logIn, register, refreshUser } from "./authOperations";
+import { logIn, register, refreshUser,logout} from "./authOperations";
 
 // Yardımcı reducer fonksiyonlar
 
@@ -34,6 +34,12 @@ const handleRefreshRejected = (state) => {
 const handleRefreshPending = (state) => {
   state.isRefreshing = true;
 };
+const handleLogoutFulfilled = (state) => {
+  state.user = { name: null, email: null };
+  state.token = null;
+  state.isLoggedIn = false;
+  state.isLoading = false;
+};
 // Slice
 
 const initialState = {
@@ -62,7 +68,11 @@ const authSlice = createSlice({
       // Refresh durumları
       .addCase(refreshUser.pending, handleRefreshPending)
       .addCase(refreshUser.rejected, handleRefreshRejected)
-      .addCase(refreshUser.fulfilled, handleRefreshFulFilled);
+      .addCase(refreshUser.fulfilled, handleRefreshFulFilled)
+      // Logout durumu
+      .addCase(logout.pending, handlePending)
+      .addCase(logout.rejected, handleRejected)
+      .addCase(logout.fulfilled, handleLogoutFulfilled);
   },
 });
 
