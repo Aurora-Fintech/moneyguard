@@ -1,0 +1,117 @@
+/* ================= HEADER ================= */
+.header {
+  width: 100%; 
+  background: linear-gradient(270.02deg, #2e1746 3.2%, #2e225f 99.98%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  height: 80px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1280px; 
+  padding: 0 36px;
+  box-sizing: border-box;
+}
+
+/* ================= SOL TARAF ================= */
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerlogo {
+  width: 24px;
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.appName {
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+/* ================= SAĞ TARAF ================= */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+
+
+.exitBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.exitBtn:hover {
+  opacity: 0.7;
+}
+
+.exitIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  transition: opacity 0.2s ease;
+}
+
+.exitBtn:hover .exitIcon {
+  opacity: 0.8;
+}
+.exitText {
+  display: none;}
+
+/* ================= RESPONSIVE ================= */
+/* Tablet ve üstü: exit yazısı görünür */
+@media (min-width: 768px) {
+  .exit-text {
+    display: inline;
+  }
+  .headerDivider {
+  width: 2px;                  
+  height: 30px;                  
+  background-color: rgba(255, 255, 255, 0.4);
+  margin: 0 5px;               
+  flex-shrink: 0;               
+}
+.exitText {
+  display: inline;
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: 0.1em;
+  color: var(--font-color-white-60);
+}
+}
+
+/* Desktop (≥1280px) */
+@media (min-width: 1280px) {
+  .headerContainer {
+    max-width: 1280px;  /* içerik genişliği sınırı */
+    margin: 0 auto;      /* ortala */
+  }
+
+  .exit-text {
+    display: inline;
+  }
+}
