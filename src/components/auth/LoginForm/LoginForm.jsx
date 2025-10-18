@@ -10,6 +10,9 @@ import {
 import { logIn } from "../../../features/auth/authOperations";
 import { useId } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import css from "./LoginForm.module.css";
+import emailIcon from "../../../assets/icons/emailIcon.svg";
+import passwordIcon from "../../../assets/icons/passwordIcon.svg";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -58,26 +61,63 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor={emailFieldId}>E-mail</label>
-        <input type="email" id={emailFieldId} {...register("email")} />
-        <p style={{ color: "red" }}>{errors.email?.message}</p>
-      </div>
+    <div className={css.authCard}>
+      <form onSubmit={handleSubmit(onSubmit)} className={css.loginForm}>
+        <div className={css.loginInputWrapper}>
+          <label htmlFor={emailFieldId} className={css.visuallyHidden}>
+            E-mail
+          </label>
 
-      <div>
-        <label htmlFor={passwordFieldId}>Password</label>
-        <input type="password" id={passwordFieldId} {...register("password")} />
-        <p style={{ color: "red" }}>{errors.password?.message}</p>
-      </div>
+          <img
+            src={emailIcon}
+            alt="Email icon"
+            className={css.loginInputIcon}
+          />
 
-      {authError && <p style={{ color: "red" }}>{authError}</p>}
+          <input
+            type="email"
+            id={emailFieldId}
+            placeholder="E-mail"
+            {...register("email")}
+            className={css.loginFormInput}
+          />
+          <p style={{ color: "red" }}>{errors.email?.message}</p>
+        </div>
 
-      <button type="submit">{isLoading ? "Loading..." : "Log In"}</button>
-      <Link to="/register">
-        <button type="button">Register</button>
-      </Link>
-    </form>
+        <div className={css.loginInputWrapper}>
+          <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
+            Password
+          </label>
+
+          <img
+            src={passwordIcon}
+            alt="Password icon"
+            className={css.loginInputIcon}
+          />
+
+          <input
+            type="password"
+            id={passwordFieldId}
+            placeholder="Password"
+            {...register("password")}
+            className={css.loginFormInput}
+          />
+          <p style={{ color: "red" }}>{errors.password?.message}</p>
+        </div>
+
+        {authError && <p style={{ color: "red" }}>{authError}</p>}
+        <div className={css.loginButtonWrapper}>
+          <button type="submit" className="form-button">
+            {isLoading ? "Loading..." : "LOG IN"}
+          </button>
+          <Link to="/register">
+            <button type="button" className="form-button-register">
+              REGISTER
+            </button>
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 };
 

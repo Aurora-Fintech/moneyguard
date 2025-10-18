@@ -1,0 +1,55 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  align-items: center;
+  gap: 40px;
+}
+
+.loginInputWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.loginFormInput {
+  width: 280px;
+  height: 35px;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--font-color-white-40);
+  outline: none;
+  padding-left: 54.5px;
+
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  color: var(--font-color-white-40);
+}
+
+.loginInputIcon {
+  margin-left: 13px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 24px;
+  height: 24px;
+}
+
+.loginButtonWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
