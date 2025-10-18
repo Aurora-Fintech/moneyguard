@@ -1,3 +1,14 @@
+
+import React from 'react';
+import Header from '../../components/header/header.jsx'; 
+
 export default function DashboardPage() {
-  return <h1>Dashboard</h1>;
+  return (
+    <>
+      <Header />
+      <main>
+        <h2>Dashboard İçeriği</h2>
+      </main>
+    </>
+  );
 }
