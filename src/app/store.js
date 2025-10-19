@@ -24,8 +24,8 @@ const authPersistConfig = {
 };
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
-
-  // transactions: transactionsReducer,
+  transactions: transactionsReducer,
+  categories: categoriesReducer, // KATEGORİLER EKLENDİ
   currency: currencyReducer,
 });
 

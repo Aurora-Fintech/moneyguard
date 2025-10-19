@@ -4,25 +4,16 @@ import TransactionsItem from "../TransactionsItem/TransactionsItem";
 import EmptyTransactions from "../EmptyTransactions/EmptyTransactions";
 
 const TransactionsList = () => {
-  // Redux store'dan transaction listesini, loading ve error durumlarını alıyoruz
   const { transactionsList, isLoading, error } = useSelector(
     (state) => state.transactions
   );
 
-  // Hata varsa göster
-  if (error) return <div>Hata oluştu: {error.message}</div>;
-
-  // Loading durumu varsa göster
+  if (error) return <div>Hata oluştu: {error}</div>;
   if (isLoading) return <div>İşlemler yükleniyor...</div>;
-
-  // Liste boşsa placeholder göster
   if (!transactionsList || transactionsList.length === 0) {
     return <EmptyTransactions />;
   }
 
-  // Liste boşsa placeholder göster
-
-  // Liste doluysa tabloyu render et
   return (
     <table
       style={{
@@ -38,7 +29,7 @@ const TransactionsList = () => {
           <th>Kategori</th>
           <th>Yorum</th>
           <th>Tutar</th>
-          <th>İşlemler</th>
+          <th style={{ textAlign: "center" }}>İşlemler</th>
         </tr>
       </thead>
       <tbody>

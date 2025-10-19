@@ -7,10 +7,16 @@ export const userTransactionApi = axios.create({
 
 // Token ayarlama
 export const setToken = (token) => {
-  userTransactionApi.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${token}`;
+  if (token) {
+    userTransactionApi.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${token}`;
+  } else {
+    delete userTransactionApi.defaults.headers.common["Authorization"];
+  }
 };
+
+// --- İşlemler --- //
 
 // Tüm işlemleri çek
 export const fetchAllTransactions = async (token) => {
@@ -29,7 +35,6 @@ export const fetchAllTransactions = async (token) => {
 export const createTransaction = async (transactionData, token) => {
   if (token) setToken(token);
 
-  // Backend’in beklediği payload yapısı
   const payload = {
     transactionDate: transactionData.transactionDate, // ISO string
     type: transactionData.type, // "INCOME" veya "EXPENSE"
@@ -42,7 +47,35 @@ export const createTransaction = async (transactionData, token) => {
     const response = await userTransactionApi.post("api/transactions", payload);
     return response.data;
   } catch (error) {
-    console.error("İşlem eklerken hata:", error.response || error);
+    console.error("İşlem eklerken hata:", error.response.data || error);
+    throw error;
+  }
+};
+
+// İşlem sil
+export const deleteTransaction = async (transactionId, token) => {
+  if (token) setToken(token);
+
+  try {
+    const response = await userTransactionApi.delete(
+      `api/transactions/${transactionId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("İşlem silerken hata:", error.response || error);
+    throw error;
+  }
+};
+
+// Kategorileri çek
+export const fetchCategories = async (token) => {
+  if (token) setToken(token);
+
+  try {
+    const response = await userTransactionApi.get("api/transaction-categories");
+    return response.data;
+  } catch (error) {
+    console.error("Kategorileri çekerken hata:", error.response || error);
     throw error;
   }
 };

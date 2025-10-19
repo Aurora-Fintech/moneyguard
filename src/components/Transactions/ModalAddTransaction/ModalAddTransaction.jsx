@@ -8,31 +8,30 @@ import styles from "./ModalAddTransaction.module.css";
 
 const ModalAddTransaction = () => {
   const dispatch = useDispatch();
-  const isModalOpen = useSelector((state) => state.transactions.isModalOpen);
+  // isModalOpen'ı buradan çekmeye gerek yok, çünkü render koşulunu dışarı taşıdık,
+  // ama kodunuzda dursun istiyorsanız tutabilirsiniz.
 
   // Modal'ı kapatma fonksiyonu
   const handleClose = () => {
-    dispatch(toggleModal()); // güncel action
+    // Redux'a modalı kapatması için aksiyon gönderilir (payload olmadan tam tersini yapar)
+    dispatch(toggleModal());
   };
 
   return (
     <div
       className={styles.overlay}
-      onClick={toggleModal} // Overlay'e tıklayınca modal kapanır
+      onClick={handleClose} // 🟢 DÜZELTME: handleClose çağrıldı
     >
-      <div
-        className={styles.modal}
-        onClick={(e) => e.stopPropagation()} // Modal içine tıklayınca kapanmayı engeller
-      >
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button
           className={styles.closeBtn}
-          onClick={toggleModal} // Butona tıklayınca modal kapanır
+          onClick={handleClose} // 🟢 DÜZELTME: handleClose çağrıldı
         >
           &times;
         </button>
 
-        {/* Form komponenti: onCancel prop’u modal’ı kapatmak için */}
-        <AddTransactionForm onCancel={toggleModal} />
+        {/* onCancel prop'u handleClose'a bağlanır */}
+        <AddTransactionForm onCancel={handleClose} />
       </div>
     </div>
   );

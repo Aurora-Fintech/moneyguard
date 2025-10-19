@@ -1,55 +1,77 @@
-// src/features/transactions/TransactionsItem.jsx
-
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { deleteTransactionThunk } from "../../../features/transactions/transactionsSlice";
 
 const TransactionsItem = ({ transaction }) => {
-  const { allCategories } = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
 
-  const isIncome = transaction.type === "INCOME";
-  const typeSymbol = isIncome ? "+" : "−";
-  const typeColor = isIncome ? "green" : "red";
+  const handleDelete = () => {
+    if (window.confirm("Bu işlemi silmek istediğine emin misin?")) {
+      dispatch(deleteTransactionThunk(transaction.id));
+    }
+  };
 
-  const dateValue = transaction.transactionDate;
-  const amountValue = transaction.amount;
+  const handleEdit = () => {
+    console.log("Düzenlenecek işlem:", transaction);
+  };
 
-  const formattedDate = dateValue
-    ? new Date(dateValue).toLocaleDateString("tr-TR")
-    : "N/A";
+  // Tarihi okunabilir formatta göster
+  const formattedDate = transaction.transactionDate
+    ? new Date(transaction.transactionDate).toLocaleDateString()
+    : transaction.date || "-";
 
-  const categoryName =
-    allCategories.find((cat) => cat.id === transaction.categoryId)?.name ||
-    "Unknown";
+  // Backend’den gelen alan isimleri: amount, type
+  const typeLower = transaction.type?.toLowerCase(); // INCOME / EXPENSE → income / expense
+  const amount = transaction.amount ?? transaction.sum;
 
   return (
-    <tr style={{ borderBottom: `1px solid ${typeColor}` }}>
+    <tr
+      style={{
+        borderBottom: "1px solid #e0e0e0",
+      }}
+    >
       <td>{formattedDate}</td>
-      <td style={{ color: typeColor, fontWeight: "bold" }}>{typeSymbol}</td>
-      <td>{categoryName}</td>
-      <td>{transaction.comment || ""}</td>
-      <td style={{ color: typeColor, fontWeight: "bold" }}>
-        {amountValue?.toFixed(2) || "0.00"}
+      <td
+        style={{
+          color: typeLower === "income" ? "#24CCA7" : "#FF6596",
+          fontWeight: 600,
+        }}
+      >
+        {typeLower === "income" ? "Gelir" : "Gider"}
       </td>
-      <td>
+      <td>{transaction.category || "-"}</td>
+      <td>{transaction.comment || "-"}</td>
+      <td>{amount} ₺</td>
+      <td
+        style={{
+          textAlign: "center",
+        }}
+      >
         <button
-          onClick={() => console.log("Düzenle:", transaction.id)}
+          onClick={handleEdit}
           style={{
-            cursor: "pointer",
+            marginRight: "8px",
+            backgroundColor: "#f0f0f0",
             border: "none",
-            background: "transparent",
+            padding: "4px 10px",
+            borderRadius: "6px",
+            cursor: "pointer",
           }}
         >
-          &#9998;
+          Edit
         </button>
         <button
-          onClick={() => console.log("Sil:", transaction.id)}
+          onClick={handleDelete}
           style={{
-            cursor: "pointer",
+            backgroundColor: "#ff4d4f",
+            color: "#fff",
             border: "none",
-            background: "transparent",
+            padding: "4px 10px",
+            borderRadius: "6px",
+            cursor: "pointer",
           }}
         >
-          &#128465;
+          ✕
         </button>
       </td>
     </tr>

@@ -26,10 +26,11 @@ const validationSchema = Yup.object().shape({
 
 const AddTransactionForm = ({ onCancel }) => {
   const dispatch = useDispatch();
-  const { categories } = useSelector((state) => state.categories);
 
-  // Expense kategorileri filtrele
-  const expenseCategories = categories?.filter((cat) => cat.type === "EXPENSE");
+  // DÜZELTİLDİ: Redux store'dan incomeCategories ve expenseCategories çekiliyor
+  const { incomeCategories, expenseCategories, isLoading } = useSelector(
+    (state) => state.categories
+  );
 
   const [isIncome, setIsIncome] = useState(true);
 
@@ -39,7 +40,11 @@ const AddTransactionForm = ({ onCancel }) => {
 
   const toggleSwitch = () => setIsIncome((prev) => !prev);
 
-  const maxDate = new Date(); // bugünden ileri tarih seçilemez
+  // Kategori listesi Gelir/Gider durumuna göre belirlenir
+  const categoriesToShow = isIncome ? incomeCategories : expenseCategories;
+
+  // Bugünden ileri tarih seçilemez, maxDate olarak kullanılıyor
+  const maxDate = new Date();
 
   return (
     <div className={styles.container}>
@@ -92,18 +97,22 @@ const AddTransactionForm = ({ onCancel }) => {
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm, setFieldError }) => {
           let finalCategoryId;
-
+          console.log("incomeCategories: ", incomeCategories);
           if (isIncome) {
-            finalCategoryId = INCOME_CATEGORY_ID;
+            finalCategoryId = incomeCategories[0]?.id;
           } else {
             if (!values.category) {
               setFieldError("category", "Gider kategorisi seçimi zorunludur.");
               return;
             }
-            const selectedCategory = expenseCategories.find(
+
+            // Kategori ID'si category name'ine göre bulunur
+            const selectedCategory = categoriesToShow.find(
               (cat) => cat.name === values.category
             );
+
             finalCategoryId = selectedCategory?.id;
+
             if (!finalCategoryId) {
               setFieldError("category", "Geçersiz kategori ID'si.");
               return;
@@ -129,7 +138,7 @@ const AddTransactionForm = ({ onCancel }) => {
       >
         {({ values, setFieldValue, errors, touched }) => (
           <Form className={styles.form}>
-            {/* Gider kategorisi */}
+            {/* Kategori Seçimi (Sadece Expense için) */}
             {!isIncome && (
               <div className={styles.inputGroup}>
                 <Field
@@ -142,7 +151,7 @@ const AddTransactionForm = ({ onCancel }) => {
                   <option value="" disabled>
                     Select a category
                   </option>
-                  {expenseCategories?.map((cat) => (
+                  {categoriesToShow?.map((cat) => (
                     <option key={cat.id} value={cat.name}>
                       {cat.name}
                     </option>
@@ -178,7 +187,7 @@ const AddTransactionForm = ({ onCancel }) => {
                   selected={values.date}
                   onChange={(date) => setFieldValue("date", date)}
                   dateFormat="dd/MM/yyyy"
-                  maxDate={maxDate}
+                  maxDate={maxDate} // Bugünden sonraki tarihi engeller
                   className={`${styles.input} ${
                     touched.date && errors.date ? styles.inputError : ""
                   }`}
