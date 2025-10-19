@@ -18,16 +18,18 @@ export default function LeftSidebar() {
   const activeTab = getActiveTab();
 
   return (
-    <div className={styles.sidebar}>
-      <Navigation />
-
-      <div
-        className={activeTab === "home" ? styles.homeTab : styles.currencyTab}
-      >
-        {/* <Balance /> */}
-        <CurrencyTab />
-        <CurrencyAreaChart />
-      </div>
+   <div className={styles.sidebar}>
+  <div className={styles.leftColumn}>
+    <Navigation />
+    {/* <Balance /> */}
+  </div>
+  <div className={styles.rightColumn}>
+    <div className={activeTab === "home" ? styles.homeTab : styles.currencyTab}>
+      <CurrencyTab />
+      <CurrencyAreaChart />
     </div>
+  </div>
+</div>
+
   );
 }
