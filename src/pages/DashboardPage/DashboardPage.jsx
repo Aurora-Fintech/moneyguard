@@ -1,6 +1,6 @@
 import React from 'react';
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar.jsx";
-import Header from '../../components/Header/Header.jsx';
+import Header from '../../components/header/header.jsx';
 import styles from "./DashboardPage.module.css";
 
 const DashboardPage = () => {
