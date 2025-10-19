@@ -197,6 +197,7 @@ a {
   letter-spacing: 0em;
   color: var(--font-color-white);
 }
+<<<<<<< HEAD
 
 .statistics-header {
   /* home statistics*/
@@ -211,6 +212,21 @@ a {
 .balance-variable {
   /*balance variable*/
   font-family: var(--font-family-base);
+=======
+.statistics-header {
+  /* home statistics*/
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1em;
+  letter-spacing: 0em;
+  vertical-align: middle;
+  color: var(--font-color-white);
+}
+.balance-variable {
+  /*balance variable*/
+  font-family: var(--font-family-base);
+>>>>>>> 4bdaf9d4b7d6cbc8aa980188d8b025b71dbf4d35
   font-weight: 400;
   font-size: 12px;
   line-height: 1em;
@@ -245,7 +261,11 @@ a {
   font-size: 18px;
   line-height: 1em;
   letter-spacing: 0em;
+<<<<<<< HEAD
   color: var(--font-color-white);
+=======
+  color: var(--font-color-white-60);
+>>>>>>> 4bdaf9d4b7d6cbc8aa980188d8b025b71dbf4d35
 }
 /* TABLET */
 @media (min-width: 768px) {
