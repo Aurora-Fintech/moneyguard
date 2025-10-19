@@ -58,8 +58,8 @@ export const refreshUser = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    const { data } = await userTransactionsApi.delete("/api/auth/sign-out");
-    removeToken();
+    const { data } = await userTransactionApi.delete("/api/auth/sign-out");
+    // removeToken();
     return data;
   } catch (error) {
     console.error("logoutThunk hata:", error);
