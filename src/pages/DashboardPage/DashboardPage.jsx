@@ -1,14 +1,21 @@
-
 import React from 'react';
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar.jsx";
-import styles from "../../components/LeftSidebar/LeftSidebar.module.css";
-import Header from '../../components/header/header.jsx'; 
+import Header from '../../components/header/header.jsx';
+import styles from "./DashboardPage.module.css";
 
-export default function DashboardPage() {
+const DashboardPage = () => {
   return (
-    <div className={styles.mainLayout}>
+    <div className={styles.dashboardPage}>
       <Header />
-      <LeftSidebar />
+      <div className={styles.container}>
+        <aside className={styles.leftSidebar}>
+          <LeftSidebar />
+           <div className={styles.sidebarDivider}></div> 
+        </aside>
+
+      </div>
     </div>
   );
-}
+};
+
+export default DashboardPage;

@@ -16,3 +16,15 @@
   color: #666;
   font-size: 14px;
 }
+@media (min-width: 768px) {
+.currencyTab {
+    width: 336px;
+    height: 88px; 
+  }
+}
+@media (min-width: 1280px) {
+  .currencyTab {
+    width: 480px; 
+    height: 120px;
+  }
+}

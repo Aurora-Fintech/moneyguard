@@ -1,17 +1,25 @@
 .mainLayout {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(220deg, #6d54eb 3.47%, #652392 90.06%);
   backdrop-filter: blur(100px);
   box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
 }
 
+/* Sidebar container */
 .sidebar {
-  width: 320px;
-  border-right: 1px solid #e0e0e0;
-  background: linear-gradient(220deg, #6d54eb 3%, #652392 90%);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 69px;
 }
 
+
+.leftColumn,
+.rightColumn {
+  width: 100%;
+}
+
+/* Tabların göster/gizle mantığı */
 .homeTab > *:nth-child(1) {
   display: block;
 }
@@ -30,7 +38,28 @@
   display: block;
 }
 
+/* Tablet ve üzeri */
 @media (min-width: 768px) {
+  .sidebar {
+    flex-direction: row; 
+  }
+
+  .leftColumn {
+    width: 336px; 
+    display: flex;
+    flex-direction: column;
+    background: none;
+    border-right: none;
+  }
+
+  .rightColumn {
+    width: 336px;
+    display: flex;
+    flex-direction: column; 
+    height: 214px; 
+  }
+
+  /* Tab içeriğini göster */
   .homeTab > *:nth-child(1),
   .homeTab > *:nth-child(2),
   .homeTab > *:nth-child(3),
@@ -39,29 +68,41 @@
   .currencyTab > *:nth-child(3) {
     display: block;
   }
-
-  .sidebar {
-    background: none;
-    border-right: none;
+}
+@media (min-width: 768px) and (max-width:1279px){
+  .rightColumn > div {
+    border-radius: 12px;
+    width: 320px;  
+    background: rgba(74, 86, 226, 0.1);
+    height: 290px;
+    box-sizing: border-box;
   }
 }
-
+  
 @media (min-width: 1280px) {
   .sidebar {
+    flex-direction: column; 
+    gap: 20px;
     width: 480px;
-    background: linear-gradient(220deg, #6d54eb 3%, #652392 90%);
+    height: 640px;
+    background: transparent;
     position: relative;
+    
   }
+
+  .leftColumn {
+    width: 480px; /* Sol sütun genişliği */
+    height: 100%; 
+  }
+
+  .rightColumn {
+    flex: 1; /* Kalan alanı kaplar */
+    height: 100%;
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   
-  .sidebar::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background-color: #e0e0e0;
-    z-index: 9999;
-    pointer-events: none;
-  }
 }
