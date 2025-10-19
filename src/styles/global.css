@@ -260,11 +260,8 @@ a {
   font-size: 18px;
   line-height: 1em;
   letter-spacing: 0em;
-<<<<<<< HEAD
   color: var(--font-color-white);
-=======
   color: var(--font-color-white-60);
->>>>>>> 4bdaf9d4b7d6cbc8aa980188d8b025b71dbf4d35
 }
 /* TABLET */
 @media (min-width: 768px) {
