@@ -11,7 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "../features/auth/authSlice";
-import transactionsReducer from "../features/transactions/transactionsSlice.js"; 
+// import transactionsReducer from "../features/transactions/transactionsSlice.js"; 
 import currencyReducer from "../features/currency/currencySlice.js";
 
 const authPersistConfig = {
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   
 
-  transactions: transactionsReducer, 
+  // transactions: transactionsReducer, 
   currency: currencyReducer,        
 
 });

@@ -1,4 +1,4 @@
-.balanceContainer {
+/* .balanceContainer {
     padding: 8px;
     padding-left: 56px;
     width: 280px;
@@ -6,21 +6,21 @@
     background: rgba(82, 59, 126, 0.6);
     box-shadow: 1px 9px 15px 0 rgba(0, 0, 0, 0.2);
     margin: 0 20px;
-}
+} */
 /* TABLET */
-@media (min-width: 768px){
+/* @media (min-width: 768px){
     .balanceContainer{
     width: 336px;
     height: 80px;
 }
-}
+} */
 
 /* DESKTOP */
-@media (min-width: 1280px) {
+/* @media (min-width: 1280px) {
 .balanceContainer {
     width: 480px;
     background: rgba(82, 59, 126, 0.6);
     box-shadow: 1px 9px 15px 0 rgba(0, 0, 0, 0.2);
     margin: 0;
 }
-}
+} */
