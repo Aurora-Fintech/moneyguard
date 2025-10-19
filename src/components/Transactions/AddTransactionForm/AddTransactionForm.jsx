@@ -44,7 +44,7 @@ const AddTransactionForm = ({ onCancel }) => {
   const categoriesToShow = isIncome ? incomeCategories : expenseCategories;
 
   // Bugünden ileri tarih seçilemez, maxDate olarak kullanılıyor
-  const maxDate = new Date();
+  const minDate = new Date();
 
   return (
     <div className={styles.container}>
@@ -97,7 +97,8 @@ const AddTransactionForm = ({ onCancel }) => {
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm, setFieldError }) => {
           let finalCategoryId;
-          console.log("incomeCategories: ", incomeCategories);
+          let amount = parseFloat(values.sum);
+
           if (isIncome) {
             finalCategoryId = incomeCategories[0]?.id;
           } else {
@@ -117,11 +118,13 @@ const AddTransactionForm = ({ onCancel }) => {
               setFieldError("category", "Geçersiz kategori ID'si.");
               return;
             }
+
+            amount = -amount;
           }
 
           const transactionData = {
             transactionDate: values.date.toISOString(),
-            amount: parseFloat(values.sum),
+            amount,
             categoryId: finalCategoryId,
             type: isIncome ? "INCOME" : "EXPENSE",
             comment: values.comment || "",
@@ -187,7 +190,7 @@ const AddTransactionForm = ({ onCancel }) => {
                   selected={values.date}
                   onChange={(date) => setFieldValue("date", date)}
                   dateFormat="dd/MM/yyyy"
-                  maxDate={maxDate} // Bugünden sonraki tarihi engeller
+                  minDate={minDate} // Bugünden sonraki tarihi engeller
                   className={`${styles.input} ${
                     touched.date && errors.date ? styles.inputError : ""
                   }`}

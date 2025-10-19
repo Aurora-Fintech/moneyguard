@@ -14,7 +14,7 @@ const TransactionsList = () => {
   if (!transactionsList || transactionsList.length === 0) {
     return <EmptyTransactions />;
   }
-
+  console.log("transactions: ", transactionsList);
   return (
     <table className={styles.table}>
       <thead>
