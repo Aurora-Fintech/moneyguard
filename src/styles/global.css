@@ -130,6 +130,8 @@ letter-spacing: 0em;
   letter-spacing: 0em;
   text-transform: uppercase;
   color: var(--font-color-white-40);
+  margin-top: 8px;
+  margin-bottom: 12px;
 }
 .dashboard-value {
   /*24000 */
@@ -140,6 +142,7 @@ letter-spacing: 0em;
   letter-spacing: 0em;
   vertical-align: middle;
   color: var(--font-color-white);
+  margin-bottom: 11px;
 }
 .home-description{ /*date type */
   font-family: var(--font-family-base);
@@ -159,16 +162,19 @@ letter-spacing: 0em;
   letter-spacing: 0em;
   color: var(--white-light);
 }
+
 .dashboard-txt,
 .transaction-txt,
 .statistics-category{ /*dashboard balance currency*/
-   font-family: var(--font-family-base);
+  font-family: var(--font-family-base);
   font-weight: 600;
   font-size: 16px;
   line-height: 1em;
   letter-spacing: 0em;
   color: var(--font-color-white);
 }
+
+
 .statistics-header{ /* home statistics*/
   font-family: var(--font-family-base);
 font-weight: 700;

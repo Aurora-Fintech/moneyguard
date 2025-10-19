@@ -11,14 +11,23 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "../features/auth/authSlice";
+import transactionsReducer from "../features/transactions/transactionsSlice.js"; 
+import currencyReducer from "../features/currency/currencySlice.js";
 
 const authPersistConfig = {
   key: "auth",
   storage,
   whitelist: ["token"],
 };
+
+
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
+  
+
+  transactions: transactionsReducer, 
+  currency: currencyReducer,        
+
 });
 
 export const store = configureStore({
@@ -30,4 +39,5 @@ export const store = configureStore({
       },
     }),
 });
+
 export const persistor = persistStore(store);

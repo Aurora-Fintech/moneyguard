@@ -1,0 +1,67 @@
+.mainLayout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(220deg, #6d54eb 3.47%, #652392 90.06%);
+  backdrop-filter: blur(100px);
+  box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
+}
+
+.sidebar {
+  width: 320px;
+  border-right: 1px solid #e0e0e0;
+  background: linear-gradient(220deg, #6d54eb 3%, #652392 90%);
+}
+
+.homeTab > *:nth-child(1) {
+  display: block;
+}
+
+.homeTab > *:nth-child(2),
+.homeTab > *:nth-child(3) {
+  display: none;
+}
+
+.currencyTab > *:nth-child(1) {
+  display: none;
+}
+
+.currencyTab > *:nth-child(2),
+.currencyTab > *:nth-child(3) {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .homeTab > *:nth-child(1),
+  .homeTab > *:nth-child(2),
+  .homeTab > *:nth-child(3),
+  .currencyTab > *:nth-child(1),
+  .currencyTab > *:nth-child(2),
+  .currencyTab > *:nth-child(3) {
+    display: block;
+  }
+
+  .sidebar {
+    background: none;
+    border-right: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .sidebar {
+    width: 480px;
+    background: linear-gradient(220deg, #6d54eb 3%, #652392 90%);
+    position: relative;
+  }
+  
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #e0e0e0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+}
