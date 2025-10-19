@@ -1,0 +1,23 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: var(--font-family-base);
+  color: var(--font-color-white);
+}
+
+.theadRow {
+  background-color: #523b7e99; /* başlık arka plan mor */
+}
+
+.th {
+  font-weight: 600;
+  font-size: 16px;
+  padding: 12px 8px;
+  color: var(--font-color-white); /* başlık yazısı beyaz */
+  text-align: left;
+}
+
+.thCenter {
+  text-align: center;
+}

@@ -1,0 +1,137 @@
+.container {
+  background-color: rgba(255, 255, 255, 0.05); /* beyazın çok hafif saydamı */
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(
+    45deg,
+    rgba(27, 0, 55, 1) 0%,
+    rgba(15, 15, 18, 1) 100%
+  );
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--font-color-white);
+}
+
+.switchWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.switchText {
+  font-weight: 600;
+  font-family: var(--font-family-base);
+}
+
+.switchBackground {
+  position: relative;
+  width: 60px;
+  height: 36px;
+  background-color: var(--font-color-white);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.switchButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: 0;
+}
+
+.income {
+  background-color: var(--yellow);
+  color: var(--font-color-white);
+  left: 0;
+}
+
+.expense {
+  background-color: var(--red);
+  color: var(--font-color-white);
+  right: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.inputGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 12px 0 8px 0; /* comment yazısı biraz aşağıda */
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: var(--font-color-white);
+  font-size: 16px;
+  outline: none;
+  font-family: var(--font-family-base);
+  resize: none; /* comment resize handle kaldırıldı */
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--yellow);
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.submitBtn,
+.cancelBtn {
+  width: 140px;
+  padding: 12px 0;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  text-align: center;
+}
+
+.submitBtn {
+  background: var(--button-gradient);
+  color: var(--font-color-white);
+  border: none;
+}
+
+.cancelBtn {
+  background-color: var(--font-color-white);
+  color: var(--font-color-purple);
+  border: none;
+}

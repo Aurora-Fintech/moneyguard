@@ -2,7 +2,7 @@
 // import { useSelector } from "react-redux";
 // import styles from "./Balance.module.css";
 
-// const selectTotalBalance = (state) => state.transactions.balance;
+const selectTotalBalance = (state) => state.transactions?.balance;
 
 // const Balance = () => {
 //   const totalBalance = useSelector(selectTotalBalance);

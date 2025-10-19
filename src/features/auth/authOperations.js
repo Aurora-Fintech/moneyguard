@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userTransactionsApi, setToken, removeToken } from "../../api/userTransactionApi.js";
+import { userTransactionApi, setToken } from "../../api/userTransactionApi2.js";
 
 export const logIn = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
     try {
-      const response = await userTransactionsApi.post(
+      console.log("login request");
+      const response = await userTransactionApi.post(
         "/api/auth/sign-in",
         credentials
       );
@@ -21,7 +22,7 @@ export const register = createAsyncThunk(
   "auth/register",
   async (credentials, thunkAPI) => {
     try {
-      const response = await userTransactionsApi.post(
+      const response = await userTransactionApi.post(
         "/api/auth/sign-up",
         credentials
       );
@@ -47,7 +48,7 @@ export const refreshUser = createAsyncThunk(
     }
 
     try {
-      const { data } = await userTransactionsApi.get("/api/users/current");
+      const { data } = await userTransactionApi.get("/api/users/current");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -55,18 +56,15 @@ export const refreshUser = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
-  "auth/logout",
-  async (_, thunkAPI) => {
-    try {    
-      const { data } = await userTransactionsApi.delete("/api/auth/sign-out");     
-      removeToken();     
-      return data;
-    } catch (error) {
-      console.error("logoutThunk hata:", error);
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
-      );
-    }
+export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+  try {
+    const { data } = await userTransactionApi.delete("/api/auth/sign-out");
+    // removeToken();
+    return data;
+  } catch (error) {
+    console.error("logoutThunk hata:", error);
+    return thunkAPI.rejectWithValue(
+      error.response?.data?.message || error.message
+    );
   }
-);
+});

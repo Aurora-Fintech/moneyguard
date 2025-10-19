@@ -10,24 +10,23 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import authReducer from "../features/auth/authSlice";
-// import transactionsReducer from "../features/transactions/transactionsSlice.js"; 
-import currencyReducer from "../features/currency/currencySlice.js";
 
+import authReducer from "../features/auth/authSlice";
+import currencyReducer from "../features/currency/currencySlice.js";
+import transactionsReducer from "../features/transactions/transactionsSlice";
+import categoriesReducer from "../features/categories/categoriesSlice";
+
+// Auth persist config
 const authPersistConfig = {
   key: "auth",
   storage,
   whitelist: ["token"],
 };
-
-
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
-  
-
-  // transactions: transactionsReducer, 
-  currency: currencyReducer,        
-
+  transactions: transactionsReducer,
+  categories: categoriesReducer, // KATEGORİLER EKLENDİ
+  currency: currencyReducer,
 });
 
 export const store = configureStore({
