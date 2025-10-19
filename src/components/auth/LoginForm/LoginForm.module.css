@@ -129,6 +129,14 @@
 }
 
 @media (min-width: 1280px) {
+  .loginBackground {
+    background-image: url("../../../assets/images/desktop-login-background1x.webp");
+  }
+  @media (min-resolution: 2dppx) {
+    .loginBackground {
+      background-image: url("../../../assets/images/desktop-login-background2x.webp");
+    }
+  }
 }
 
 input:-webkit-autofill,
