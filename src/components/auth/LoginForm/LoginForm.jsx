@@ -13,6 +13,7 @@ import { useNavigate, Link } from "react-router-dom";
 import css from "./LoginForm.module.css";
 import emailIcon from "../../../assets/icons/emailIcon.svg";
 import passwordIcon from "../../../assets/icons/passwordIcon.svg";
+import logoIcon from "../../../assets/icons/moneyGuardLogo.svg";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -61,62 +62,73 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={css.authCard}>
-      <form onSubmit={handleSubmit(onSubmit)} className={css.loginForm}>
-        <div className={css.loginInputWrapper}>
-          <label htmlFor={emailFieldId} className={css.visuallyHidden}>
-            E-mail
-          </label>
+    <div className={css.loginBackground}>
+      <div className={css.loginFormBlurCenter}></div>
 
-          <img
-            src={emailIcon}
-            alt="Email icon"
-            className={css.loginInputIcon}
-          />
+      <div className={css.authCard}>
+        <img
+          src={logoIcon}
+          alt="Money Guard icon"
+          className={css.loginLogoIcon}
+        />
+        <h2 className={css.loginFormTitle}>Money Guard</h2>
 
-          <input
-            type="email"
-            id={emailFieldId}
-            placeholder="E-mail"
-            {...register("email")}
-            className={css.loginFormInput}
-          />
-          <p style={{ color: "red" }}>{errors.email?.message}</p>
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className={css.loginForm}>
+          <div className={css.loginInputWrapper}>
+            <label htmlFor={emailFieldId} className={css.visuallyHidden}>
+              E-mail
+            </label>
 
-        <div className={css.loginInputWrapper}>
-          <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
-            Password
-          </label>
+            <img
+              src={emailIcon}
+              alt="Email icon"
+              className={css.loginInputIcon}
+            />
 
-          <img
-            src={passwordIcon}
-            alt="Password icon"
-            className={css.loginInputIcon}
-          />
+            <input
+              type="email"
+              id={emailFieldId}
+              placeholder="E-mail"
+              {...register("email")}
+              className={css.loginFormInput}
+            />
+            <p style={{ color: "red" }}>{errors.email?.message}</p>
+          </div>
 
-          <input
-            type="password"
-            id={passwordFieldId}
-            placeholder="Password"
-            {...register("password")}
-            className={css.loginFormInput}
-          />
-          <p style={{ color: "red" }}>{errors.password?.message}</p>
-        </div>
+          <div className={css.loginInputWrapper}>
+            <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
+              Password
+            </label>
 
-        {authError && <p style={{ color: "red" }}>{authError}</p>}
-        <div className={css.loginButtonWrapper}>
-          <button type="submit" className="form-button">
-            {isLoading ? "Loading..." : "LOG IN"}
-          </button>
-          <Link to="/register">
-            <button type="button" className="form-button-register">
-              REGISTER
+            <img
+              src={passwordIcon}
+              alt="Password icon"
+              className={css.loginInputIcon}
+            />
+
+            <input
+              type="password"
+              id={passwordFieldId}
+              placeholder="Password"
+              {...register("password")}
+              className={css.loginFormInput}
+            />
+            <p style={{ color: "red" }}>{errors.password?.message}</p>
+          </div>
+
+          {authError && <p style={{ color: "red" }}>{authError}</p>}
+          <div className={css.loginButtonWrapper}>
+            <button type="submit" className="form-button">
+              {isLoading ? "Loading..." : "LOG IN"}
             </button>
-          </Link>
-        </div>
-      </form>
+            <Link to="/register">
+              <button type="button" className="form-button-register">
+                REGISTER
+              </button>
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
