@@ -197,7 +197,6 @@ a {
   letter-spacing: 0em;
   color: var(--font-color-white);
 }
-<<<<<<< HEAD
 
 .statistics-header {
   /* home statistics*/
@@ -212,7 +211,7 @@ a {
 .balance-variable {
   /*balance variable*/
   font-family: var(--font-family-base);
-=======
+}
 .statistics-header {
   /* home statistics*/
   font-family: var(--font-family-base);
