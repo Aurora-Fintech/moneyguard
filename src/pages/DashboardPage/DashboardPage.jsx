@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar.jsx";
-import Header from '../../components/header/header.jsx';
+import Header from "../../components/header/header.jsx";
 import styles from "./DashboardPage.module.css";
 
 const DashboardPage = () => {
@@ -10,9 +10,9 @@ const DashboardPage = () => {
       <div className={styles.container}>
         <aside className={styles.leftSidebar}>
           <LeftSidebar />
-           <div className={styles.sidebarDivider}></div> 
+          <div className={styles.sidebarDivider}></div>
         </aside>
-
+        <HomeTable />
       </div>
     </div>
   );

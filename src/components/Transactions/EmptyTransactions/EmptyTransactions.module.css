@@ -1,0 +1,89 @@
+/* Global CSS dosyanızdaki değişkenler bu modül tarafından kullanılacaktır. */
+
+.emptyContainer {
+  /* NOT: --dropdown-color-gradient değişkeni şeffaf ve 0deg açılı olduğu için, 
+       opak 45deg görseli elde etmek adına bu gradient elle tanımlandı. */
+  background: linear-gradient(
+    45deg,
+    rgba(27, 0, 55, 1) 0%,
+    rgba(15, 15, 18, 1) 100%
+  );
+
+  min-height: 97vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+
+  color: var(--font-color-white);
+  border-radius: 10px;
+}
+
+.title {
+  /* transaction-header mobil font boyutu: 24px */
+  font-family: var(--font-family-base);
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.subtitle {
+  /* select-category-txt mobil font boyutu: 18px */
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--font-color-white-60);
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+.addButton {
+  /* GLOBAL DEĞİŞKENLER KULLANILIYOR: */
+  background: var(--button-gradient);
+  box-shadow: var(--button-shadow);
+  color: var(--font-color-white);
+
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1em;
+  letter-spacing: 0.1em;
+
+  /* Mobil Varsayılan Boyut (Global CSS .form-button'a uygun) */
+  padding: 15px 30px;
+  width: 280px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s;
+}
+
+.addButton:hover {
+  transform: scale(1.03);
+}
+
+/* --- TABLET (min-width: 768px) --- */
+@media (min-width: 768px) {
+  .title {
+    /* Global CSS: transaction-header tablet boyutu: 30px */
+    font-size: 30px;
+  }
+  .addButton {
+    /* Global CSS: form-button tablet genişliği: 300px */
+    width: 300px;
+  }
+}
+
+/* --- DESKTOP (min-width: 1280px) --- */
+@media (min-width: 1280px) {
+  .title {
+    /* transaction-header desktop boyutu: 30px */
+    font-size: 30px;
+  }
+  .addButton {
+    /* form-button desktop genişliği: 300px */
+    width: 300px;
+  }
+}

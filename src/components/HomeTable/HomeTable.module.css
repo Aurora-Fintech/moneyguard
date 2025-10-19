@@ -1,0 +1,30 @@
+/* Dashboard Sayfasının ana düzeni artık sadece listeyi kapsar. */
+.dashboardLayout {
+  padding: 20px; /* İçerik için genel dolgu */
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Mobil Buton (Floating Action Button) Stili */
+.fabButton {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  border: none;
+  color: var(--font-color-white); /* Global değişken */
+
+  /* Global değişken olmadığı için, görseldeki turuncu-kırmızı gradienti kullanıldı */
+  background: linear-gradient(90deg, var(--yellow), var(--red));
+  cursor: pointer;
+  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  transition: transform 0.2s;
+}
+
+.fabButton:hover {
+  transform: scale(1.1);
+}
