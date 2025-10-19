@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteTransactionThunk } from "../../../features/transactions/transactionsSlice";
+import styles from "./TransactionsItem.module.css";
 
 const TransactionsItem = ({ transaction }) => {
   const dispatch = useDispatch();
@@ -20,58 +21,42 @@ const TransactionsItem = ({ transaction }) => {
     ? new Date(transaction.transactionDate).toLocaleDateString()
     : transaction.date || "-";
 
-  // Backend’den gelen alan isimleri: amount, type
-  const typeLower = transaction.type?.toLowerCase(); // INCOME / EXPENSE → income / expense
+  const typeLower = transaction.type?.toLowerCase(); // income / expense
   const amount = transaction.amount ?? transaction.sum;
 
   return (
-    <tr
-      style={{
-        borderBottom: "1px solid #e0e0e0",
-      }}
-    >
-      <td>{formattedDate}</td>
+    <tr className={styles.tr}>
+      <td className={styles.td}>{formattedDate}</td>
+
       <td
-        style={{
-          color: typeLower === "income" ? "#24CCA7" : "#FF6596",
-          fontWeight: 600,
-        }}
+        className={`${styles.td} ${styles.type} ${
+          typeLower === "income" ? styles.typeIncome : styles.typeExpense
+        }`}
       >
-        {typeLower === "income" ? "Gelir" : "Gider"}
+        {typeLower === "income" ? "+" : "-"}
       </td>
-      <td>{transaction.category || "-"}</td>
-      <td>{transaction.comment || "-"}</td>
-      <td>{amount} ₺</td>
-      <td
-        style={{
-          textAlign: "center",
-        }}
-      >
+
+      <td className={styles.td}>
+        {typeLower === "expense" ? transaction.category : null}
+        {typeLower === "income" && (
+          <div className={styles.incomeLabel}>Income</div>
+        )}
+      </td>
+
+      <td className={styles.td}>{transaction.comment || "-"}</td>
+      <td className={`${styles.td} ${styles.sum}`}>{amount} ₺</td>
+      <td className={`${styles.td} ${styles.actions}`}>
         <button
+          className={`${styles.button} ${styles.editButton}`}
           onClick={handleEdit}
-          style={{
-            marginRight: "8px",
-            backgroundColor: "#f0f0f0",
-            border: "none",
-            padding: "4px 10px",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
         >
           Edit
         </button>
         <button
+          className={`${styles.button} ${styles.deleteButton}`}
           onClick={handleDelete}
-          style={{
-            backgroundColor: "#ff4d4f",
-            color: "#fff",
-            border: "none",
-            padding: "4px 10px",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
         >
-          ✕
+          Delete
         </button>
       </td>
     </tr>

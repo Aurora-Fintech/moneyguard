@@ -1,58 +1,23 @@
-/* src/components/Transactions/TransactionsList/TransactionsList.module.css */
-
-.container {
-  /* Figma'daki tablonun ana konteyner stili */
-  background: rgba(255, 255, 255, 0.05); /* Yarı saydam beyaz arka plan */
-  backdrop-filter: blur(50px); /* Arka plan bulanıklığı */
-  border-radius: 30px;
-  padding: 30px 10px 30px 30px; /* İç boşluklar */
-  margin: 20px auto;
-  width: 100%;
-  max-width: 715px; /* Örnek genişlik */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 .table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  color: var(--font-color-white);
-  /* Sağdaki padding için genel stil */
-  padding-right: 20px;
-}
-
-.table thead tr {
-  /* Başlık altındaki çizgi */
-  border-bottom: 1px solid var(--font-color-white-60);
-  /* Çizginin tablo genişliğini kaplaması için */
-  display: table-row;
-}
-
-.table th {
-  /* Başlık stilini global CSS'den çekiyoruz */
   font-family: var(--font-family-base);
+  color: var(--font-color-white);
+}
+
+.theadRow {
+  background-color: #523b7e99; /* başlık arka plan mor */
+}
+
+.th {
   font-weight: 600;
   font-size: 16px;
-  padding-bottom: 20px;
-  color: var(--font-color-white);
+  padding: 12px 8px;
+  color: var(--font-color-white); /* başlık yazısı beyaz */
+  text-align: left;
 }
 
-/* Sütun Genişlikleri (Figma'ya yaklaşık olarak uyarlanmıştır) */
-.table th:nth-child(1) {
-  width: 15%;
-} /* Tarih */
-.table th:nth-child(2) {
-  width: 8%;
-} /* Tip */
-.table th:nth-child(3) {
-  width: 15%;
-} /* Kategori */
-.table th:nth-child(4) {
-  width: 30%;
-} /* Yorum */
-.table th:nth-child(5) {
-  width: 17%;
-} /* Tutar */
-.table th:nth-child(6) {
-  width: 15%;
-} /* İşlemler */
+.thCenter {
+  text-align: center;
+}

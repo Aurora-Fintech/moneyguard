@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import TransactionsItem from "../TransactionsItem/TransactionsItem";
 import EmptyTransactions from "../EmptyTransactions/EmptyTransactions";
+import styles from "./TransactionsList.module.css";
 
 const TransactionsList = () => {
   const { transactionsList, isLoading, error } = useSelector(
@@ -15,21 +16,15 @@ const TransactionsList = () => {
   }
 
   return (
-    <table
-      style={{
-        width: "100%",
-        borderCollapse: "collapse",
-        textAlign: "left",
-      }}
-    >
+    <table className={styles.table}>
       <thead>
-        <tr>
-          <th>Tarih</th>
-          <th>Tip</th>
-          <th>Kategori</th>
-          <th>Yorum</th>
-          <th>Tutar</th>
-          <th style={{ textAlign: "center" }}>İşlemler</th>
+        <tr className={styles.theadRow}>
+          <th className={styles.th}>Date</th>
+          <th className={styles.th}>Type</th>
+          <th className={styles.th}>Category</th>
+          <th className={styles.th}>Comment</th>
+          <th className={styles.th}>Sum</th>
+          <th className={`${styles.th} ${styles.thCenter}`}>İşlemler</th>
         </tr>
       </thead>
       <tbody>
