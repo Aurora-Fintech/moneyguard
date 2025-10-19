@@ -1,84 +1,53 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RefreshCw } from "lucide-react";
-import styles from "./CurrencyTab.module.css";
 import { fetchCurrencyRates } from "../../features/currency/currencyOperations.js";
-
-const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
-
-const selectCurrencyRates = (state) => state.currency.rates;
-const selectIsLoading = (state) => state.currency.isLoading;
-
+import styles from "./CurrencyTab.module.css";
+import { MOCK_RATES } from "../../features/currency/currencySlice.js";
 
 const CurrencyTab = () => {
   const dispatch = useDispatch();
-  const rates = useSelector(selectCurrencyRates);
-  const isLoading = useSelector(selectIsLoading);
 
-
-  const isAuthenticated = useSelector(selectIsAuthenticated); 
-
+  const currencyData = useSelector((state) => state.currency.rates);
+  const isLoading = useSelector((state) => state.currency.isLoading);
 
   useEffect(() => {
-    if (isAuthenticated) { 
-      dispatch(fetchCurrencyRates());
-    }
-  }, [dispatch, isAuthenticated]);
+    console.log("CurrencyTab Yüklendi ve Kurları Çekme İşlemi Başlatılıyor.");
+    dispatch(fetchCurrencyRates());
+  }, [dispatch]);
 
-  const filteredRates = (rates || []).filter(
-    (rate) =>
-      (rate.currencyCodeA === 840 || rate.currencyCodeA === 978) &&
-      rate.currencyCodeB === 980
-  );
-
-  const formatRate = (rate) => {
-    return rate !== null && rate !== undefined && !isNaN(rate)
-      ? Number(rate).toFixed(2)
-      : "N/A";
-  };
-
-
-  if (isLoading && filteredRates.length === 0) {
+  if (isLoading) {
     return (
-      <div className={styles.currencyLoading}>
-        <RefreshCw size={32} className={styles.loadingIcon} />
-        <span>Loading currency rates...</span>
+      <div className={styles.currencyTab}>
+        <div className={styles.currencyLoading}>Yükleniyor...</div>
       </div>
     );
   }
 
+  const displayData =
+    currencyData && currencyData.length > 0 ? currencyData : MOCK_RATES;
+
   return (
     <div className={styles.currencyTab}>
-      <div className={styles.currencyCards}>
-        {filteredRates.length > 0 ? (
-          <>
-            <div className={`${styles.tableHeader} dashboard-txt`}>
-              <span className={styles.headerCurrency}>Currency</span>
-              <span className={styles.headerPurchase}>Purchase</span>
-              <span className={styles.headerSale}>Sale</span>
-            </div>
-            {filteredRates.map((rate) => (
-              <div key={rate.currencyCodeA} className={styles.currencyRow}>
-                {/* 1. Sütun: Para Birimi (USD / US Dollar) */}
-                <div className={styles.currencyNameContainer}>
-                  <span className={styles.currencyCodeRow}>
-                    {rate.currencyCodeA === 840 ? "USD" : "EUR"}
-                  </span>
-                </div>
-                <span className={styles.rateValueRow}>
-                  {formatRate(rate.rateBuy)}
-                </span>
-                <span className={styles.rateValueRow}>
-                  {formatRate(rate.rateSell)}
-                </span>
-              </div>
-            ))}
-          </>
-        ) : (
-          <div className={styles.currencyLoading}>
-            <span>No rates available. Data should load automatically.</span>
+      <div className={styles.tableHeader}>
+        <span style={{ gridColumn: "1 / 2" }}>Currency</span>
+        <span style={{ gridColumn: "2 / 3" }}>Purchase</span>
+        <span style={{ gridColumn: "3 / 4" }}>Sale</span>
+      </div>
+
+      <div>
+        {displayData.map((rate) => (
+          <div key={rate.currencyCodeA} className={styles.currencyRow}>
+            <span style={{ gridColumn: "1 / 2" }}>
+              {rate.currencyCodeA === 840
+                ? "USD"
+                : rate.currencyCodeA === 978
+                ? "EUR"
+                : rate.currencyCodeA}
+            </span>
+            <span style={{ gridColumn: "2 / 3" }}>{rate.rateBuy}</span>
+            <span style={{ gridColumn: "3 / 4" }}>{rate.rateSell}</span>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
