@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 :root {
   --font-color-white: rgba(255, 255, 255, 1);
   --font-color-purple: rgba(98, 63, 139, 1);
@@ -94,6 +95,20 @@ a {
   cursor: pointer;
   border: none;
   box-shadow: var(--button-shadow);
+}
+.form-button:hover,
+.form-button:focus {
+  transform: scale(1.05);
+  background-size: 200%;
+  background-position: right center;
+  transition: all 1s ease 0s;
+}
+.form-button-register:hover,
+.form-button-register:focus {
+  transform: scale(1.05);
+  background-size: 200%;
+  background-position: right center;
+  transition: all 1s ease 0s;
 }
 .exit-text {
   /*name*/
@@ -220,7 +235,7 @@ font-weight: 400;
 font-size: 18px;
 line-height: 1em;
 letter-spacing: 0em;
-color: var(--font-color-white-60);
+color: var(--font-color-white);
 
 }
 /* TABLET */

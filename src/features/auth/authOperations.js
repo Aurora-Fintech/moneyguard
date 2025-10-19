@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userTransactionsApi, setToken } from "../../api/userTransactionApi.js";
+import { userTransactionsApi, setToken, removeToken } from "../../api/userTransactionApi.js";
 
 export const logIn = createAsyncThunk(
   "auth/login",
@@ -51,6 +51,22 @@ export const refreshUser = createAsyncThunk(
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, thunkAPI) => {
+    try {    
+      const { data } = await userTransactionsApi.delete("/api/auth/sign-out");     
+      removeToken();     
+      return data;
+    } catch (error) {
+      console.error("logoutThunk hata:", error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message
+      );
     }
   }
 );
