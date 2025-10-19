@@ -12,7 +12,6 @@ import {
 import storage from "redux-persist/lib/storage";
 
 import authReducer from "../features/auth/authSlice";
-// import transactionsReducer from "../features/transactions/transactionsSlice.js";
 import currencyReducer from "../features/currency/currencySlice.js";
 import transactionsReducer from "../features/transactions/transactionsSlice";
 import categoriesReducer from "../features/categories/categoriesSlice";
