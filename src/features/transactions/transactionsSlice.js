@@ -25,6 +25,18 @@ const saveToLocalStorage = (transactions) => {
   }
 };
 
+// --- Bakiyeyi Hesaplama Yardımcısı ---
+/**
+ * İşlem listesini alarak toplam bakiyeyi hesaplar.
+ * Gider (Expense) işlemlerinin amount alanının NEGATİF geldiği varsayılmıştır.
+ */
+const calculateBalance = (transactions) => {
+  return transactions.reduce((acc, transaction) => {
+    const amount = Number(transaction.amount);
+    return acc + amount;
+  }, 0);
+};
+
 // --- ASENKRON THUNK'LAR ---
 export const getTransactions = createAsyncThunk(
   "transactions/fetchAll",
@@ -79,9 +91,12 @@ export const deleteTransactionThunk = createAsyncThunk(
   }
 );
 
+// Başlangıç listesini çek
+const initialTransactions = loadFromLocalStorage();
+
 const initialState = {
-  balance: 0,
-  transactionsList: loadFromLocalStorage(),
+  balance: calculateBalance(initialTransactions), // ✅ Başlangıç bakiyesi hesaplandı
+  transactionsList: initialTransactions,
   isModalOpen: false,
   isLoading: false,
   error: null,
@@ -106,7 +121,11 @@ const transactionsSlice = createSlice({
         state.transactionsList = Array.isArray(action.payload)
           ? action.payload
           : [];
-        saveToLocalStorage(state.transactionsList);
+        saveToLocalStorage(state.transactionsList); // ✅ Bakiyeyi güncelle
+        state.balance = calculateBalance(state.transactionsList); // ⭐️ KONSOL KONTROLÜ
+        console.log("--- getTransactions.fulfilled ---");
+        console.log("Tüm İşlemler:", state.transactionsList);
+        console.log("Yeni Bakiye:", state.balance);
       })
       .addCase(getTransactions.rejected, (state, action) => {
         state.isLoading = false;
@@ -115,13 +134,21 @@ const transactionsSlice = createSlice({
       .addCase(addNewTransaction.fulfilled, (state, action) => {
         state.transactionsList.unshift(action.payload);
         saveToLocalStorage(state.transactionsList);
-        state.isModalOpen = false;
+        state.isModalOpen = false; // ✅ Bakiyeyi güncelle
+        state.balance = calculateBalance(state.transactionsList); // ⭐️ KONSOL KONTROLÜ
+        console.log("--- addNewTransaction.fulfilled ---");
+        console.log("Eklenen İşlem:", action.payload);
+        console.log("Yeni Bakiye:", state.balance);
       })
       .addCase(deleteTransactionThunk.fulfilled, (state, action) => {
         state.transactionsList = state.transactionsList.filter(
           (tx) => tx.id !== action.payload
         );
-        saveToLocalStorage(state.transactionsList);
+        saveToLocalStorage(state.transactionsList); // ✅ Bakiyeyi güncelle
+        state.balance = calculateBalance(state.transactionsList); // ⭐️ KONSOL KONTROLÜ
+        console.log("--- deleteTransactionThunk.fulfilled ---");
+        console.log("Silinen İşlem ID'si:", action.payload);
+        console.log("Yeni Bakiye:", state.balance);
       });
   },
 });
