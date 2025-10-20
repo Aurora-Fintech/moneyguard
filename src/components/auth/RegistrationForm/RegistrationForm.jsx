@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -15,6 +15,7 @@ import emailIcon from "../../../assets/icons/emailIcon.svg";
 import passwordIcon from "../../../assets/icons/passwordIcon.svg";
 import logoIcon from "../../../assets/icons/moneyGuardLogo.svg";
 import nameIcon from "../../../assets/icons/nameIcon.svg";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -49,11 +50,51 @@ const RegistrationForm = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues: initialValues,
+    mode: "onChange",
   });
+
+  // Progress Bar için şifre izleme
+  const [passwordValue, confirmPasswordValue] = watch([
+    "password",
+    "confirmPassword",
+  ]);
+
+  // Match Bar
+  const { matchPercentage, barColor } = useMemo(() => {
+    let matchCount = 0;
+    const targetLength = passwordValue.length;
+    const currentLength = confirmPasswordValue.length;
+
+    // Confirm passwordun her karakterini asıl şifre ile karşılaştıren döngü
+    for (let i = 0; i < currentLength; i++) {
+      if (i < targetLength && passwordValue[i] === confirmPasswordValue[i]) {
+        matchCount++;
+      } else {
+        break;
+      }
+    }
+
+    // Yüzdeyi hesaplama
+    const percentage = targetLength > 0 ? (matchCount / targetLength) * 100 : 0;
+    const finalPercentage = Math.min(percentage, 100);
+
+    // İlerlemeye göre renk belirleme
+    let color = "#e0e0e0";
+    if (finalPercentage === 100 && currentLength === targetLength) {
+      color = "#25c281";
+    } else if (finalPercentage > 50) {
+      color = "#f6b44d";
+    } else if (finalPercentage > 0) {
+      color = "#ff8a80";
+    }
+
+    return { matchPercentage: finalPercentage, barColor: color };
+  }, [passwordValue, confirmPasswordValue]);
 
   const onSubmit = async (values) => {
     // eslint-disable-next-line no-unused-vars
@@ -86,94 +127,121 @@ const RegistrationForm = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={css.registerForm}>
           {/* INPUT BAŞLANGIÇ */}
           <div className={css.registerInputWrapper}>
-            <label htmlFor={usernameFieldId} className={css.visuallyHidden}>
-              Username
-            </label>
+            <div className={css.inputContainer}>
+              <label htmlFor={usernameFieldId} className={css.visuallyHidden}>
+                Username
+              </label>
 
-            <img
-              src={nameIcon}
-              alt="User icon"
-              className={css.registerInputIcon}
-            />
+              <img
+                src={nameIcon}
+                alt="User icon"
+                className={css.registerInputIcon}
+              />
 
-            <input
-              type="text"
-              id={usernameFieldId}
-              placeholder="Name"
-              {...register("username")}
-              className={css.registerFormInput}
-            />
-            <p style={{ color: "red" }}>{errors.username?.message}</p>
+              <input
+                type="text"
+                id={usernameFieldId}
+                placeholder="Name"
+                {...register("username")}
+                className={css.registerFormInput}
+              />
+            </div>
+            <p className={css.authErrorMessage}>{errors.username?.message}</p>
           </div>
 
           <div className={css.registerInputWrapper}>
-            <label htmlFor={emailFieldId} className={css.visuallyHidden}>
-              E-mail
-            </label>
+            <div className={css.inputContainer}>
+              <label htmlFor={emailFieldId} className={css.visuallyHidden}>
+                E-mail
+              </label>
 
-            <img
-              src={emailIcon}
-              alt="Email icon"
-              className={css.registerInputIcon}
-            />
+              <img
+                src={emailIcon}
+                alt="Email icon"
+                className={css.registerInputIcon}
+              />
 
-            <input
-              type="email"
-              id={emailFieldId}
-              placeholder="E-mail"
-              {...register("email")}
-              className={css.registerFormInput}
-            />
-            <p style={{ color: "red" }}>{errors.email?.message}</p>
+              <input
+                type="email"
+                id={emailFieldId}
+                placeholder="E-mail"
+                {...register("email")}
+                className={css.registerFormInput}
+              />
+            </div>
+            <p className={css.authErrorMessage}>{errors.email?.message}</p>
           </div>
 
           <div className={css.registerInputWrapper}>
-            <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
-              Password
-            </label>
+            <div className={css.inputContainer}>
+              <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
+                Password
+              </label>
 
-            <img
-              src={passwordIcon}
-              alt="Password icon"
-              className={css.registerInputIcon}
-            />
+              <img
+                src={passwordIcon}
+                alt="Password icon"
+                className={css.registerInputIcon}
+              />
 
-            <input
-              type="password"
-              id={passwordFieldId}
-              placeholder="Password"
-              {...register("password")}
-              className={css.registerFormInput}
-            />
-            <p style={{ color: "red" }}>{errors.password?.message}</p>
+              <input
+                type="password"
+                id={passwordFieldId}
+                placeholder="Password"
+                {...register("password")}
+                className={css.registerFormInput}
+              />
+            </div>
+            <PasswordStrengthBar password={passwordValue} minLength={6} />
+            <p className={css.authErrorMessage}>{errors.password?.message}</p>
           </div>
 
           <div className={css.registerInputWrapper}>
-            <label
-              htmlFor={confirmPasswordFieldId}
-              className={css.visuallyHidden}
-            >
-              Confirm password
-            </label>
+            <div className={css.inputContainer}>
+              <label
+                htmlFor={confirmPasswordFieldId}
+                className={css.visuallyHidden}
+              >
+                Confirm password
+              </label>
 
-            <img
-              src={passwordIcon}
-              alt="Password icon"
-              className={css.registerInputIcon}
-            />
+              <img
+                src={passwordIcon}
+                alt="Password icon"
+                className={css.registerInputIcon}
+              />
 
-            <input
-              type="password"
-              id={confirmPasswordFieldId}
-              placeholder="Confirm password"
-              {...register("confirmPassword")}
-              className={css.registerFormInput}
-            />
-            <p style={{ color: "red" }}>{errors.confirmPassword?.message}</p>
+              <input
+                type="password"
+                id={confirmPasswordFieldId}
+                placeholder="Confirm password"
+                {...register("confirmPassword")}
+                className={css.registerFormInput}
+              />
+            </div>
+            {confirmPasswordValue && (
+              <div className={css.matchBarContainer}>
+                {" "}
+                <div className={css.matchBarBackground}>
+                  {" "}
+                  <div
+                    className={css.matchBarFill}
+                    style={{
+                      width: `${matchPercentage}%`,
+                      backgroundColor: barColor,
+                    }}
+                  ></div>
+                </div>
+              </div>
+            )}
+            <p className={css.authErrorMessage}>
+              {errors.confirmPassword?.message}
+            </p>
           </div>
+
           {/* INPUT SON */}
 
-          {authError && <p style={{ color: "red" }}>{authError}</p>}
+          {authError && <p className={css.authErrorMessage}>{authError}</p>}
           <div className={css.registerButtonWrapper}>
             <button type="submit" disabled={isLoading} className="form-button">
               {isLoading ? "Loading..." : "REGISTER"}

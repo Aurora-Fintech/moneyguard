@@ -75,48 +75,52 @@ const LoginForm = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className={css.loginForm}>
           <div className={css.loginInputWrapper}>
-            <label htmlFor={emailFieldId} className={css.visuallyHidden}>
-              E-mail
-            </label>
+            <div className={css.inputContainer}>
+              <label htmlFor={emailFieldId} className={css.visuallyHidden}>
+                E-mail
+              </label>
 
-            <img
-              src={emailIcon}
-              alt="Email icon"
-              className={css.loginInputIcon}
-            />
+              <img
+                src={emailIcon}
+                alt="Email icon"
+                className={css.loginInputIcon}
+              />
 
-            <input
-              type="email"
-              id={emailFieldId}
-              placeholder="E-mail"
-              {...register("email")}
-              className={css.loginFormInput}
-            />
-            <p style={{ color: "red" }}>{errors.email?.message}</p>
+              <input
+                type="email"
+                id={emailFieldId}
+                placeholder="E-mail"
+                {...register("email")}
+                className={css.loginFormInput}
+              />
+            </div>
+            <p className={css.authErrorMessage}>{errors.email?.message}</p>
           </div>
 
           <div className={css.loginInputWrapper}>
-            <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
-              Password
-            </label>
+            <div className={css.inputContainer}>
+              <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
+                Password
+              </label>
 
-            <img
-              src={passwordIcon}
-              alt="Password icon"
-              className={css.loginInputIcon}
-            />
+              <img
+                src={passwordIcon}
+                alt="Password icon"
+                className={css.loginInputIcon}
+              />
 
-            <input
-              type="password"
-              id={passwordFieldId}
-              placeholder="Password"
-              {...register("password")}
-              className={css.loginFormInput}
-            />
-            <p style={{ color: "red" }}>{errors.password?.message}</p>
+              <input
+                type="password"
+                id={passwordFieldId}
+                placeholder="Password"
+                {...register("password")}
+                className={css.loginFormInput}
+              />
+            </div>
+            <p className={css.authErrorMessage}>{errors.password?.message}</p>
           </div>
 
-          {authError && <p style={{ color: "red" }}>{authError}</p>}
+          {authError && <p className={css.authErrorMessage}>{authError}</p>}
           <div className={css.loginButtonWrapper}>
             <button type="submit" className="form-button">
               {isLoading ? "Loading..." : "LOG IN"}
