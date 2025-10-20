@@ -4,6 +4,8 @@ import RestrictedRoute from "./RestrictedRoute";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegistrationPage from "../pages/RegistrationPage/RegistrationPage";
 import DashboardPage from "../pages/DashboardPage/DashboardPage";
+import HomeTable from "../components/HomeTable/HomeTable";
+import Statistics from "../components/Statistics/Statistics";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { refreshUser } from "../features/auth/authOperations";
@@ -34,6 +36,8 @@ export default function AppRouter() {
             </RestrictedRoute>
           }
         />
+
+        {/* Dashboard + nested içerik */}
         <Route
           path="/dashboard/*"
           element={
@@ -41,7 +45,13 @@ export default function AppRouter() {
               <DashboardPage />
             </PrivateRoute>
           }
-        />
+        >
+          {/* /dashboard -> HomeTable */}
+          <Route index element={<HomeTable />} />
+          {/* /dashboard/statistics -> Statistics */}
+          <Route path="statistics" element={<Statistics />} />
+        </Route>
+
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
