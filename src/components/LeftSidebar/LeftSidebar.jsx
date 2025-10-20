@@ -10,8 +10,16 @@ export default function LeftSidebar() {
   const location = useLocation();
 
   const getActiveTab = () => {
-    if (location.pathname.includes("/currency")) return "currency";
+    const path = location.pathname;
 
+    // /dashboard/statistics ve alt yolları "statistics" kabul edilir
+    if (path.startsWith("/dashboard/statistics")) return "statistics";
+
+    // Diğer tüm /dashboard altı home gibi davranır
+    if (path === "/dashboard" || path === "/dashboard/") return "home";
+    if (path.startsWith("/dashboard")) return "home";
+
+    // Güvenli varsayılan
     return "home";
   };
 

@@ -1,0 +1,75 @@
+.tr {
+  border-bottom: 1px solid var(--font-grey-light);
+}
+
+.td {
+  padding: 10px 8px;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.type {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.typeIncome {
+  color: var(--yellow); /* gelir + sarı */
+}
+
+.typeExpense {
+  color: var(--red); /* gider - kırmızı */
+}
+
+/* Sum hücresi */
+.sum {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Category altında Income yazısı */
+.incomeLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--yellow);
+  margin-top: 4px;
+}
+
+/* İşlemler (Edit / Delete) */
+.actions {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.button {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  margin-right: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  box-shadow: var(--button-shadow);
+}
+
+/* Düzenle butonu gradient */
+.editButton {
+  background: linear-gradient(
+    96.76deg,
+    var(--yellow) -16.42%,
+    var(--red) 97.04%,
+    var(--font-color-purple) 150.71%
+  );
+  color: var(--font-color-white);
+}
+
+/* Sil butonu */
+.deleteButton {
+  background-color: var(--red);
+  color: var(--font-color-white);
+}
