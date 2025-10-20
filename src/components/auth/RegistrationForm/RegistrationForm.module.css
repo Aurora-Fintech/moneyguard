@@ -93,9 +93,50 @@
 }
 
 @media (min-width: 768px) {
+  .authCard {
+    width: 533px;
+    min-height: 570px;
+  }
+
+  .registerBackground {
+    background-image: url("../../../assets/images/tablet-register-background1x.webp");
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @media (min-resolution: 2dppx) {
+    .registerBackground {
+      background-image: url("../../../assets/images/tablet-register-background2x.webp");
+    }
+  }
+
+  .registerLogoIcon {
+    width: 35px;
+  }
+
+  .registerFormTitle {
+    font-size: 26px;
+  }
+
+  .registerFormInput {
+    width: 409px;
+  }
+
+  .registerButtonWrapper {
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: 1280px) {
+  .registerBackground {
+    background-image: url("../../../assets/images/desktop-register-background1x.webp");
+  }
+  @media (min-resolution: 2dppx) {
+    .registerBackground {
+      background-image: url("../../../assets/images/desktop-register-background2x.webp");
+    }
+  }
 }
 
 input:-webkit-autofill,
