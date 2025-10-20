@@ -1,6 +1,6 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar.jsx";
-import HomeTable from "../../components/HomeTable/HomeTable.jsx";
 import styles from "./DashboardPage.module.css";
 import Header from "../../components/header/header.jsx";
 
@@ -13,7 +13,11 @@ const DashboardPage = () => {
           <LeftSidebar />
           <div className={styles.sidebarDivider}></div>
         </aside>
-        <HomeTable />
+
+        {/* SAĞ ALAN: sadece Outlet */}
+        <main className={styles.mainArea}>
+          <Outlet />
+        </main>
       </div>
     </div>
   );
