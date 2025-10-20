@@ -1,0 +1,107 @@
+.authCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+
+  padding: 20px;
+  backdrop-filter: blur(100px);
+  box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.registerFormBlurCenter {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  background-color: rgba(47, 21, 176, 0.73);
+  border-radius: 100%;
+  transform: translateX(50%);
+  top: 30%;
+  right: 50%;
+}
+
+.registerBackground {
+  background-image: url("../../../assets/images/mobile-login-background.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+.registerFormTitle {
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--font-color-white);
+  font-family: var(--font-family-base);
+  padding-top: 7px;
+  letter-spacing: 0.5px;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 52px;
+}
+
+.registerInputWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.registerFormInput {
+  width: 280px;
+  height: 35px;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--font-color-white-40);
+  outline: none;
+  padding-left: 54.5px;
+
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  color: var(--font-color-white-40);
+}
+
+.registerInputIcon {
+  margin-left: 13px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 24px;
+  height: 24px;
+}
+
+.registerButtonWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 1280px) {
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: var(--font-color-white-40);
+}
