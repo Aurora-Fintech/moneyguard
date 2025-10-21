@@ -44,7 +44,7 @@ const AddTransactionForm = ({ onCancel }) => {
   const categoriesToShow = isIncome ? incomeCategories : expenseCategories;
 
   // Bugünden ileri tarih seçilemez, maxDate olarak kullanılıyor
-  const minDate = new Date();
+  const maxDate = new Date();
 
   return (
     <div className={styles.container}>
@@ -190,7 +190,7 @@ const AddTransactionForm = ({ onCancel }) => {
                   selected={values.date}
                   onChange={(date) => setFieldValue("date", date)}
                   dateFormat="dd/MM/yyyy"
-                  minDate={minDate} // Bugünden sonraki tarihi engeller
+                  maxDate={maxDate} // Bugünden sonraki tarihi engeller
                   className={`${styles.input} ${
                     touched.date && errors.date ? styles.inputError : ""
                   }`}

@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchAllTransactions,
   createTransaction,
-  deleteTransaction, // ✅ doğru isim
+  deleteTransaction,
+  updateTransaction,
 } from "../../api/userTransactionApi2.js";
 
 // --- LocalStorage Yardımcıları ---
@@ -26,10 +27,6 @@ const saveToLocalStorage = (transactions) => {
 };
 
 // --- Bakiyeyi Hesaplama Yardımcısı ---
-/**
- * İşlem listesini alarak toplam bakiyeyi hesaplar.
- * Gider (Expense) işlemlerinin amount alanının NEGATİF geldiği varsayılmıştır.
- */
 const calculateBalance = (transactions) => {
   return transactions.reduce((acc, transaction) => {
     const amount = Number(transaction.amount);
@@ -82,7 +79,7 @@ export const deleteTransactionThunk = createAsyncThunk(
     try {
       const token = getState().auth?.token;
       if (token) {
-        await deleteTransaction(transactionId, token); // ✅ burası düzeltildi
+        await deleteTransaction(transactionId, token);
       }
       return transactionId;
     } catch (error) {
@@ -91,13 +88,38 @@ export const deleteTransactionThunk = createAsyncThunk(
   }
 );
 
-// Başlangıç listesini çek
+// ✅ UPDATE THUNK'INIZ
+export const updateTransactionThunk = createAsyncThunk(
+  "transactions/updateTransaction",
+  async (transactionData, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth?.token;
+      let updatedTransaction = transactionData;
+
+      if (token) {
+        const data = await updateTransaction(transactionData, token);
+        updatedTransaction = data;
+      }
+
+      if (!updatedTransaction.id) {
+        updatedTransaction.id = transactionData.id;
+      }
+
+      return updatedTransaction;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 const initialTransactions = loadFromLocalStorage();
 const today = new Date();
 const initialState = {
-  balance: calculateBalance(initialTransactions), // ✅ Başlangıç bakiyesi hesaplandı
+  balance: calculateBalance(initialTransactions),
   transactionsList: initialTransactions,
   isModalOpen: false,
+  isEditModalOpen: false,
+  editingTransaction: null,
   isLoading: false,
   error: null,
   selectedMonth: today.getMonth() + 1,
@@ -110,6 +132,14 @@ const transactionsSlice = createSlice({
   reducers: {
     toggleModal: (state, action) => {
       state.isModalOpen = action.payload ?? !state.isModalOpen;
+    }, // ✅ YENİ ACTION'LAR
+    openEditModal: (state, action) => {
+      state.editingTransaction = action.payload;
+      state.isEditModalOpen = true;
+    },
+    closeEditModal: (state) => {
+      state.isEditModalOpen = false;
+      state.editingTransaction = null;
     },
     setPeriod: (state, action) => {
       state.selectedMonth = action.payload.month;
@@ -127,8 +157,8 @@ const transactionsSlice = createSlice({
         state.transactionsList = Array.isArray(action.payload)
           ? action.payload
           : [];
-        saveToLocalStorage(state.transactionsList); // ✅ Bakiyeyi güncelle
-        state.balance = calculateBalance(state.transactionsList); // ⭐️ KONSOL KONTROLÜ
+        saveToLocalStorage(state.transactionsList);
+        state.balance = calculateBalance(state.transactionsList);
         console.log("--- getTransactions.fulfilled ---");
         console.log("Tüm İşlemler:", state.transactionsList);
         console.log("Yeni Bakiye:", state.balance);
@@ -140,8 +170,8 @@ const transactionsSlice = createSlice({
       .addCase(addNewTransaction.fulfilled, (state, action) => {
         state.transactionsList.unshift(action.payload);
         saveToLocalStorage(state.transactionsList);
-        state.isModalOpen = false; // ✅ Bakiyeyi güncelle
-        state.balance = calculateBalance(state.transactionsList); // ⭐️ KONSOL KONTROLÜ
+        state.isModalOpen = false;
+        state.balance = calculateBalance(state.transactionsList);
         console.log("--- addNewTransaction.fulfilled ---");
         console.log("Eklenen İşlem:", action.payload);
         console.log("Yeni Bakiye:", state.balance);
@@ -150,14 +180,36 @@ const transactionsSlice = createSlice({
         state.transactionsList = state.transactionsList.filter(
           (tx) => tx.id !== action.payload
         );
-        saveToLocalStorage(state.transactionsList); // ✅ Bakiyeyi güncelle
-        state.balance = calculateBalance(state.transactionsList); // ⭐️ KONSOL KONTROLÜ
+        saveToLocalStorage(state.transactionsList);
+        state.balance = calculateBalance(state.transactionsList);
         console.log("--- deleteTransactionThunk.fulfilled ---");
         console.log("Silinen İşlem ID'si:", action.payload);
+        console.log("Yeni Bakiye:", state.balance);
+      })
+      // ✅ YENİ EXTRA REDUCER: İşlem Güncelleme Başarılı Oldu
+      .addCase(updateTransactionThunk.fulfilled, (state, action) => {
+        const updatedTransaction = action.payload;
+
+        // İşlem listesinde ilgili ID'yi bul ve güncellenmiş işlemle değiştir
+        state.transactionsList = state.transactionsList.map((tx) =>
+          tx.id === updatedTransaction.id ? updatedTransaction : tx
+        );
+
+        saveToLocalStorage(state.transactionsList);
+        state.isEditModalOpen = false; // Modalı kapat
+        state.editingTransaction = null; // Düzenleme işlemini sıfırla
+        state.balance = calculateBalance(state.transactionsList); // Bakiyeyi güncelle
+
+        console.log("--- updateTransactionThunk.fulfilled ---");
+        console.log("Güncellenen İşlem:", updatedTransaction);
         console.log("Yeni Bakiye:", state.balance);
       });
   },
 });
 
-export const { toggleModal, setPeriod } = transactionsSlice.actions;
+// 1. Reducer action'ları (toggleModal ve yeni action'lar)
+export const { toggleModal, openEditModal, closeEditModal, setPeriod } =
+  transactionsSlice.actions;
+
+// 3. Varsayılan reducer
 export default transactionsSlice.reducer;
