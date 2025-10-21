@@ -47,7 +47,11 @@
 .registerInputWrapper {
   display: flex;
   flex-direction: column;
+}
+
+.inputContainer {
   position: relative;
+  width: 100%;
 }
 
 .registerFormInput {
@@ -90,6 +94,41 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+.authErrorMessage {
+  color: var(--red);
+
+  font-family: var(--font-family-base, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  margin-top: 10px;
+  min-height: 1.3em;
+  line-height: 1.3;
+}
+
+/* Match Bar stilleri */
+
+.matchBarContainer {
+  margin-top: 8px;
+  height: 3px;
+  width: 100%;
+}
+
+.matchBarBackground {
+  height: 100%;
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.matchBarFill {
+  height: 100%;
+  border-radius: 3px;
+
+  transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 @media (min-width: 768px) {
