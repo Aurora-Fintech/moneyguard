@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -14,6 +14,7 @@ import css from "./LoginForm.module.css";
 import emailIcon from "../../../assets/icons/emailIcon.svg";
 import passwordIcon from "../../../assets/icons/passwordIcon.svg";
 import logoIcon from "../../../assets/icons/moneyGuardLogo.svg";
+import { Eye, EyeOff } from "lucide-react";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -60,6 +61,9 @@ const LoginForm = () => {
       console.error("Login failed:", error);
     }
   };
+
+  // Şifre gösterme/gizleme
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className={css.loginBackground}>
@@ -110,12 +114,19 @@ const LoginForm = () => {
               />
 
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id={passwordFieldId}
                 placeholder="Password"
                 {...register("password")}
                 className={css.loginFormInput}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className={css.showPasswordButton}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
             <p className={css.authErrorMessage}>{errors.password?.message}</p>
           </div>
