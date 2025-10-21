@@ -93,13 +93,15 @@ export const deleteTransactionThunk = createAsyncThunk(
 
 // Başlangıç listesini çek
 const initialTransactions = loadFromLocalStorage();
-
+const today = new Date();
 const initialState = {
   balance: calculateBalance(initialTransactions), // ✅ Başlangıç bakiyesi hesaplandı
   transactionsList: initialTransactions,
   isModalOpen: false,
   isLoading: false,
   error: null,
+  selectedMonth: today.getMonth() + 1,
+  selectedYear: today.getFullYear(),
 };
 
 const transactionsSlice = createSlice({
@@ -108,6 +110,10 @@ const transactionsSlice = createSlice({
   reducers: {
     toggleModal: (state, action) => {
       state.isModalOpen = action.payload ?? !state.isModalOpen;
+    },
+    setPeriod: (state, action) => {
+      state.selectedMonth = action.payload.month;
+      state.selectedYear = action.payload.year;
     },
   },
   extraReducers: (builder) => {
@@ -153,5 +159,5 @@ const transactionsSlice = createSlice({
   },
 });
 
-export const { toggleModal } = transactionsSlice.actions;
+export const { toggleModal, setPeriod } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

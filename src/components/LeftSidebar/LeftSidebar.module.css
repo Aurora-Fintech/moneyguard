@@ -1,3 +1,5 @@
+/* src/components/LeftSidebar/LeftSidebar.module.css */
+
 .mainLayout {
   display: flex;
   min-height: 100vh;
@@ -5,7 +7,7 @@
   box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
 }
 
-/* Sidebar container */
+/* Sidebar container (Mobil) */
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -13,39 +15,44 @@
   gap: 69px;
 }
 
-
 .leftColumn,
 .rightColumn {
   width: 100%;
 }
 
-/* Tabların göster/gizle mantığı */
+/* Tabların göster/gizle mantığı (Mobil) */
 .homeTab > *:nth-child(1) {
+  /* Navigation */
   display: block;
 }
 
 .homeTab > *:nth-child(2),
 .homeTab > *:nth-child(3) {
+  /* CurrencyTab ve Chart */
   display: none;
 }
 
 .currencyTab > *:nth-child(1) {
+  /* Navigation */
   display: none;
 }
 
 .currencyTab > *:nth-child(2),
 .currencyTab > *:nth-child(3) {
+  /* CurrencyTab ve Chart */
   display: block;
 }
 
-/* Tablet ve üzeri */
+/* -------------------------------------------------------------------------- */
+/* TABLET (768px+) */
+/* -------------------------------------------------------------------------- */
 @media (min-width: 768px) {
   .sidebar {
-    flex-direction: row; 
+    flex-direction: row;
   }
 
   .leftColumn {
-    width: 336px; 
+    width: 336px;
     display: flex;
     flex-direction: column;
     background: none;
@@ -55,54 +62,59 @@
   .rightColumn {
     width: 336px;
     display: flex;
-    flex-direction: column; 
-    height: 214px; 
+    flex-direction: column;
+    height: 214px;
   }
 
-  /* Tab içeriğini göster */
-  .homeTab > *:nth-child(1),
-  .homeTab > *:nth-child(2),
-  .homeTab > *:nth-child(3),
-  .currencyTab > *:nth-child(1),
-  .currencyTab > *:nth-child(2),
-  .currencyTab > *:nth-child(3) {
-    display: block;
+  /* Tablette tüm tab içeriğini göster */
+  .homeTab > *,
+  .currencyTab > * {
+    display: block !important;
   }
 }
-@media (min-width: 768px) and (max-width:1279px){
-  .rightColumn > div {
+
+/* Tablet (768px - 1279px) için GRAFİK YÜKSEKLİĞİ DÜZELTMESİ */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .homeTab,
+  .currencyTab {
     border-radius: 12px;
-    width: 320px;  
+    width: 320px;
     background: rgba(74, 86, 226, 0.1);
-    height: 290px;
+    height: 290px; /* ⭐️ GRAFİK TAŞMASINI ENGELLEYEN KRİTİK YÜKSEKLİK */
     box-sizing: border-box;
   }
 }
-  
+
+/* -------------------------------------------------------------------------- */
+/* DESKTOP (1280px+) */
+/* -------------------------------------------------------------------------- */
 @media (min-width: 1280px) {
   .sidebar {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 20px;
     width: 480px;
     height: 640px;
     background: transparent;
     position: relative;
-    
   }
 
   .leftColumn {
-    width: 480px; /* Sol sütun genişliği */
-    height: 100%; 
+    width: 480px;
+    height: auto;
   }
 
   .rightColumn {
-    flex: 1; /* Kalan alanı kaplar */
-    height: 100%;
+    flex: 1;
     width: 480px;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
 
-  
+  /* GRAFİK KAPSAYICISINA SABİT YÜKSEKLİK VERİLDİ (KRİTİK) */
+  .homeTab,
+  .currencyTab {
+    width: 100%;
+    height: 350px; /* ⭐️ GRAFİK TAŞMASINI ENGELLEYEN KRİTİK YÜKSEKLİK */
+  }
 }
