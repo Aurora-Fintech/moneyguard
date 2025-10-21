@@ -131,6 +131,19 @@
   transition: width 0.3s ease, background-color 0.3s ease;
 }
 
+.showPasswordButton {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  right: 12px;
+
+  display: flex;
+  align-items: center;
+  color: var(--font-color-white-40);
+  background-color: transparent;
+}
+
 @media (min-width: 768px) {
   .authCard {
     width: 533px;
