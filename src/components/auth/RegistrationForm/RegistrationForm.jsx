@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -16,13 +16,14 @@ import passwordIcon from "../../../assets/icons/passwordIcon.svg";
 import logoIcon from "../../../assets/icons/moneyGuardLogo.svg";
 import nameIcon from "../../../assets/icons/nameIcon.svg";
 import PasswordStrengthBar from "react-password-strength-bar";
+import { Eye, EyeOff } from "lucide-react";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
-    .max(12, "Password must be at most 12 characters")
+    .max(20, "Password must be at most 20 characters")
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match.")
@@ -114,6 +115,10 @@ const RegistrationForm = () => {
     }
   };
 
+  // Şifre gösterme/gizleme
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   return (
     <div className={css.registerBackground}>
       <div className={css.registerFormBlurCenter}></div>
@@ -185,12 +190,19 @@ const RegistrationForm = () => {
               />
 
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id={passwordFieldId}
                 placeholder="Password"
                 {...register("password")}
                 className={css.registerFormInput}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className={css.showPasswordButton}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
             <PasswordStrengthBar password={passwordValue} minLength={6} />
             <p className={css.authErrorMessage}>{errors.password?.message}</p>
@@ -212,12 +224,19 @@ const RegistrationForm = () => {
               />
 
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 id={confirmPasswordFieldId}
                 placeholder="Confirm password"
                 {...register("confirmPassword")}
                 className={css.registerFormInput}
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className={css.showPasswordButton}
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
             {confirmPasswordValue && (
               <div className={css.matchBarContainer}>
