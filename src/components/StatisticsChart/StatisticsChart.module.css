@@ -1,0 +1,22 @@
+.doughnutWrapper {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.centerText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  text-align: center;
+  z-index: 10;
+}
+
+.totalAmount {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}

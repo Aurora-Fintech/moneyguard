@@ -27,4 +27,12 @@
     width: 480px; 
     height: 120px;
   }
+  /* src/components/CurrencyAreaChart/CurrencyAreaChart.module.css */
+
+.chartWrapper { /* Grafiği sarmalayan div'in sınıf adı */
+    width: 100%;
+    height: 300px; /* ⭐️ Burası KRİTİK. Canvas'ı bu boyuta zorlayacaktır. */
+    max-height: 300px; /* Ek güvenlik */
+    /* Diğer stiller... */
+}
 }
