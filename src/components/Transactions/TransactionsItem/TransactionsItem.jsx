@@ -1,6 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTransactionThunk } from "../../../features/transactions/transactionsSlice";
+// ✅ openEditModal'ı transactionsSlice'tan import edin
+import {
+  deleteTransactionThunk,
+  openEditModal,
+} from "../../../features/transactions/transactionsSlice";
 import styles from "./TransactionsItem.module.css";
 
 const TransactionsItem = ({ transaction }) => {
@@ -16,10 +20,10 @@ const TransactionsItem = ({ transaction }) => {
   };
 
   const handleEdit = () => {
-    console.log("Düzenlenecek işlem:", transaction);
-  };
+    // ⭐️ KRİTİK GÜNCELLEME: İşlemi payload olarak gönderip düzenleme modalını açıyoruz
+    dispatch(openEditModal(transaction));
+  }; // Tarihi okunabilir formatta göster
 
-  // Tarihi okunabilir formatta göster
   const formattedDate = transaction.transactionDate
     ? new Date(transaction.transactionDate).toLocaleDateString()
     : transaction.date || "-";
@@ -33,7 +37,6 @@ const TransactionsItem = ({ transaction }) => {
   return (
     <tr className={styles.tr}>
       <td className={styles.td}>{formattedDate}</td>
-
       <td
         className={`${styles.td} ${styles.type} ${
           typeLower === "income" ? styles.typeIncome : styles.typeExpense
@@ -41,23 +44,22 @@ const TransactionsItem = ({ transaction }) => {
       >
         {typeLower === "income" ? "+" : "-"}
       </td>
-
       <td className={styles.td}>
         {typeLower === "expense" ? category?.name : null}
         {typeLower === "income" && (
           <div className={styles.incomeLabel}>Income</div>
         )}
       </td>
-
       <td className={styles.td}>{transaction.comment || "-"}</td>
-      <td className={`${styles.td} ${styles.sum}`}>{Math.abs(amount)} ₺</td>
+      <td className={`${styles.td} ${styles.sum}`}>{Math.abs(amount)} ₺</td> 
       <td className={`${styles.td} ${styles.actions}`}>
         <button
           className={`${styles.button} ${styles.editButton}`}
-          onClick={handleEdit}
+          onClick={handleEdit} // ✅ Artık modalı açan Redux action'ını tetikliyor
         >
           Edit
         </button>
+
         <button
           className={`${styles.button} ${styles.deleteButton}`}
           onClick={handleDelete}

@@ -21,3 +21,6 @@
 .thCenter {
   text-align: center;
 }
+.sortIcon {
+  margin-left: 6px; /* Date ile ok arasında boşluk */
+}

@@ -52,6 +52,32 @@ export const createTransaction = async (transactionData, token) => {
   }
 };
 
+// ✅ YENİ İŞLEM: İşlem Güncelle
+export const updateTransaction = async (transactionData, token) => {
+  if (token) setToken(token); // ID'yi veriden ayırın, çünkü API genellikle ID'yi payload'da beklemez
+
+  const { id: transactionId, ...updatePayload } = transactionData; // API'nin beklediği formatta payload'ı düzenleyin
+
+  const payload = {
+    ...updatePayload,
+    // amount'ı güncellerken sayı olduğundan emin olun
+    amount: Number(updatePayload.amount),
+    // Diğer alanlar: transactionDate, type, categoryId, comment
+  };
+
+  try {
+    // PATCH metodunu kullanarak ilgili ID'deki işlemi güncelliyoruz
+    const response = await userTransactionApi.patch(
+      `api/transactions/${transactionId}`,
+      payload
+    );
+    return response.data; // Güncellenmiş işlem objesi dönmeli
+  } catch (error) {
+    console.error("İşlem güncellerken hata:", error.response.data || error);
+    throw error;
+  }
+};
+
 // İşlem sil
 export const deleteTransaction = async (transactionId, token) => {
   if (token) setToken(token);
