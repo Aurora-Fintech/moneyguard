@@ -73,12 +73,16 @@ export const selectStatisticsSummary = createSelector(
       }
 
       const isCategorized = categoryId && categoryMap[categoryId];
-      const finalCategoryId = isCategorized ? categoryId : "unknown";
+      const finalCategoryId = isCategorized
+        ? categoryId
+        : isExpense
+        ? "unknown_expense"
+        : "unknown_income";
 
-      if (isCategorized || finalCategoryId === "unknown") {
+      if (isExpense) {
         const categoryInfo = isCategorized
           ? categoryMap[finalCategoryId]
-          : { name: "Tanımsız İşlem", colorHex: "#808080" };
+          : { name: "Tanımsız İşlem", colorHex: "#808080", type: "EXPENSE" };
 
         if (!categoriesSummary[finalCategoryId]) {
           categoriesSummary[finalCategoryId] = {
@@ -86,11 +90,10 @@ export const selectStatisticsSummary = createSelector(
             name: categoryInfo.name,
             total: 0,
             color: categoryInfo.colorHex,
-            isExpense: isExpense,
+            isExpense: true,
           };
         }
-        const sign = isExpense ? -1 : 1;
-        categoriesSummary[finalCategoryId].total += sign * Math.abs(amount);
+        categoriesSummary[finalCategoryId].total -= Math.abs(amount);
       }
     });
 
