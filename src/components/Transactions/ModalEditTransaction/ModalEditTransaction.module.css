@@ -1,0 +1,53 @@
+/* src/assets/components/Transactions/ModalEditTransaction/ModalEditTransaction.module.css */
+
+.editModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam arka plan */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.editModalContent {
+  /* ✨ Arka plan görselinizdeki gradyan/mor renk */
+  background: linear-gradient(
+    268.08deg,
+    rgba(37, 26, 60, 0.99) 2.92%,
+    rgba(56, 36, 91, 0.99) 70.92%
+  );
+  backdrop-filter: blur(20px); /* Morluk üzerindeki hafif bulanıklık */
+  padding: 40px 60px; /* İç ve dış fotoğraf arasındaki boşluk farkına göre ayarlandı */
+  border-radius: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 530px; /* Görseldeki boyutlara yakın */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.editModalCloseButton {
+  position: absolute;
+  top: 25px; /* Daha içeri çekildi */
+  right: 25px; /* Daha içeri çekildi */
+  background: none;
+  border: none;
+  font-size: 30px; /* X işaretini büyüt */
+  cursor: pointer;
+  color: var(--font-color-white-60); /* Beyazın daha soluk bir tonu */
+  line-height: 1em;
+}
+
+.editModalTitle {
+  /* Edit transaction başlık stili */
+  font-family: var(--font-family-base);
+  font-weight: 400; /* Global CSS'inizdeki .edit-transaction-header'a göre ayarlandı */
+  font-size: 30px;
+  line-height: 1em;
+  text-align: center;
+  color: var(--font-color-white);
+  margin-bottom: 40px; /* Tip seçici ile arasına boşluk */
+}
