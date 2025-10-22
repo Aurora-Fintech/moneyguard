@@ -5,11 +5,10 @@ import {
   openEditModal,
 } from "../../../features/transactions/transactionsSlice";
 import styles from "./TransactionsItem.module.css";
-import editIcon from "../../../assets/icons/editIcon.svg";
-
 // iziToast import
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+import editIcon from "../../../assets/icons/editIcon.svg";
 
 const TransactionsItem = ({ transaction }) => {
   const dispatch = useDispatch();
@@ -52,13 +51,45 @@ const TransactionsItem = ({ transaction }) => {
   };
 
   // Silme işlemi
-  const handleDelete = async () => {
-    try {
-      await dispatch(deleteTransactionThunk(transaction.id)).unwrap();
-      showSuccessToast();
-    } catch (error) {
-      showErrorToast(error?.message);
-    }
+  const handleDelete = () => {
+    iziToast.show({
+      title: "Onay Gerekiyor",
+      message:
+        "Bu işlemi **kalıcı olarak** silmek istediğinizden emin misiniz?",
+      position: "center",
+      timeout: false,
+      close: true,
+      overlay: true,
+      id: "delete-confirm",
+      zindex: 99999,
+      // ÖZEL STİL İÇİN EKLEDİK:
+      class: "dark-confirm-toast",
+
+      buttons: [
+        [
+          // EVET, SİL butonu
+          "<button class='delete-confirm-btn delete-btn'><b>Evet, Sil</b></button>",
+          async (instance, toast) => {
+            instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
+
+            try {
+              await dispatch(deleteTransactionThunk(transaction.id)).unwrap();
+              showSuccessToast();
+            } catch (error) {
+              showErrorToast(error?.message);
+            }
+          },
+          true,
+        ],
+        [
+          // İPTAL butonu
+          "<button class='delete-confirm-btn cancel-btn'>İptal</button>",
+          (instance, toast) => {
+            instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
+          },
+        ],
+      ],
+    });
   };
 
   const handleEdit = () => {
@@ -92,14 +123,14 @@ const TransactionsItem = ({ transaction }) => {
         )}
       </td>
       <td className={styles.td}>{transaction.comment || "-"}</td>
-      <td className={`${styles.td} ${styles.sum}`}>{Math.abs(amount)} ₺</td> 
+      <td className={`${styles.td} ${styles.sum}`}>{Math.abs(amount)} ₺</td>
       <td className={`${styles.td} ${styles.actions}`}>
         <button className={styles.iconButton} onClick={handleEdit}>
           <img src={editIcon} alt="Edit" />
         </button>
 
         <button
-          className={`${styles.button} ${styles.deleteButton}`}
+          className={`form-button ${styles.deleteButton}`}
           onClick={handleDelete}
         >
           Delete
