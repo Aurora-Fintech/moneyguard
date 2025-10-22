@@ -46,7 +46,7 @@ const TransactionsList = () => {
               onClick={handleSortClick}
               style={{ cursor: "pointer" }}
             >
-              Date{" "}
+              Date
               <span className={styles.sortIcon}>
                 {sortOrder === "asc" ? "▲" : "▼"}
               </span>
