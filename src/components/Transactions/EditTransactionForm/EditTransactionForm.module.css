@@ -1,11 +1,8 @@
-/* src/assets/components/Transactions/ModalEditTransaction/EditTransactionForm.module.css */
-
 /* --- FORM GENEL STİLLERİ --- */
 .editForm {
   display: flex;
   flex-direction: column;
   gap: 40px; /* Form grupları arasındaki dikey boşluk */
-  /* Padding kaldırıldı, ModalContent zaten padding'e sahip */
 }
 
 /* Yükleme Mesajı */
@@ -20,37 +17,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px; /* Income / Expense arasına boşluk */
+  gap: 8px;
   margin-bottom: 40px;
   font-family: var(--font-family-base);
   font-weight: 600;
   font-size: 16px;
-  line-height: 1em;
 }
 
-/* Label varsayılan beyaz, aktif olursa renk override edilir */
 .editFormTypeLabel {
   color: var(--font-color-white);
-  cursor: default; /* fare pointer’ı kaldır */
+  cursor: default;
   transition: color 0.3s;
-  display: inline-block; /* ::after için gerekli */
+  display: inline-block;
   position: relative;
 }
 
-/* Ayraç olarak "/" ekleniyor sadece ilk label sonrası */
 .editFormTypeLabel:first-child::after {
   content: "/";
-  margin-left: 5px; /* araya boşluk bırak */
+  margin-left: 5px;
   color: var(--font-color-white-60);
-  position: static; /* artık absolute değil, flex ile doğru yerde duracak */
 }
 
-/* Aktif INCOME (Gelir) rengi */
 .editFormActiveIncome {
   color: var(--yellow);
 }
 
-/* Aktif EXPENSE (Gider) rengi */
 .editFormActiveExpense {
   color: var(--red);
 }
@@ -62,7 +53,7 @@
 
 .editFormAmountDateGroup {
   display: flex;
-  flex-direction: column; /* üst üste */
+  flex-direction: column;
   gap: 30px;
 }
 
@@ -89,10 +80,10 @@
   width: 100%;
   font-family: var(--font-family-base);
   font-size: 18px;
-  line-height: 1.5;
   outline: none;
   transition: border-bottom-color 0.3s;
 }
+
 .editFormInput[type="number"]::-webkit-inner-spin-button,
 .editFormInput[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -108,7 +99,6 @@
   border-bottom-color: var(--form-borders);
 }
 
-/* Select ve Textarea özel yükseklik ayarı */
 .editFormInput[as="select"],
 .editFormInput[as="textarea"] {
   height: 40px;
@@ -145,25 +135,34 @@
   margin-top: 50px;
 }
 
-.editFormSaveButton {
+/* Save / Delete butonları artık global class ile entegre */
+.editFormSaveButton,
+.editFormDeleteButton {
   width: 280px;
   height: 50px;
   border-radius: 20px;
-  background: var(--button-gradient);
-  color: var(--font-color-white);
   font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 18px;
   line-height: 1em;
   letter-spacing: 0.1em;
   box-shadow: var(--button-shadow);
-  transition: transform 0.3s ease;
+  cursor: pointer;
+  border: none;
+  background: var(--button-gradient);
+  color: var(--font-color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
-.editFormSaveButton:hover {
+.editFormSaveButton:hover,
+.editFormDeleteButton:hover {
   transform: scale(1.05);
 }
 
+/* Cancel Button */
 .editFormCancelButton {
   width: 280px;
   height: 50px;

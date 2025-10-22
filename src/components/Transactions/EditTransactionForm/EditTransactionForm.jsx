@@ -1,15 +1,18 @@
-// src/assets/components/Transactions/ModalEditTransaction/EditTransactionForm.jsx
-
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { updateTransactionThunk } from "../../../features/transactions/transactionsSlice";
+import {
+  updateTransactionThunk,
+  closeEditModal,
+} from "../../../features/transactions/transactionsSlice";
 import styles from "./EditTransactionForm.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
-const EditTransactionForm = ({ onSaveSuccess }) => {
+const EditTransactionForm = () => {
   const dispatch = useDispatch();
   const editingTransaction = useSelector(
     (state) => state.transactions.editingTransaction
@@ -39,7 +42,7 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
   });
 
   const getInitialValues = (tx) => {
-    if (!tx) {
+    if (!tx)
       return {
         id: null,
         amount: "",
@@ -48,14 +51,12 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
         categoryId: "",
         comment: "",
       };
-    }
 
     const type = tx.type?.toUpperCase() || "EXPENSE";
     const amount = Math.abs(tx.amount || tx.sum || "");
     const transactionDateStr = tx.transactionDate
       ? new Date(tx.transactionDate).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0];
-
     const initialCategoryId =
       tx.categoryId && type === "EXPENSE" ? tx.categoryId : "";
 
@@ -67,6 +68,40 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
       categoryId: initialCategoryId,
       comment: tx.comment || "",
     };
+  };
+
+  const showSuccessToast = () => {
+    iziToast.show({
+      title: "Success",
+      message: "Transaction updated successfully",
+      position: "topRight",
+      timeout: 3000,
+      progressBar: true,
+      backgroundColor: "#4BB543",
+      transitionIn: "fadeInRight",
+      transitionOut: "fadeOutRight",
+      layout: 2,
+      zindex: 9999,
+      maxWidth: 500,
+      padding: 25,
+    });
+  };
+
+  const showErrorToast = (msg) => {
+    iziToast.show({
+      title: "Error",
+      message: msg || "İşlem güncellenirken bir hata oluştu",
+      position: "topRight",
+      timeout: 3000,
+      progressBar: true,
+      backgroundColor: "#FF4C4C",
+      transitionIn: "fadeInRight",
+      transitionOut: "fadeOutRight",
+      layout: 2,
+      zindex: 9999,
+      maxWidth: 500,
+      padding: 25,
+    });
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -86,16 +121,18 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
         categoryId: values.type === "EXPENSE" ? values.categoryId : null,
       };
 
+      // 🔹 Backend’den dönen transaction objesini alıyoruz
       const resultAction = await dispatch(updateTransactionThunk(payload));
 
       if (updateTransactionThunk.fulfilled.match(resultAction)) {
-        onSaveSuccess();
+        showSuccessToast();
+        dispatch(closeEditModal());
       } else {
-        alert("İşlem güncellenirken bir hata oluştu.");
+        showErrorToast();
       }
     } catch (error) {
       console.error("Güncelleme hatası:", error);
-      alert("İşlem güncellenirken beklenmedik bir hata oluştu.");
+      showErrorToast("Beklenmedik bir hata oluştu");
     } finally {
       setIsLoading(false);
       setSubmitting(false);
@@ -117,32 +154,8 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
       onSubmit={handleSubmit}
       enableReinitialize
     >
-      {({ values, setFieldValue, isSubmitting, errors, touched }) => (
+      {({ values, setFieldValue, isSubmitting }) => (
         <Form className={styles.editForm}>
-          {/* --- TYPE SHOW ONLY --- */}
-          <div className={styles.editFormTypeSwitcher}>
-            <span
-              className={`${styles.editFormTypeLabel} ${
-                editingTransaction.type === "INCOME"
-                  ? styles.editFormActiveIncome
-                  : ""
-              }`}
-            >
-              Income
-            </span>
-
-            <span
-              className={`${styles.editFormTypeLabel} ${
-                editingTransaction.type === "EXPENSE"
-                  ? styles.editFormActiveExpense
-                  : ""
-              }`}
-            >
-              Expense
-            </span>
-          </div>
-
-          {/* Kategori Seçimi (sadece EXPENSE ise) */}
           {values.type === "EXPENSE" && (
             <div className={styles.editFormGroup}>
               <Field
@@ -167,7 +180,6 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
             </div>
           )}
 
-          {/* Miktar ve Tarih */}
           <div className={styles.editFormAmountDateGroup}>
             <div className={styles.editFormGroup}>
               <Field
@@ -209,7 +221,6 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
             </div>
           </div>
 
-          {/* Yorum */}
           <div className={styles.editFormGroup}>
             <Field
               as="textarea"
@@ -224,7 +235,6 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
             />
           </div>
 
-          {/* Butonlar */}
           <div className={styles.editFormButtonGroup}>
             <button
               type="submit"
@@ -236,7 +246,7 @@ const EditTransactionForm = ({ onSaveSuccess }) => {
             <button
               type="button"
               className={styles.editFormCancelButton}
-              onClick={onSaveSuccess}
+              onClick={() => dispatch(closeEditModal())}
               disabled={isSubmitting || isLoading}
             >
               CANCEL

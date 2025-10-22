@@ -1,75 +1,52 @@
-.tr {
-  border-bottom: 1px solid var(--font-grey-light);
-}
-
-.td {
-  padding: 10px 8px;
-  font-size: 14px;
-  vertical-align: top;
-}
-
-.type {
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.typeIncome {
-  color: var(--yellow); /* gelir + sarı */
-}
-
-.typeExpense {
-  color: var(--red); /* gider - kırmızı */
-}
-
-/* Sum hücresi */
-.sum {
-  font-weight: 600;
-  font-size: 14px;
-}
-
-/* Category altında Income yazısı */
-.incomeLabel {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--yellow);
-  margin-top: 4px;
-}
-
-/* İşlemler (Edit / Delete) */
 .actions {
   text-align: center;
   white-space: nowrap;
 }
 
+/* Ortak buton stilleri (global CSS’den miras al) */
 .button {
+  composes: form-button from global;
   padding: 4px 10px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
   font-size: 14px;
+  font-weight: 500;
+
   margin-right: 8px;
+  /* width: auto; */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+/* //Düzenleme butonu */
+.iconButton {
+  background: none; /* arkaplan yok */
+  border: none; /* border yok */
+  cursor: pointer;
+  padding: 4px; /* ikon etrafı boşluk */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.button:hover {
-  transform: scale(1.05);
-  box-shadow: var(--button-shadow);
+.iconButton:hover {
+  transform: scale(1.1);
+  box-shadow: var(--button-shadow); /* global shadow kullan */
 }
 
-/* Düzenle butonu gradient */
-.editButton {
-  background: linear-gradient(
-    96.76deg,
-    var(--yellow) -16.42%,
-    var(--red) 97.04%,
-    var(--font-color-purple) 150.71%
-  );
-  color: var(--font-color-white);
+.iconButton img {
+  width: 14px;
+  height: 14px;
 }
 
-/* Sil butonu */
+/* Sil butonu (gradient ve hover efektli) */
 .deleteButton {
-  background-color: var(--red);
+  composes: form-button from global;
+  background: var(--button-gradient);
+  border-radius: 20px;
+  width: 69px;
+  height: 29px;
+
   color: var(--font-color-white);
 }

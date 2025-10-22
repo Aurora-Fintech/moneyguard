@@ -9,7 +9,7 @@
     rgba(15, 15, 18, 1) 100%
   );
 
-  min-height: 97vh;
+  /* min-height: 97vh; */
   display: flex;
   flex-direction: column;
   justify-content: center;

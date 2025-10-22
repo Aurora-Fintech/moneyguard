@@ -34,17 +34,42 @@ const calculateBalance = (transactions) => {
   }, 0);
 };
 
+// --- YARDIMCI FONKSİYON: CategoryName Ekleme ---
+const addCategoryNameToTransaction = (transaction, categories) => {
+  // Sadece Gider işlemleri için ve categoryId varsa ekle
+  if (transaction.type === "EXPENSE" && transaction.categoryId) {
+    const category = categories.find(
+      (cat) => String(cat.id) === String(transaction.categoryId)
+    );
+    return {
+      ...transaction,
+      categoryName: category ? category.name : "Bilinmeyen Kategori",
+    };
+  }
+  return transaction;
+};
+
 // --- ASENKRON THUNK'LAR ---
 export const getTransactions = createAsyncThunk(
   "transactions/fetchAll",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth?.token;
+      const state = getState(); // State'i al
+      const token = state.auth?.token;
       if (!token) {
         return loadFromLocalStorage();
       }
+
+      const allExpenseCategories = state.categories.expenseCategories || []; // Kategorileri al
+
       const data = await fetchAllTransactions(token);
-      return data;
+
+      // 💥 KÖKTEN ÇÖZÜM 1: Gelen tüm işlemlere categoryName ekle
+      const transactionsWithNames = data.map((tx) =>
+        addCategoryNameToTransaction(tx, allExpenseCategories)
+      );
+
+      return transactionsWithNames;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -65,6 +90,16 @@ export const addNewTransaction = createAsyncThunk(
         const data = await createTransaction(transactionData, token);
         newTransaction = data;
       }
+
+      // Kategori adını formdan almış olmalıyız (EditForm'daki gibi)
+      const allExpenseCategories =
+        getState().categories.expenseCategories || [];
+
+      // 💥 KÖKTEN ÇÖZÜM 2: Eklenen işleme categoryName ekle
+      newTransaction = addCategoryNameToTransaction(
+        newTransaction,
+        allExpenseCategories
+      );
 
       return newTransaction;
     } catch (error) {
@@ -88,16 +123,19 @@ export const deleteTransactionThunk = createAsyncThunk(
   }
 );
 
-// ✅ UPDATE THUNK'INIZ
+// ✅ GÜNCELLENMİŞ UPDATE THUNK'INIZ
 export const updateTransactionThunk = createAsyncThunk(
   "transactions/updateTransaction",
   async (transactionData, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth?.token;
+      const token = getState().auth?.token; // API'ye göndereceğimiz payload'dan UI için eklenen categoryName'i çıkar
+      const apiPayload = { ...transactionData };
+      delete apiPayload.categoryName;
       let updatedTransaction = transactionData;
 
       if (token) {
-        const data = await updateTransaction(transactionData, token);
+        // API çağrısı temizlenmiş payload ile
+        const data = await updateTransaction(apiPayload, token);
         updatedTransaction = data;
       }
 
@@ -105,12 +143,25 @@ export const updateTransactionThunk = createAsyncThunk(
         updatedTransaction.id = transactionData.id;
       }
 
+      const allExpenseCategories =
+        getState().categories.expenseCategories || [];
+
+      // 💥 KÖKTEN ÇÖZÜM 3: Güncellenen işleme categoryName ekle
+      // API'den dönen objeye categoryName ekle. Bu, formdan gelen veriyi kullanmak yerine,
+      // API'den dönen categoryId'ye göre kategoriyi tekrar bulur.
+      updatedTransaction = addCategoryNameToTransaction(
+        updatedTransaction,
+        allExpenseCategories
+      );
+
       return updatedTransaction;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
+// ... (Reducer ve Action'lar aynı kalır)
+// Bu kısım aynı kaldığı için aşağıdaki kodu dosyanıza eklemeniz yeterli.
 
 const initialTransactions = loadFromLocalStorage();
 const today = new Date();
@@ -185,12 +236,10 @@ const transactionsSlice = createSlice({
         console.log("--- deleteTransactionThunk.fulfilled ---");
         console.log("Silinen İşlem ID'si:", action.payload);
         console.log("Yeni Bakiye:", state.balance);
-      })
-      // ✅ YENİ EXTRA REDUCER: İşlem Güncelleme Başarılı Oldu
+      }) // ✅ YENİ EXTRA REDUCER: İşlem Güncelleme Başarılı Oldu
       .addCase(updateTransactionThunk.fulfilled, (state, action) => {
-        const updatedTransaction = action.payload;
+        const updatedTransaction = action.payload; // İşlem listesinde ilgili ID'yi bul ve güncellenmiş işlemle değiştir
 
-        // İşlem listesinde ilgili ID'yi bul ve güncellenmiş işlemle değiştir
         state.transactionsList = state.transactionsList.map((tx) =>
           tx.id === updatedTransaction.id ? updatedTransaction : tx
         );
