@@ -1,89 +1,111 @@
-/* Global CSS dosyanızdaki değişkenler bu modül tarafından kullanılacaktır. */
-
+/* Kutu arka planı (maketteki sağ panel kartı gibi) */
 .emptyContainer {
-  /* NOT: --dropdown-color-gradient değişkeni şeffaf ve 0deg açılı olduğu için, 
-       opak 45deg görseli elde etmek adına bu gradient elle tanımlandı. */
+  /* Yeni, daha açık degrade tonu */
   background: linear-gradient(
     45deg,
-    rgba(27, 0, 55, 1) 0%,
-    rgba(15, 15, 18, 1) 100%
+    rgba(45, 10, 85, 1) 0%,
+    rgb(43, 26, 94) 100%
   );
+  border-radius: 12px;
 
-  /* min-height: 97vh; */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 340px; /* mobile default */
   padding: 80px 20px;
 
   color: var(--font-color-white);
-  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.title {
-  /* transaction-header mobil font boyutu: 24px */
-  font-family: var(--font-family-base);
-  font-size: 24px;
-  font-weight: 400;
-  margin: 0 0 10px 0;
+.inactive {
+  pointer-events: none;
+}
+
+.inner {
+  max-width: 640px;
+  width: 100%;
   text-align: center;
+}
+
+/* Başlık ve alt başlık */
+.title {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2em;
+  margin: 0 0 10px 0;
+  color: var(--font-color-white);
 }
 
 .subtitle {
-  /* select-category-txt mobil font boyutu: 18px */
   font-family: var(--font-family-base);
-  font-size: 18px;
   font-weight: 400;
+  font-size: 18px;
+  line-height: 1.2em;
   color: var(--font-color-white-60);
-  margin: 0 0 30px 0;
-  text-align: center;
+  margin: 0 0 40px 0;
 }
 
 .addButton {
-  /* GLOBAL DEĞİŞKENLER KULLANILIYOR: */
-  background: var(--button-gradient);
-  box-shadow: var(--button-shadow);
-  color: var(--font-color-white);
-
-  font-family: var(--font-family-base);
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 1em;
-  letter-spacing: 0.1em;
-
-  /* Mobil Varsayılan Boyut (Global CSS .form-button'a uygun) */
-  padding: 15px 30px;
-  width: 280px;
-  border-radius: 20px;
-  cursor: pointer;
-  border: none;
-  transition: transform 0.2s;
+  margin: 0 auto;
 }
 
-.addButton:hover {
-  transform: scale(1.03);
-}
-
-/* --- TABLET (min-width: 768px) --- */
+/* --- TABLET (>=768px) --- */
 @media (min-width: 768px) {
-  .title {
-    /* Global CSS: transaction-header tablet boyutu: 30px */
-    font-size: 30px;
+  .emptyContainer {
+    min-height: 480px; /* Yüksekliği artırıldı */
+    min-width: 640px;
+    padding: 100px 40px;
+    border-radius: 14px;
   }
+
+  .inner {
+    max-width: 720px; /* daha geniş kart */
+  }
+
+  .title {
+    font-size: 32px; /* daha büyük başlık */
+  }
+
+  .subtitle {
+    font-size: 20px;
+  }
+
   .addButton {
-    /* Global CSS: form-button tablet genişliği: 300px */
-    width: 300px;
+    width: 320px; /* global 300px + biraz geniş */
+    height: 55px;
+    font-size: 20px;
   }
 }
 
-/* --- DESKTOP (min-width: 1280px) --- */
+/* --- DESKTOP (>=1280px) --- */
 @media (min-width: 1280px) {
-  .title {
-    /* transaction-header desktop boyutu: 30px */
-    font-size: 30px;
+  .emptyContainer {
+    min-height: 640px; /* Daha büyük sağ panel alanı */
+    min-width: 640px;
+    padding: 120px 60px;
+    border-radius: 16px;
   }
+
+  .inner {
+    max-width: 880px; /* Kart genişliği artırıldı */
+  }
+
+  .title {
+    font-size: 36px; /* büyük başlık */
+  }
+
+  .subtitle {
+    font-size: 22px;
+  }
+
   .addButton {
-    /* form-button desktop genişliği: 300px */
-    width: 300px;
+    width: 340px;
+    height: 60px;
+    font-size: 20px;
   }
 }
