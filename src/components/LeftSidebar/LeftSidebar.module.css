@@ -1,5 +1,4 @@
-/* src/components/LeftSidebar/LeftSidebar.module.css */
-
+/* ------------------- Genel ------------------- */
 .mainLayout {
   display: flex;
   min-height: 100vh;
@@ -7,45 +6,48 @@
   box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
 }
 
-/* Sidebar container (Mobil) */
 .sidebar {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 69px;
 }
 
-.leftColumn,
+.leftColumn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .rightColumn {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(74, 86, 226, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  margin-top: 20px;
 }
 
-/* Tabların göster/gizle mantığı (Mobil) */
-.homeTab > *:nth-child(1) {
-  /* Navigation */
-  display: block;
+/* ------------------- Mobil ------------------- */
+.balance {
+  display: block; /* default olarak görünür */
+  margin-top: 20px;
 }
 
-.homeTab > *:nth-child(2),
-.homeTab > *:nth-child(3) {
-  /* CurrencyTab ve Chart */
+/* Mobilde balance sadece home tab için gösterilecek */
+.balance.hideOnMobile {
   display: none;
 }
 
-.currencyTab > *:nth-child(1) {
-  /* Navigation */
-  display: none;
+.currencyTab {
+  display: none; /* mobilde varsayılan gizli */
 }
 
-.currencyTab > *:nth-child(2),
-.currencyTab > *:nth-child(3) {
-  /* CurrencyTab ve Chart */
-  display: block;
+.currencyTab.activeMobile {
+  display: block; /* sadece /currency aktifse mobilde göster */
 }
 
-/* -------------------------------------------------------------------------- */
-/* TABLET (768px+) */
-/* -------------------------------------------------------------------------- */
+/* ------------------- Tablet (768px+) ------------------- */
 @media (min-width: 768px) {
   .sidebar {
     flex-direction: row;
@@ -53,68 +55,74 @@
 
   .leftColumn {
     width: 336px;
-    display: flex;
-    flex-direction: column;
     background: none;
     border-right: none;
   }
 
   .rightColumn {
-    width: 336px;
-    display: flex;
-    flex-direction: column;
-    height: 214px;
+    width: 320px;
+    height: auto;
+    margin-top: 0px;
   }
 
-  /* Tablette tüm tab içeriğini göster */
-  .homeTab > *,
-  .currencyTab > * {
+  /* Tablet ve üstü: CurrencyTab her zaman göster */
+  .currencyTab {
+    display: block !important;
+  }
+
+  /* Tablet ve üstü: Balance her zaman görünür */
+  .balance {
     display: block !important;
   }
 }
 
-/* Tablet (768px - 1279px) için GRAFİK YÜKSEKLİĞİ DÜZELTMESİ */
+/* Tablet (768px - 1279px) grafik yüksekliği */
 @media (min-width: 768px) and (max-width: 1279px) {
-  .homeTab,
   .currencyTab {
-    border-radius: 12px;
     width: 320px;
-    background: rgba(74, 86, 226, 0.1);
-    height: 290px; /* ⭐️ GRAFİK TAŞMASINI ENGELLEYEN KRİTİK YÜKSEKLİK */
+    height: 290px;
+    border-radius: 12px;
     box-sizing: border-box;
+  }
+
+  .rightColumn {
+    margin-left: 120px;
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* DESKTOP (1280px+) */
-/* -------------------------------------------------------------------------- */
+/* ------------------- Desktop (1280px+) ------------------- */
 @media (min-width: 1280px) {
   .sidebar {
     flex-direction: column;
-    gap: 20px;
     width: 480px;
-    height: 640px;
+    gap: 20px;
+    height: auto;
     background: transparent;
     position: relative;
   }
 
   .leftColumn {
     width: 480px;
-    height: auto;
   }
 
   .rightColumn {
-    flex: 1;
     width: 480px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
   }
 
-  /* GRAFİK KAPSAYICISINA SABİT YÜKSEKLİK VERİLDİ (KRİTİK) */
-  .homeTab,
   .currencyTab {
     width: 100%;
-    height: 350px; /* ⭐️ GRAFİK TAŞMASINI ENGELLEYEN KRİTİK YÜKSEKLİK */
+    height: 350px;
+  }
+
+  .balance {
+    margin-top: 50px;
+    display: block !important; /* her zaman görünür */
   }
 }
