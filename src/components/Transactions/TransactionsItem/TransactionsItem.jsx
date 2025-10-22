@@ -1,11 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-// ✅ openEditModal'ı transactionsSlice'tan import edin
 import {
   deleteTransactionThunk,
   openEditModal,
 } from "../../../features/transactions/transactionsSlice";
 import styles from "./TransactionsItem.module.css";
+import editIcon from "../../../assets/icons/editIcon.svg";
+
+// iziToast import
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 const TransactionsItem = ({ transaction }) => {
   const dispatch = useDispatch();
@@ -13,22 +17,59 @@ const TransactionsItem = ({ transaction }) => {
     (state) => state.categories.expenseCategories
   );
 
-  const handleDelete = () => {
-    if (window.confirm("Bu işlemi silmek istediğine emin misin?")) {
-      dispatch(deleteTransactionThunk(transaction.id));
+  const showSuccessToast = (msg) => {
+    iziToast.show({
+      title: "Success",
+      message: msg || "Transaction deleted successfully",
+      position: "topRight",
+      timeout: 3000,
+      progressBar: true,
+      backgroundColor: "#4BB543",
+      transitionIn: "fadeInRight",
+      transitionOut: "fadeOutRight",
+      layout: 2,
+      zindex: 9999,
+      maxWidth: 500,
+      padding: 25,
+    });
+  };
+
+  const showErrorToast = (msg) => {
+    iziToast.show({
+      title: "Error",
+      message: msg || "Transaction could not be deleted",
+      position: "topRight",
+      timeout: 3000,
+      progressBar: true,
+      backgroundColor: "#FF4C4C",
+      transitionIn: "fadeInRight",
+      transitionOut: "fadeOutRight",
+      layout: 2,
+      zindex: 9999,
+      maxWidth: 500,
+      padding: 25,
+    });
+  };
+
+  // Silme işlemi
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteTransactionThunk(transaction.id)).unwrap();
+      showSuccessToast();
+    } catch (error) {
+      showErrorToast(error?.message);
     }
   };
 
   const handleEdit = () => {
-    // ⭐️ KRİTİK GÜNCELLEME: İşlemi payload olarak gönderip düzenleme modalını açıyoruz
     dispatch(openEditModal(transaction));
-  }; // Tarihi okunabilir formatta göster
+  };
 
   const formattedDate = transaction.transactionDate
     ? new Date(transaction.transactionDate).toLocaleDateString()
     : transaction.date || "-";
 
-  const typeLower = transaction.type?.toLowerCase(); // income / expense
+  const typeLower = transaction.type?.toLowerCase();
   const amount = transaction.amount ?? transaction.sum;
   const category = expenseCategories.filter(
     (cat) => cat.id === transaction.categoryId
@@ -53,11 +94,8 @@ const TransactionsItem = ({ transaction }) => {
       <td className={styles.td}>{transaction.comment || "-"}</td>
       <td className={`${styles.td} ${styles.sum}`}>{Math.abs(amount)} ₺</td> 
       <td className={`${styles.td} ${styles.actions}`}>
-        <button
-          className={`${styles.button} ${styles.editButton}`}
-          onClick={handleEdit} // ✅ Artık modalı açan Redux action'ını tetikliyor
-        >
-          Edit
+        <button className={styles.iconButton} onClick={handleEdit}>
+          <img src={editIcon} alt="Edit" />
         </button>
 
         <button

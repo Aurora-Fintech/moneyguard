@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,6 +11,10 @@ import { getCategories } from "../../../features/categories/categoriesSlice";
 import { addNewTransaction } from "../../../features/transactions/transactionsSlice";
 
 import styles from "./AddTransactionForm.module.css";
+
+// iziToast import
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 // Sabit Income kategorisi ID'si
 const INCOME_CATEGORY_ID = "063f25c8-1033-40f4-b15b-21d496c8a584";
@@ -27,8 +31,7 @@ const validationSchema = Yup.object().shape({
 const AddTransactionForm = ({ onCancel }) => {
   const dispatch = useDispatch();
 
-  // DÜZELTİLDİ: Redux store'dan incomeCategories ve expenseCategories çekiliyor
-  const { incomeCategories, expenseCategories, isLoading } = useSelector(
+  const { incomeCategories, expenseCategories } = useSelector(
     (state) => state.categories
   );
 
@@ -40,17 +43,48 @@ const AddTransactionForm = ({ onCancel }) => {
 
   const toggleSwitch = () => setIsIncome((prev) => !prev);
 
-  // Kategori listesi Gelir/Gider durumuna göre belirlenir
   const categoriesToShow = isIncome ? incomeCategories : expenseCategories;
-
-  // Bugünden ileri tarih seçilemez, maxDate olarak kullanılıyor
   const maxDate = new Date();
+
+  // --- iziToast fonksiyonları ---
+  const showSuccessToast = () => {
+    iziToast.show({
+      title: "Success",
+      message: "Transaction added successfully",
+      position: "topRight",
+      timeout: 3000,
+      progressBar: true,
+      backgroundColor: "#4BB543",
+      transitionIn: "fadeInRight",
+      transitionOut: "fadeOutRight",
+      layout: 2,
+      zindex: 9999,
+      maxWidth: 500,
+      padding: 25,
+    });
+  };
+
+  const showErrorToast = (msg) => {
+    iziToast.show({
+      title: "Error",
+      message: msg || "Transaction could not be added",
+      position: "topRight",
+      timeout: 3000,
+      progressBar: true,
+      backgroundColor: "#FF4C4C",
+      transitionIn: "fadeInRight",
+      transitionOut: "fadeOutRight",
+      layout: 2,
+      zindex: 9999,
+      maxWidth: 500,
+      padding: 25,
+    });
+  };
 
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Add Transaction</h2>
 
-      {/* Gelir / Gider Switch */}
       <div className={styles.switchWrapper}>
         <span
           className={styles.switchText}
@@ -86,7 +120,6 @@ const AddTransactionForm = ({ onCancel }) => {
         </span>
       </div>
 
-      {/* --- Formik Form Başlangıç --- */}
       <Formik
         initialValues={{
           category: "",
@@ -107,7 +140,6 @@ const AddTransactionForm = ({ onCancel }) => {
               return;
             }
 
-            // Kategori ID'si category name'ine göre bulunur
             const selectedCategory = categoriesToShow.find(
               (cat) => cat.name === values.category
             );
@@ -133,15 +165,16 @@ const AddTransactionForm = ({ onCancel }) => {
           try {
             await dispatch(addNewTransaction(transactionData)).unwrap();
             resetForm();
-            onCancel();
+            showSuccessToast(); // ✅ Önce toast göster
+            // onCancel();
           } catch (error) {
-            alert(error?.message || "İşlem eklenirken hata oluştu.");
+            console.error(error);
+            showErrorToast(error?.message);
           }
         }}
       >
         {({ values, setFieldValue, errors, touched }) => (
           <Form className={styles.form}>
-            {/* Kategori Seçimi (Sadece Expense için) */}
             {!isIncome && (
               <div className={styles.inputGroup}>
                 <Field
@@ -166,7 +199,6 @@ const AddTransactionForm = ({ onCancel }) => {
               </div>
             )}
 
-            {/* Tutar ve Tarih */}
             <div className={styles.row}>
               <div className={styles.inputGroup}>
                 <Field
@@ -190,7 +222,7 @@ const AddTransactionForm = ({ onCancel }) => {
                   selected={values.date}
                   onChange={(date) => setFieldValue("date", date)}
                   dateFormat="dd/MM/yyyy"
-                  maxDate={maxDate} // Bugünden sonraki tarihi engeller
+                  maxDate={maxDate}
                   className={`${styles.input} ${
                     touched.date && errors.date ? styles.inputError : ""
                   }`}
@@ -201,7 +233,6 @@ const AddTransactionForm = ({ onCancel }) => {
               </div>
             </div>
 
-            {/* Yorum */}
             <div className={styles.inputGroup}>
               <Field
                 as="textarea"
@@ -211,7 +242,6 @@ const AddTransactionForm = ({ onCancel }) => {
               />
             </div>
 
-            {/* Butonlar */}
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.submitBtn}>
                 Add

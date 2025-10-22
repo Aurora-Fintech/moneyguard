@@ -1,5 +1,7 @@
 .table {
   width: 100%;
+  font-family: var(--font-family-base);
+
   border-collapse: collapse;
   text-align: left;
   font-family: var(--font-family-base);
@@ -11,15 +13,18 @@
 }
 
 .th {
+  font-family: var(--font-family-base);
   font-weight: 600;
   font-size: 16px;
-  padding: 12px 8px;
+  padding: 12px 24px;
+
   color: var(--font-color-white); /* başlık yazısı beyaz */
-  text-align: left;
+  text-align: center;
 }
 
 .thCenter {
   text-align: center;
+  padding: 32px;
 }
 .sortIcon {
   margin-left: 6px; /* Date ile ok arasında boşluk */
