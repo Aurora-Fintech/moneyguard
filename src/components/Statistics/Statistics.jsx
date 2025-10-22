@@ -22,6 +22,8 @@ export default function Statistics() {
     <div className={styles.statisticsContainer}>
       <div className={styles.header}>
         <h1 className={styles.title}>Statistics</h1>
+      </div>
+      <div className={styles.periodSelectorWrapper}>
         <PeriodSelector
           month={month}
           year={year}

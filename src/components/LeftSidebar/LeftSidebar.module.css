@@ -31,7 +31,6 @@
 /* ------------------- Mobil ------------------- */
 .balance {
   display: block; /* default olarak görünür */
-  margin-top: 20px;
 }
 
 /* Mobilde balance sadece home tab için gösterilecek */
@@ -41,6 +40,7 @@
 
 .currencyTab {
   display: none; /* mobilde varsayılan gizli */
+  min-height: 200px;
 }
 
 .currencyTab.activeMobile {
@@ -95,7 +95,7 @@
   .sidebar {
     flex-direction: column;
     width: 480px;
-    gap: 20px;
+    gap: 32px;
     height: auto;
     background: transparent;
     position: relative;
@@ -122,7 +122,6 @@
   }
 
   .balance {
-    margin-top: 50px;
     display: block !important; /* her zaman görünür */
   }
 }
