@@ -46,6 +46,10 @@ const StatisticsTable = ({ data = [], expenseTotal = 0, incomeTotal = 0 }) => {
 
   return (
     <div className={styles.tableContainer}>
+      <div className={styles.tableHeader}>
+        <span className={styles.headerCategory}>Category</span>
+        <span className={styles.headerSum}>Sum</span>
+      </div>
       <ul className={styles.categoryList}>
         {tableData.map((item, index) => {
           const color =

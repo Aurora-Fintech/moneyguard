@@ -1,0 +1,13 @@
+.statisticsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.periodSelectorWrapper {
+  position: absolute;
+  right: 16px;
+  z-index: 10;
+}

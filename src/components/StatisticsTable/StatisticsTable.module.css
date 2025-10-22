@@ -2,6 +2,32 @@
   width: 100%;
 }
 
+.tableHeader {
+  width: 395px;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background: rgba(82, 59, 126, 0.6);
+  border-radius: 8px;
+  backdrop-filter: blur(100px);
+  box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
+  margin-bottom: 16px;
+}
+
+.headerCategory {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.headerSum {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
 .categoryList {
   list-style: none;
   padding: 0;
