@@ -11,7 +11,6 @@ const CurrencyTab = () => {
   const isLoading = useSelector((state) => state.currency.isLoading);
 
   useEffect(() => {
-    console.log("Kurları Çekme İşlemi Başlatılıyor.");
     dispatch(fetchCurrencyRates());
   }, [dispatch]);
 
