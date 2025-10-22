@@ -56,17 +56,6 @@
 
 /* --- TABLET (>=768px) --- */
 @media (min-width: 768px) {
-  .emptyContainer {
-    min-height: 480px; /* Yüksekliği artırıldı */
-    min-width: 640px;
-    padding: 100px 40px;
-    border-radius: 14px;
-  }
-
-  .inner {
-    max-width: 720px; /* daha geniş kart */
-  }
-
   .title {
     font-size: 32px; /* daha büyük başlık */
   }
@@ -84,17 +73,6 @@
 
 /* --- DESKTOP (>=1280px) --- */
 @media (min-width: 1280px) {
-  .emptyContainer {
-    min-height: 640px; /* Daha büyük sağ panel alanı */
-    min-width: 640px;
-    padding: 120px 60px;
-    border-radius: 16px;
-  }
-
-  .inner {
-    max-width: 880px; /* Kart genişliği artırıldı */
-  }
-
   .title {
     font-size: 36px; /* büyük başlık */
   }
