@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./PeriodSelector.module.css";
+import Select from "react-select";
 
 const MONTH_OPTIONS = [
   { value: 1, label: "January" },
@@ -36,45 +37,66 @@ const getYearOptions = () => {
  * @param {function} onChange
  */
 const PeriodSelector = ({ month, year, onChange }) => {
-  const handleMonthChange = (e) => {
-    const newMonth = Number(e.target.value);
-    onChange(newMonth, year);
-  };
-
-  const handleYearChange = (e) => {
-    const newYear = Number(e.target.value);
-    onChange(month, newYear);
-  };
-
   const yearOptions = getYearOptions();
+  const classNames = {
+    control: () => styles.dropdownControl,
+    menu: () => styles.dropdownMenu,
+    option: () => styles.dropdownOption,
+    singleValue: () => styles.dropdownValue,
+    valueContainer: () => styles.dropdownValueContainer,
+    indicatorsContainer: () => styles.dropdownIndicators,
+  };
+
+  // zorunlu inline styles
+  const customStyles = {
+    menu: (provided) => ({
+      ...provided,
+      background:
+        "linear-gradient(360deg, rgba(83, 61, 186, 0.7) 0%, rgba(80, 48, 154, 0.7) 35.94%, rgba(106, 70, 165, 0.7) 61.04%, rgba(133, 93, 175, 0.7) 100%)",
+    }),
+    indicatorSeparator: (provided) => ({
+      ...provided,
+      display: "none",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#FF868D" : "transparent",
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      transform: state.selectProps.menuIsOpen
+        ? "rotate(180deg)"
+        : "rotate(0deg)",
+      transition: "transform 0.2s ease",
+    }),
+  };
+
+  const selectedMonth = MONTH_OPTIONS.find((opt) => opt.value === month);
+  const selectedYear = yearOptions.find((opt) => opt.value === year);
 
   return (
     <div className={styles.selectorContainer}>
-      {/* Ay Seçimi  */}
-      <select
-        className={styles.dropdown}
-        value={month}
-        onChange={handleMonthChange}
-      >
-        {MONTH_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <Select
+        value={selectedMonth}
+        onChange={(option) => onChange(option.value, year)}
+        options={MONTH_OPTIONS}
+        classNames={classNames}
+        styles={customStyles}
+        isSearchable={false}
+        placeholder="Ay Seçin"
+        menuPortalTarget={document.body}
+      />
 
-      {/* Yıl Seçimi  */}
-      <select
-        className={styles.dropdown}
-        value={year}
-        onChange={handleYearChange}
-      >
-        {yearOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <Select
+        value={selectedYear}
+        onChange={(option) => onChange(month, option.value)}
+        options={yearOptions}
+        classNames={classNames}
+        styles={customStyles}
+        isSearchable={false}
+        placeholder="Yıl Seçin"
+        menuPortalTarget={document.body}
+      />
     </div>
   );
 };

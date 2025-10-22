@@ -1,0 +1,76 @@
+.selectorContainer {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-left: 32px;
+  margin-top: 97px;
+}
+
+.selectorContainer .dropdownControl {
+  width: 182px;
+  height: 50px;
+  min-height: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  background: rgba(74, 86, 226, 0.1);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.selectorContainer .dropdownValue {
+  color: #fbfbfb;
+  font: 400 16px "Poppins", sans-serif;
+}
+
+.selectorContainer .dropdownMenu {
+  width: 182px;
+  height: 157px;
+  border-radius: 8px;
+  margin-top: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(100px);
+}
+
+.selectorContainer .dropdownOption {
+  font: 400 16px "Poppins", sans-serif;
+  color: #fbfbfb;
+  background-color: transparent;
+  padding: 8px 20px;
+}
+
+.selectorContainer .dropdownOption:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.selectorContainer .dropdownValueContainer {
+  padding: 0 20px;
+}
+
+.selectorContainer .dropdownIndicators {
+  padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .selectorContainer {
+    flex-direction: column;
+    gap: 12px;
+    margin-left: 0;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 16px;
+  }
+  
+  .selectorContainer .dropdownControl {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .selectorContainer .dropdownMenu {
+    width: 100%;
+    max-width: 280px;
+  }
+}
