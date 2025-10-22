@@ -1,5 +1,3 @@
-// src/components/Transactions/EmptyTransactions/EmptyTransactions.jsx
-
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../../../features/transactions/transactionsSlice";
@@ -10,33 +8,31 @@ const EmptyTransactions = () => {
   const isModalOpen = useSelector((state) => state.transactions.isModalOpen);
 
   return (
-    <div
-      className={styles.emptyContainer}
-      style={{
-        pointerEvents: isModalOpen ? "none" : "auto", // modal açıksa tıklanamaz
-      }}
+    <section
+      className={`${styles.emptyContainer} ${
+        isModalOpen ? styles.inactive : ""
+      }`}
+      aria-live="polite"
     >
-      <h3
-        className={styles.title}
-        style={{ visibility: isModalOpen ? "hidden" : "visible" }}
-      >
-        No transactions available yet.
-      </h3>
-      <p
-        className={styles.subtitle}
-        style={{ visibility: isModalOpen ? "hidden" : "visible" }}
-      >
-        Let's add your first transaction:
-      </p>
+      <div className={styles.inner}>
+        <h3 className={styles.title} aria-hidden={isModalOpen}>
+          No transactions available yet.
+        </h3>
 
-      <button
-        onClick={() => dispatch(toggleModal())} // güncel action
-        className={styles.addButton}
-        style={{ visibility: isModalOpen ? "hidden" : "visible" }}
-      >
-        ADD TRANSACTION
-      </button>
-    </div>
+        <p className={styles.subtitle} aria-hidden={isModalOpen}>
+          Let&apos;s add your first transaction:
+        </p>
+
+        <button
+          type="button"
+          onClick={() => dispatch(toggleModal())}
+          className={`form-button ${styles.addButton}`}
+          aria-hidden={isModalOpen}
+        >
+          ADD TRANSACTION
+        </button>
+      </div>
+    </section>
   );
 };
 
