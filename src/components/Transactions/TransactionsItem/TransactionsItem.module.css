@@ -14,20 +14,18 @@
 }
 
 .typeIncome {
-  color: var(--yellow); /* gelir + sarı */
+  color: var(--yellow);
 }
 
 .typeExpense {
-  color: var(--red); /* gider - kırmızı */
+  color: var(--red);
 }
 
-/* Sum hücresi */
 .sum {
   font-weight: 600;
   font-size: 14px;
 }
 
-/* Category altında Income yazısı */
 .incomeLabel {
   font-size: 12px;
   font-weight: 500;
@@ -36,31 +34,38 @@
 }
 
 .actions {
-  text-align: center;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* veya 'flex-start' istersen sola hizalar */
+  gap: 10px; /* 🔹 butonlar arası boşluk */
 }
 
-/* Ortak buton stilleri (global CSS’den miras al) */
+.iconButton,
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Ortak buton stilleri */
 .button {
-  composes: form-button from global;
   padding: 4px 10px;
   font-size: 14px;
   font-weight: 500;
-
   margin-right: 8px;
-  /* width: auto; */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   transition: transform 0.2s, box-shadow 0.2s;
 }
-/* //Düzenleme butonu */
+
+/* Düzenleme butonu (ikonlu) */
 .iconButton {
-  background: none; /* arkaplan yok */
-  border: none; /* border yok */
+  background: none;
+  border: none;
   cursor: pointer;
-  padding: 4px; /* ikon etrafı boşluk */
+  padding: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +74,7 @@
 
 .iconButton:hover {
   transform: scale(1.1);
-  box-shadow: var(--button-shadow); /* global shadow kullan */
+  box-shadow: var(--button-shadow);
 }
 
 .iconButton img {
@@ -77,13 +82,103 @@
   height: 14px;
 }
 
-/* Sil butonu (gradient ve hover efektli) */
+/* Sil butonu */
 .deleteButton {
-  composes: form-button from global;
   background: var(--button-gradient);
   border-radius: 20px;
   width: 69px;
   height: 29px;
-
   color: var(--font-color-white);
+}
+
+/* ======================================================
+   İZITOAST CONFIRM DİALOG OVERRIDE STYLES 
+   ====================================================== */
+
+:global(.iziToast.dark-confirm-toast) {
+  background-color: #1a0833 !important;
+  background-image: linear-gradient(
+    145deg,
+    #1f0a40 0%,
+    #0d0417 100%
+  ) !important;
+  color: #ffffff !important;
+  border-radius: 20px !important;
+  padding: 30px !important;
+  max-width: 400px !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5) !important;
+  font-family: var(--font-family-base) !important;
+}
+
+:global(.iziToast.dark-confirm-toast .iziToast-title) {
+  color: #ffffff !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin-bottom: 10px !important;
+  text-align: center;
+  width: 100%;
+}
+
+:global(.iziToast.dark-confirm-toast .iziToast-message) {
+  color: #ccc !important;
+  font-size: 16px !important;
+  margin-top: 10px;
+  margin-bottom: 30px !important;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+:global(.iziToast.dark-confirm-toast .iziToast-buttons) {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Onay Butonlarının Temel Stili */
+:global(.delete-confirm-btn) {
+  width: 100% !important;
+  padding: 14px 20px !important;
+  border: none !important;
+  border-radius: 20px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 0 !important;
+  height: auto !important;
+  font-family: var(--font-family-base) !important;
+}
+
+/* EVET, SİL butonu */
+:global(.delete-btn) {
+  background: var(--button-gradient) !important;
+  color: var(--font-color-white) !important;
+  box-shadow: var(--button-shadow) !important;
+}
+
+:global(.delete-btn:hover) {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 199, 39, 0.5);
+}
+
+/* İPTAL butonu */
+:global(.cancel-btn) {
+  background-color: var(--font-color-white) !important;
+  color: var(--font-color-purple) !important;
+  border: 2px solid var(--font-color-purple) !important;
+  box-shadow: none !important;
+}
+
+:global(.cancel-btn:hover) {
+  transform: scale(1.05);
+}
+
+/* X Kapatma ikonu */
+:global(.iziToast.dark-confirm-toast .iziToast-close) {
+  color: white !important;
+  opacity: 0.8 !important;
 }
