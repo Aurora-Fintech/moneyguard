@@ -1,3 +1,40 @@
+.tr {
+  border-bottom: 1px solid var(--font-grey-light);
+}
+
+.td {
+  padding: 10px 8px;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.type {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.typeIncome {
+  color: var(--yellow); /* gelir + sarı */
+}
+
+.typeExpense {
+  color: var(--red); /* gider - kırmızı */
+}
+
+/* Sum hücresi */
+.sum {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Category altında Income yazısı */
+.incomeLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--yellow);
+  margin-top: 4px;
+}
+
 .actions {
   text-align: center;
   white-space: nowrap;
