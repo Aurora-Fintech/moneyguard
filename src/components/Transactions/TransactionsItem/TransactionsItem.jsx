@@ -10,6 +10,11 @@ import editIcon from "../../../assets/icons/editIcon.svg";
 // iziToast import
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+import editIcon from "../../../assets/icons/editIcon.svg";
+
+// iziToast import
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 const TransactionsItem = ({ transaction }) => {
   const dispatch = useDispatch();

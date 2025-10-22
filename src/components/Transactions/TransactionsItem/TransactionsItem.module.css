@@ -50,7 +50,28 @@
 
 /* Ortak buton stilleri */
 .button {
+  composes: form-button from global;
   padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 500;
+
+  margin-right: 8px;
+  /* width: auto; */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+/* //Düzenleme butonu */
+.iconButton {
+  background: none; /* arkaplan yok */
+  border: none; /* border yok */
+  cursor: pointer;
+  padding: 4px; /* ikon etrafı boşluk */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 14px;
   font-weight: 500;
   margin-right: 8px;
@@ -82,7 +103,7 @@
   height: 14px;
 }
 
-/* Sil butonu */
+/* Sil butonu (gradient ve hover efektli) */
 .deleteButton {
   background: var(--button-gradient);
   border-radius: 20px;
