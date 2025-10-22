@@ -1,0 +1,62 @@
+.InputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.inputIcon {
+  margin-left: 13px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.formInput {
+  width: 280px;
+  height: 35px;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--font-color-white-40);
+  outline: none;
+  padding-left: 54.5px;
+
+  font-family: var(--font-family-base);
+  font-size: 18px;
+  color: var(--font-color-white-40);
+}
+
+.authErrorMessage {
+  color: var(--red);
+
+  font-family: var(--font-family-base, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .formInput {
+    width: 409px;
+  }
+}
