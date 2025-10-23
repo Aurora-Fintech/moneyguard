@@ -86,8 +86,8 @@
 /* --- DESKTOP (>=1280px) --- */
 @media (min-width: 1280px) {
   .emptyContainer {
-    min-height: 680px; /* Daha büyük sağ panel alanı */
-    min-width: 740px;
+    min-height: 700px; /* Daha büyük sağ panel alanı */
+    min-width: 760px;
     padding: 120px 60px;
     border-radius: 16px;
   }
