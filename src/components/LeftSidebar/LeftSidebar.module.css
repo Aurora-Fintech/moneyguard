@@ -30,10 +30,10 @@
 
 /* ------------------- Mobil ------------------- */
 .balance {
-  display: block; /* default olarak görünür */
+  display: block; /* varsayılan: görünür */
 }
 
-/* Mobilde balance sadece home tab için gösterilecek */
+/* Mobilde home dışında gizle */
 .balance.hideOnMobile {
   display: none;
 }
@@ -55,38 +55,35 @@
 
   .leftColumn {
     width: 336px;
-    background: none;
-    border-right: none;
   }
 
   .rightColumn {
     width: 320px;
-    height: auto;
-    margin-top: 0px;
+    margin-top: 0;
   }
 
   /* Tablet ve üstü: CurrencyTab her zaman göster */
   .currencyTab {
-    display: block ;
+    display: block;
   }
 
   /* Tablet ve üstü: Balance her zaman görünür */
-  .balance {
-    display: block;
+  .balance,
+  .balance.hideOnMobile {
+    display: block !important;
   }
 }
 
-/* Tablet (768px - 1279px) grafik yüksekliği */
+/* ------------------- Tablet özel (768px - 1279px) ------------------- */
 @media (min-width: 768px) and (max-width: 1279px) {
   .currencyTab {
     width: 320px;
     height: 290px;
     border-radius: 12px;
-    box-sizing: border-box;
   }
 
   .rightColumn {
-    margin-left: 103px;
+    margin-left: 75px;
   }
 }
 
@@ -96,24 +93,19 @@
     flex-direction: column;
     width: 480px;
     gap: 120px;
-    height: auto;
     background: transparent;
-    position: relative;
   }
 
-  .leftColumn {
+  .leftColumn,
+  .rightColumn {
     width: 480px;
   }
 
   .rightColumn {
-    width: 480px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
     gap: 10px;
     border: none;
     box-shadow: none;
-    background-color: transparent;
+    background: transparent;
   }
 
   .currencyTab {
