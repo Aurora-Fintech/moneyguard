@@ -1,36 +1,37 @@
-// src/components/Transactions/ModalAddTransaction/AddTransactionForm.jsx
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Select from "react-select";
 
 import { getCategories } from "../../../features/categories/categoriesSlice";
 import { addNewTransaction } from "../../../features/transactions/transactionsSlice";
 
 import styles from "./AddTransactionForm.module.css";
 
-// iziToast import
+// Toast
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-// Sabit Income kategorisi ID'si
-const INCOME_CATEGORY_ID = "063f25c8-1033-40f4-b15b-21d496c8a584";
-
-// --- Form doğrulama ---
+// Doğrulama
 const validationSchema = Yup.object().shape({
   sum: Yup.number()
-    .typeError("Tutar geçerli bir sayı olmalıdır.")
-    .positive("Tutar pozitif olmalı")
-    .required("Tutar zorunludur"),
-  date: Yup.date().required("Tarih zorunludur"),
+    .typeError("The amount must be a valid number.")
+    .positive("The amount must be positive.")
+    .required("Amount is required."),
+  date: Yup.date().required("Date is required."),
+  // Category is required only for expenses
+  category: Yup.mixed().when("$isIncome", {
+    is: false,
+    then: (s) => s.required("Expense category is required."),
+    otherwise: (s) => s.notRequired(),
+  }),
 });
 
 const AddTransactionForm = ({ onCancel }) => {
   const dispatch = useDispatch();
-
   const { incomeCategories, expenseCategories } = useSelector(
     (state) => state.categories
   );
@@ -41,222 +42,309 @@ const AddTransactionForm = ({ onCancel }) => {
     dispatch(getCategories());
   }, [dispatch]);
 
-  const toggleSwitch = () => setIsIncome((prev) => !prev);
+  // ESC ile kapat
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onCancel?.();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onCancel]);
 
+  const toggleSwitch = () => setIsIncome((p) => !p);
   const categoriesToShow = isIncome ? incomeCategories : expenseCategories;
+  const options = useMemo(
+    () =>
+      (categoriesToShow || []).map((c) => ({
+        value: c.id,
+        label: c.name,
+      })),
+    [categoriesToShow]
+  );
+
   const maxDate = new Date();
 
-  // --- iziToast fonksiyonları ---
-  const showSuccessToast = () => {
+  const showSuccessToast = () =>
     iziToast.show({
       title: "Success",
       message: "Transaction added successfully",
       position: "topRight",
-      timeout: 3000,
+      timeout: 2800,
       progressBar: true,
       backgroundColor: "#4BB543",
       transitionIn: "fadeInRight",
       transitionOut: "fadeOutRight",
-      layout: 2,
       zindex: 9999,
-      maxWidth: 500,
-      padding: 25,
     });
-  };
 
-  const showErrorToast = (msg) => {
+  const showErrorToast = (msg) =>
     iziToast.show({
       title: "Error",
       message: msg || "Transaction could not be added",
       position: "topRight",
-      timeout: 3000,
+      timeout: 3200,
       progressBar: true,
       backgroundColor: "#FF4C4C",
       transitionIn: "fadeInRight",
       transitionOut: "fadeOutRight",
-      layout: 2,
       zindex: 9999,
-      maxWidth: 500,
-      padding: 25,
     });
-  };
+
+  // react-select custom styles (Global değişkenlerle)
+  const selectStyles = useMemo(
+    () => ({
+      container: (base) => ({ ...base, width: "100%" }),
+      control: (base, state) => ({
+        ...base,
+        minHeight: 44,
+        background: "transparent",
+        border: "none",
+        boxShadow: "none",
+        borderBottom: `2px solid rgba(255,255,255,${
+          state.isFocused ? 1 : 0.3
+        })`,
+        borderRadius: 0,
+        cursor: "pointer",
+      }),
+      valueContainer: (b) => ({ ...b, padding: "4px 0 8px 0" }),
+      placeholder: (b) => ({
+        ...b,
+        color: "var(--font-color-white-60)",
+        fontFamily: "var(--font-family-base)",
+      }),
+      singleValue: (b) => ({
+        ...b,
+        color: "var(--font-color-white)",
+        fontFamily: "var(--font-family-base)",
+      }),
+      indicatorsContainer: (b) => ({ ...b, color: "var(--font-color-white)" }),
+      dropdownIndicator: (b, s) => ({
+        ...b,
+        transition: "transform .2s ease",
+        transform: s.selectProps.menuIsOpen ? "rotate(180deg)" : "none",
+      }),
+      menuPortal: (b) => ({ ...b, zIndex: 10000 }),
+      menu: (b) => ({
+        ...b,
+        background: "var(--dropdown-color-gradient)",
+        borderRadius: 16,
+        boxShadow: "0 12px 24px rgba(0,0,0,.35)",
+        overflow: "hidden",
+        backdropFilter: "blur(6px)",
+      }),
+      menuList: (b) => ({ ...b, padding: 8, maxHeight: 240 }),
+      option: (base, state) => {
+        const isHover = state.isFocused && !state.isSelected;
+        return {
+          ...base,
+          borderRadius: 12,
+          color: isHover ? "#FF868D" : "var(--font-color-white)",
+          background: state.isSelected
+            ? "linear-gradient(96.76deg,#ffc727 -16.42%,#9e40ba 97.04%,#7000ff 150.71%)"
+            : isHover
+            ? "rgba(255, 134, 141, 0.18)"
+            : "transparent",
+          cursor: "pointer",
+        };
+      },
+      noOptionsMessage: (b) => ({ ...b, color: "var(--font-grey)" }),
+    }),
+    []
+  );
+
+  // overlay click – modal dışına tıklayınca kapat
+  const handleOverlayClick = useCallback(
+    (e) => {
+      if (e.target === e.currentTarget) onCancel?.();
+    },
+    [onCancel]
+  );
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Add Transaction</h2>
-
-      <div className={styles.switchWrapper}>
-        <span
-          className={styles.switchText}
-          style={{
-            color: isIncome ? "var(--yellow)" : "var(--font-color-white)",
-          }}
+    <div
+      className={styles.overlay}
+      onClick={handleOverlayClick}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className={styles.modal}>
+        <button
+          type="button"
+          className={styles.closeBtn}
+          aria-label="Close"
+          onClick={onCancel}
         >
-          Income
-        </span>
+          ×
+        </button>
 
-        <div className={styles.switchBackground} onClick={toggleSwitch}>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleSwitch();
+        <h2 className={`${styles.title} transaction-header`}>
+          Add transaction
+        </h2>
+
+        <div className={styles.switchWrapper}>
+          <span
+            className={styles.switchText}
+            style={{
+              color: isIncome ? "var(--yellow)" : "var(--font-color-white)",
             }}
-            className={`${styles.switchButton} ${
-              isIncome ? styles.income : styles.expense
-            }`}
           >
-            {isIncome ? "+" : "−"}
-          </button>
+            Income
+          </span>
+
+          <div className={styles.switchBackground} onClick={toggleSwitch}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleSwitch();
+              }}
+              className={`${styles.switchButton} ${
+                isIncome ? styles.income : styles.expense
+              }`}
+            >
+              {isIncome ? "+" : "−"}
+            </button>
+          </div>
+
+          <span
+            className={styles.switchText}
+            style={{
+              color: !isIncome ? "var(--red)" : "var(--font-color-white)",
+            }}
+          >
+            Expense
+          </span>
         </div>
 
-        <span
-          className={styles.switchText}
-          style={{
-            color: !isIncome ? "var(--red)" : "var(--font-color-white)",
+        <Formik
+          initialValues={{
+            category: null, // react-select object
+            sum: "",
+            date: new Date(),
+            comment: "",
           }}
+          validationSchema={validationSchema}
+          validateOnBlur
+          validateOnChange={false}
+          onSubmit={async (values, { resetForm, setSubmitting }) => {
+            try {
+              const amount = isIncome
+                ? parseFloat(values.sum)
+                : -Math.abs(parseFloat(values.sum));
+
+              const categoryId = isIncome
+                ? incomeCategories?.[0]?.id || null
+                : values.category?.value || null;
+
+              const payload = {
+                transactionDate: values.date.toISOString(),
+                amount,
+                categoryId,
+                type: isIncome ? "INCOME" : "EXPENSE",
+                comment: values.comment || "",
+              };
+
+              await dispatch(addNewTransaction(payload)).unwrap();
+              showSuccessToast();
+              resetForm();
+              onCancel?.();
+            } catch (err) {
+              console.error(err);
+              showErrorToast(err?.message);
+            } finally {
+              setSubmitting(false);
+            }
+          }}
+          context={{ isIncome }}
         >
-          Expense
-        </span>
-      </div>
+          {({ values, setFieldValue, errors, touched, isSubmitting }) => (
+            <Form className={styles.form}>
+              {!isIncome && (
+                <div className={styles.inputGroup}>
+                  <Select
+                    instanceId="category-select"
+                    name="category"
+                    options={options}
+                    value={values.category}
+                    onChange={(opt) => setFieldValue("category", opt)}
+                    placeholder="Select a category"
+                    menuPortalTarget={
+                      typeof document !== "undefined" ? document.body : null
+                    }
+                    styles={selectStyles}
+                    classNamePrefix="rs"
+                  />
+                  {errors.category && (
+                    <div className={styles.errorText}>{errors.category}</div>
+                  )}
+                </div>
+              )}
 
-      <Formik
-        initialValues={{
-          category: "",
-          sum: "",
-          date: new Date(),
-          comment: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={async (values, { resetForm, setFieldError }) => {
-          let finalCategoryId;
-          let amount = parseFloat(values.sum);
+              <div className={styles.row}>
+                <div className={styles.inputGroup}>
+                  <Field
+                    name="sum"
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0.00"
+                    className={`${styles.input} ${
+                      touched.sum && errors.sum ? styles.inputError : ""
+                    }`}
+                    onKeyDown={(e) =>
+                      ["-", "+", "e"].includes(e.key) && e.preventDefault()
+                    }
+                  />
+                  {touched.sum && errors.sum && (
+                    <div className={styles.errorText}>{errors.sum}</div>
+                  )}
+                </div>
 
-          if (isIncome) {
-            finalCategoryId = incomeCategories[0]?.id;
-          } else {
-            if (!values.category) {
-              setFieldError("category", "Gider kategorisi seçimi zorunludur.");
-              return;
-            }
+                <div className={styles.inputGroup}>
+                  <DatePicker
+                    selected={values.date}
+                    onChange={(date) => setFieldValue("date", date)}
+                    dateFormat="dd.MM.yyyy"
+                    maxDate={maxDate}
+                    filterDate={(d) => d <= maxDate}
+                    className={`${styles.input} ${
+                      touched.date && errors.date ? styles.inputError : ""
+                    }`}
+                    calendarClassName={styles.calendar}
+                  />
+                  {touched.date && errors.date && (
+                    <div className={styles.errorText}>{errors.date}</div>
+                  )}
+                </div>
+              </div>
 
-            const selectedCategory = categoriesToShow.find(
-              (cat) => cat.name === values.category
-            );
-
-            finalCategoryId = selectedCategory?.id;
-
-            if (!finalCategoryId) {
-              setFieldError("category", "Geçersiz kategori ID'si.");
-              return;
-            }
-
-            amount = -amount;
-          }
-
-          const transactionData = {
-            transactionDate: values.date.toISOString(),
-            amount,
-            categoryId: finalCategoryId,
-            type: isIncome ? "INCOME" : "EXPENSE",
-            comment: values.comment || "",
-          };
-
-          try {
-            await dispatch(addNewTransaction(transactionData)).unwrap();
-            resetForm();
-            showSuccessToast(); // ✅ Önce toast göster
-            // onCancel();
-          } catch (error) {
-            console.error(error);
-            showErrorToast(error?.message);
-          }
-        }}
-      >
-        {({ values, setFieldValue, errors, touched }) => (
-          <Form className={styles.form}>
-            {!isIncome && (
               <div className={styles.inputGroup}>
                 <Field
-                  as="select"
-                  name="category"
-                  className={`${styles.input} ${
-                    touched.category && errors.category ? styles.inputError : ""
-                  }`}
+                  as="textarea"
+                  name="comment"
+                  placeholder="Comment"
+                  className={styles.textarea}
+                  rows="2"
+                />
+              </div>
+
+              <div className={styles.buttonGroup}>
+                <button
+                  type="submit"
+                  className={`${styles.submitBtn} form-button`}
+                  disabled={isSubmitting}
                 >
-                  <option value="" disabled>
-                    Select a category
-                  </option>
-                  {categoriesToShow?.map((cat) => (
-                    <option key={cat.id} value={cat.name}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </Field>
-                {touched.category && errors.category && (
-                  <div className={styles.errorText}>{errors.category}</div>
-                )}
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.cancelBtn} form-button-register`}
+                  onClick={onCancel}
+                >
+                  CANCEL
+                </button>
               </div>
-            )}
-
-            <div className={styles.row}>
-              <div className={styles.inputGroup}>
-                <Field
-                  name="sum"
-                  type="text"
-                  placeholder="0.00"
-                  className={`${styles.input} ${
-                    touched.sum && errors.sum ? styles.inputError : ""
-                  }`}
-                  onKeyDown={(e) =>
-                    ["-", "+", "e"].includes(e.key) && e.preventDefault()
-                  }
-                />
-                {touched.sum && errors.sum && (
-                  <div className={styles.errorText}>{errors.sum}</div>
-                )}
-              </div>
-
-              <div className={styles.inputGroup}>
-                <DatePicker
-                  selected={values.date}
-                  onChange={(date) => setFieldValue("date", date)}
-                  dateFormat="dd/MM/yyyy"
-                  maxDate={maxDate}
-                  className={`${styles.input} ${
-                    touched.date && errors.date ? styles.inputError : ""
-                  }`}
-                />
-                {touched.date && errors.date && (
-                  <div className={styles.errorText}>{errors.date}</div>
-                )}
-              </div>
-            </div>
-
-            <div className={styles.inputGroup}>
-              <Field
-                as="textarea"
-                name="comment"
-                placeholder="Comment"
-                className={styles.input}
-              />
-            </div>
-
-            <div className={styles.buttonGroup}>
-              <button type="submit" className={styles.submitBtn}>
-                Add
-              </button>
-              <button
-                type="button"
-                className={styles.cancelBtn}
-                onClick={onCancel}
-              >
-                Cancel
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 };
