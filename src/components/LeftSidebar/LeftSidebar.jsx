@@ -25,7 +25,7 @@ export default function LeftSidebar() {
       <div className={styles.leftColumn}>
         <Navigation />
 
-        {/* Balance: mobilde sadece home, tablet ve desktop'ta her zaman */}
+        {/* Balance — mobilde sadece home, tablet+ her zaman */}
         <div
           className={`${styles.balance} ${
             activeTab !== "home" ? styles.hideOnMobile : ""
