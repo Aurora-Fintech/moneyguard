@@ -38,7 +38,7 @@ const StatisticsTable = ({ data = [], expenseTotal = 0, incomeTotal = 0 }) => {
     return (
       <div className={styles.tableContainer}>
         <h4 className={styles.noData}>
-          Seçilen dönemde hiçbir işlem bulunmamaktadır.
+          There are no expense transactions for the selected period.
         </h4>
       </div>
     );
