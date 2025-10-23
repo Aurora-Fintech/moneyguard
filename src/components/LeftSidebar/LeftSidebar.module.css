@@ -67,12 +67,12 @@
 
   /* Tablet ve üstü: CurrencyTab her zaman göster */
   .currencyTab {
-    display: block !important;
+    display: block ;
   }
 
   /* Tablet ve üstü: Balance her zaman görünür */
   .balance {
-    display: block !important;
+    display: block;
   }
 }
 
@@ -122,6 +122,6 @@
   }
 
   .balance {
-    display: block !important; /* her zaman görünür */
+    display: block;
   }
 }
