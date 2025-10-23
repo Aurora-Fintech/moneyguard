@@ -121,7 +121,6 @@ const EditTransactionForm = () => {
         categoryId: values.type === "EXPENSE" ? values.categoryId : null,
       };
 
-      // 🔹 Backend’den dönen transaction objesini alıyoruz
       const resultAction = await dispatch(updateTransactionThunk(payload));
 
       if (updateTransactionThunk.fulfilled.match(resultAction)) {
@@ -156,6 +155,24 @@ const EditTransactionForm = () => {
     >
       {({ values, setFieldValue, isSubmitting }) => (
         <Form className={styles.editForm}>
+          {/* 🟡 Income / Expense Başlığı */}
+          <div className={styles.editFormTypeSwitcher}>
+            <span
+              className={`${styles.editFormTypeLabel} ${
+                values.type === "INCOME" ? styles.editFormActiveIncome : ""
+              }`}
+            >
+              Income
+            </span>
+            <span
+              className={`${styles.editFormTypeLabel} ${
+                values.type === "EXPENSE" ? styles.editFormActiveExpense : ""
+              }`}
+            >
+              Expense
+            </span>
+          </div>
+
           {values.type === "EXPENSE" && (
             <div className={styles.editFormGroup}>
               <Field
@@ -222,12 +239,60 @@ const EditTransactionForm = () => {
           </div>
 
           <div className={styles.editFormGroup}>
-            <Field
-              as="textarea"
-              name="comment"
-              placeholder="Yorum"
-              className={styles.editFormInput}
-            />
+            <Field name="comment">
+              {({ field, form }) => {
+                // Uyarının bir kez gösterilmesini kontrol için local state
+                const [toastShown, setToastShown] = React.useState(false);
+
+                const handleChange = (e) => {
+                  let value = e.target.value;
+                  let showToast = false;
+
+                  // Satır sayısı kontrolü
+                  const lines = value.split("\n");
+                  if (lines.length > 2) {
+                    value = lines.slice(0, 2).join("\n");
+                    showToast = true;
+                  }
+
+                  // Karakter sınırı kontrolü
+                  if (value.length > 30) {
+                    value = value.slice(0, 30);
+                    showToast = true;
+                  }
+
+                  form.setFieldValue("comment", value);
+
+                  // Toast sadece bir kez gösterilsin
+                  if (showToast && !toastShown) {
+                    iziToast.show({
+                      title: "Warning",
+                      message: "Max 30 letters allowed!",
+                      position: "topRight",
+                      timeout: 3000,
+                      progressBar: true,
+                      backgroundColor: "rgba(255, 134, 141, 1)", // senin verdiğin kırmızı
+                    });
+                    setToastShown(true);
+                  }
+
+                  // Eğer kullanıcı limitin altına düşerse tekrar gösterilebilir hale getir
+                  if (!showToast && toastShown) {
+                    setToastShown(false);
+                  }
+                };
+
+                return (
+                  <textarea
+                    {...field}
+                    placeholder="Yorum"
+                    className={styles.editFormInput}
+                    rows={2}
+                    onChange={handleChange}
+                  />
+                );
+              }}
+            </Field>
             <ErrorMessage
               name="comment"
               component="div"

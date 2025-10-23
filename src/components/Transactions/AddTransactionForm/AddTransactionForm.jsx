@@ -30,7 +30,6 @@ const validationSchema = Yup.object().shape({
 
 const AddTransactionForm = ({ onCancel }) => {
   const dispatch = useDispatch();
-
   const { incomeCategories, expenseCategories } = useSelector(
     (state) => state.categories
   );
@@ -42,7 +41,6 @@ const AddTransactionForm = ({ onCancel }) => {
   }, [dispatch]);
 
   const toggleSwitch = () => setIsIncome((prev) => !prev);
-
   const categoriesToShow = isIncome ? incomeCategories : expenseCategories;
   const maxDate = new Date();
 
@@ -85,6 +83,7 @@ const AddTransactionForm = ({ onCancel }) => {
     <div className={styles.container}>
       <h2 className={styles.title}>Add Transaction</h2>
 
+      {/* --- Income/Expense Switch --- */}
       <div className={styles.switchWrapper}>
         <span
           className={styles.switchText}
@@ -120,6 +119,7 @@ const AddTransactionForm = ({ onCancel }) => {
         </span>
       </div>
 
+      {/* --- Formik --- */}
       <Formik
         initialValues={{
           category: "",
@@ -165,97 +165,154 @@ const AddTransactionForm = ({ onCancel }) => {
           try {
             await dispatch(addNewTransaction(transactionData)).unwrap();
             resetForm();
-            showSuccessToast(); // ✅ Önce toast göster
-            // onCancel();
+            showSuccessToast();
           } catch (error) {
             console.error(error);
             showErrorToast(error?.message);
           }
         }}
       >
-        {({ values, setFieldValue, errors, touched }) => (
-          <Form className={styles.form}>
-            {!isIncome && (
-              <div className={styles.inputGroup}>
-                <Field
-                  as="select"
-                  name="category"
-                  className={`${styles.input} ${
-                    touched.category && errors.category ? styles.inputError : ""
-                  }`}
-                >
-                  <option value="" disabled>
-                    Select a category
-                  </option>
-                  {categoriesToShow?.map((cat) => (
-                    <option key={cat.id} value={cat.name}>
-                      {cat.name}
+        {({ values, setFieldValue, errors, touched }) => {
+          const [toastShown, setToastShown] = React.useState(false);
+
+          const handleCommentChange = (e) => {
+            let value = e.target.value;
+            let showToast = false;
+
+            const lines = value.split("\n");
+            if (lines.length > 2) {
+              value = lines.slice(0, 2).join("\n");
+              showToast = true;
+            }
+
+            if (value.length > 30) {
+              value = value.slice(0, 30);
+              showToast = true;
+            }
+
+            setFieldValue("comment", value);
+
+            if (showToast && !toastShown) {
+              iziToast.show({
+                title: "Uyarı",
+                message: "Yorum en fazla 2 satır ve 30 karakter olabilir",
+                position: "topRight",
+                timeout: 3000,
+                progressBar: true,
+                backgroundColor: "rgba(255, 134, 141, 1)",
+              });
+              setToastShown(true);
+            }
+
+            if (!showToast && toastShown) {
+              setToastShown(false);
+            }
+          };
+
+          return (
+            <Form className={styles.form}>
+              {!isIncome && (
+                <div className={styles.inputGroup}>
+                  <Field
+                    as="select"
+                    name="category"
+                    className={`${styles.input} ${
+                      touched.category && errors.category
+                        ? styles.inputError
+                        : ""
+                    }`}
+                  >
+                    <option value="" disabled>
+                      Select a category
                     </option>
-                  ))}
-                </Field>
-                {touched.category && errors.category && (
-                  <div className={styles.errorText}>{errors.category}</div>
-                )}
-              </div>
-            )}
+                    {categoriesToShow?.map((cat) => (
+                      <option key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </Field>
+                  {touched.category && errors.category && (
+                    <div className={styles.errorText}>{errors.category}</div>
+                  )}
+                </div>
+              )}
 
-            <div className={styles.row}>
+              {/* --- Amount + Date --- */}
+              <div className={styles.row}>
+                <div className={styles.inputGroup}>
+                  <Field
+                    name="sum"
+                    type="text"
+                    placeholder="0.00"
+                    className={`${styles.input} ${
+                      touched.sum && errors.sum ? styles.inputError : ""
+                    }`}
+                    onKeyDown={(e) =>
+                      ["-", "+", "e"].includes(e.key) && e.preventDefault()
+                    }
+                  />
+                  {touched.sum && errors.sum && (
+                    <div className={styles.errorText}>{errors.sum}</div>
+                  )}
+                </div>
+
+                <div className={`${styles.inputGroup} ${styles.dateWrapper}`}>
+                  <DatePicker
+                    selected={values.date}
+                    onChange={(date) => setFieldValue("date", date)}
+                    dateFormat="dd/MM/yyyy"
+                    maxDate={maxDate}
+                    className={`${styles.input} ${
+                      touched.date && errors.date ? styles.inputError : ""
+                    }`}
+                  />
+                  <svg
+                    className={styles.calendarIcon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="var(--font-color-white-60)"
+                      strokeWidth="2"
+                      d="M7 11h10M7 15h10M5 5h14a2 2 0 0 1 2 2v12a2 
+                      2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 
+                      2-2Zm2-4v4m10-4v4"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* --- Comment --- */}
               <div className={styles.inputGroup}>
-                <Field
-                  name="sum"
-                  type="text"
-                  placeholder="0.00"
-                  className={`${styles.input} ${
-                    touched.sum && errors.sum ? styles.inputError : ""
-                  }`}
-                  onKeyDown={(e) =>
-                    ["-", "+", "e"].includes(e.key) && e.preventDefault()
-                  }
+                <textarea
+                  name="comment"
+                  placeholder="Comment"
+                  className={styles.input}
+                  rows={2}
+                  value={values.comment}
+                  onChange={handleCommentChange}
                 />
-                {touched.sum && errors.sum && (
-                  <div className={styles.errorText}>{errors.sum}</div>
-                )}
               </div>
 
-              <div className={styles.inputGroup}>
-                <DatePicker
-                  selected={values.date}
-                  onChange={(date) => setFieldValue("date", date)}
-                  dateFormat="dd/MM/yyyy"
-                  maxDate={maxDate}
-                  className={`${styles.input} ${
-                    touched.date && errors.date ? styles.inputError : ""
-                  }`}
-                />
-                {touched.date && errors.date && (
-                  <div className={styles.errorText}>{errors.date}</div>
-                )}
+              {/* --- Butonlar --- */}
+              <div className={styles.buttonGroup}>
+                <button type="submit" className={styles.submitBtn}>
+                  Add
+                </button>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={onCancel}
+                >
+                  Cancel
+                </button>
               </div>
-            </div>
-
-            <div className={styles.inputGroup}>
-              <Field
-                as="textarea"
-                name="comment"
-                placeholder="Comment"
-                className={styles.input}
-              />
-            </div>
-
-            <div className={styles.buttonGroup}>
-              <button type="submit" className={styles.submitBtn}>
-                Add
-              </button>
-              <button
-                type="button"
-                className={styles.cancelBtn}
-                onClick={onCancel}
-              >
-                Cancel
-              </button>
-            </div>
-          </Form>
-        )}
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );

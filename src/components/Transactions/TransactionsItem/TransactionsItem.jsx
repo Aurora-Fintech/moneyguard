@@ -10,11 +10,6 @@ import editIcon from "../../../assets/icons/editIcon.svg";
 // iziToast import
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
-import editIcon from "../../../assets/icons/editIcon.svg";
-
-// iziToast import
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
 
 const TransactionsItem = ({ transaction }) => {
   const dispatch = useDispatch();
@@ -68,16 +63,13 @@ const TransactionsItem = ({ transaction }) => {
       overlay: true,
       id: "delete-confirm",
       zindex: 99999,
-      // ÖZEL STİL İÇİN EKLEDİK:
       class: "dark-confirm-toast",
 
       buttons: [
         [
-          // EVET, SİL butonu
           "<button class='delete-confirm-btn delete-btn'><b>Evet, Sil</b></button>",
           async (instance, toast) => {
             instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
-
             try {
               await dispatch(deleteTransactionThunk(transaction.id)).unwrap();
               showSuccessToast();
@@ -88,7 +80,6 @@ const TransactionsItem = ({ transaction }) => {
           true,
         ],
         [
-          // İPTAL butonu
           "<button class='delete-confirm-btn cancel-btn'>İptal</button>",
           (instance, toast) => {
             instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
@@ -108,33 +99,75 @@ const TransactionsItem = ({ transaction }) => {
 
   const typeLower = transaction.type?.toLowerCase();
   const amount = transaction.amount ?? transaction.sum;
-  const category = expenseCategories.filter(
+  const category = expenseCategories.find(
     (cat) => cat.id === transaction.categoryId
-  )?.[0];
+  );
 
   return (
-    <tr className={styles.tr}>
-      <td className={styles.td}>{formattedDate}</td>
+    <tr
+      className={`${styles.tr} ${
+        typeLower === "income" ? styles.income : styles.expense
+      }`}
+    >
+      <td className={styles.td}>
+        {/* MOBİL ETİKET BAŞLANGICI */}
+        <span className={styles.mobileLabel}>Date:</span>
+        {/* MOBİL ETİKET SONU */}
+        {formattedDate}
+      </td>
+
       <td
         className={`${styles.td} ${styles.type} ${
           typeLower === "income" ? styles.typeIncome : styles.typeExpense
         }`}
       >
+        {/* MOBİL ETİKET BAŞLANGICI */}
+        <span className={styles.mobileLabel}>Type:</span>
+        {/* MOBİL ETİKET SONU */}
         {typeLower === "income" ? "+" : "-"}
       </td>
+
       <td className={styles.td}>
+        {/* MOBİL ETİKET BAŞLANGICI */}
+        <span className={styles.mobileLabel}>Category:</span>
+        {/* MOBİL ETİKET SONU */}
         {typeLower === "expense" ? category?.name : null}
         {typeLower === "income" && (
           <div className={styles.incomeLabel}>Income</div>
         )}
       </td>
-      <td className={styles.td}>{transaction.comment || "-"}</td>
-      <td className={`${styles.td} ${styles.sum}`}>{Math.abs(amount)} ₺</td>
+
+      {/* 🟢 GÜNCELLEME: Comment sütununa özel sınıf eklenerek alt satıra geçiş sağlanacak */}
+      <td className={`${styles.td} ${styles.comment}`}>
+        <span className={styles.mobileLabel}>Comment:</span>
+        {transaction.comment
+          ? transaction.comment.length > 30
+            ? transaction.comment.slice(0, 30)
+            : transaction.comment
+          : "-"}
+      </td>
+
+      {/* 💰 SUM RENK KOŞULU BURADA */}
+      <td
+        className={`${styles.td} ${styles.sum} ${
+          typeLower === "income" ? styles.sumIncome : styles.sumExpense
+        }`}
+      >
+        {/* MOBİL ETİKET BAŞLANGICI */}
+        <span className={styles.mobileLabel}>Sum:</span>
+        {/* MOBİL ETİKET SONU */}
+        {Math.abs(amount)}
+      </td>
+
       <td className={`${styles.td} ${styles.actions}`}>
+        {/* SIRA 1 (MASAÜSTÜ SOL): EDİT BUTONU */}
         <button className={styles.iconButton} onClick={handleEdit}>
           <img src={editIcon} alt="Edit" />
+          <span className={styles.editLabel}>Edit</span>{" "}
+          {/* MOBİL EDİT YAZISI */}
         </button>
 
+        {/* SIRA 2 (MASAÜSTÜ SAĞ): DELETE BUTONU */}
         <button
           className={`form-button ${styles.deleteButton}`}
           onClick={handleDelete}

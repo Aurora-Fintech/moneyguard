@@ -1,16 +1,66 @@
+/* ======================================================
+  TABLE CONTAINER GENİŞLİK AYARLARI
+  (Logo ve Exit ile hizalamak için güncellendi)
+  ====================================================== */
+
+.table-container {
+  margin: 0 auto; /* Ortala */
+  /* Kapsayıcının %100 genişliğinde olmasını sağlar */
+  width: 100%;
+  /* Logo ve Exit'in başladığı/bittiği noktalarla hizalamak için
+     yatayda 24px (tahmini gutter) padding eklenir. */
+  padding: 0 24px;
+  /* Padding'in toplam genişliği bozmaması için */
+  box-sizing: border-box;
+}
+
+/* Masaüstü (769px ve üzeri) */
+@media (min-width: 769px) {
+  .table-container {
+    /* Sabit max-width ayarları kaldırıldı.
+      Artık üst kapsayıcının (parent) içeriğini takip edecek. */
+  }
+}
+
+/* Tablet (705px–768px arası) */
+@media (min-width: 705px) and (max-width: 768px) {
+  .table-container {
+    /* Sabit max-width ayarları kaldırıldı. */
+  }
+}
+
+/* ======================================================
+  TABLO GENEL STİLLERİ
+  ====================================================== */
+
 .tr {
   border-bottom: 1px solid var(--font-grey-light);
+  vertical-align: middle; /* Hücreleri dikey ortala */
 }
 
 .td {
-  padding: 10px 8px;
+  padding: 10px 24px;
   font-size: 14px;
-  vertical-align: top;
+  text-align: center;
+  vertical-align: middle;
+  word-break: break-word; /* Uzun kelime satırı kır */
 }
 
+/* 🟢 COMMENT SÜTUNU (Metin Alt Satıra Geçecek) */
+.comment,
+.category {
+  white-space: pre-wrap; /* Alt satıra geçebilir */
+  word-break: break-word; /* Uzun kelimeler alt satıra geçer */
+  max-width: 150px; /* Genişliği sınırlı */
+}
+
+/* -----------------------------------------------------------
+ * ÖZEL SÜTUN HİZALAMALARI
+ * ----------------------------------------------------------- */
 .type {
   font-weight: 600;
   font-size: 16px;
+  text-align: center;
 }
 
 .typeIncome {
@@ -24,6 +74,15 @@
 .sum {
   font-weight: 600;
   font-size: 14px;
+  text-align: center;
+}
+
+.sumIncome {
+  color: var(--yellow);
+}
+
+.sumExpense {
+  color: var(--red);
 }
 
 .incomeLabel {
@@ -36,8 +95,13 @@
 .actions {
   display: flex;
   align-items: center;
-  justify-content: center; /* veya 'flex-start' istersen sola hizalar */
-  gap: 10px; /* 🔹 butonlar arası boşluk */
+  justify-content: flex-end;
+  width: 100%;
+  padding-right: 24px;
+  padding-left: 0;
+  gap: 10px;
+  vertical-align: middle;
+  height: 100%;
 }
 
 .iconButton,
@@ -48,40 +112,10 @@
   cursor: pointer;
 }
 
-/* Ortak buton stilleri */
-.button {
-  composes: form-button from global;
-  padding: 4px 10px;
-  font-size: 14px;
-  font-weight: 500;
-
-  margin-right: 8px;
-  /* width: auto; */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-/* //Düzenleme butonu */
-.iconButton {
-  background: none; /* arkaplan yok */
-  border: none; /* border yok */
-  cursor: pointer;
-  padding: 4px; /* ikon etrafı boşluk */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 500;
-  margin-right: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+.editLabel {
+  display: none;
 }
 
-/* Düzenleme butonu (ikonlu) */
 .iconButton {
   background: none;
   border: none;
@@ -103,18 +137,130 @@
   height: 14px;
 }
 
-/* Sil butonu (gradient ve hover efektli) */
 .deleteButton {
   background: var(--button-gradient);
   border-radius: 20px;
   width: 69px;
   height: 29px;
   color: var(--font-color-white);
+  font-size: 14px;
+  letter-spacing: 0px;
 }
 
 /* ======================================================
-   İZITOAST CONFIRM DİALOG OVERRIDE STYLES 
-   ====================================================== */
+  MOBİL STİLLER
+  ====================================================== */
+
+.mobileLabel {
+  display: none;
+  font-weight: 500;
+  color: #999;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .mobileLabel {
+    display: inline-block;
+  }
+
+  .tr {
+    display: block;
+    margin-bottom: 8px; /* 8px boşluk için güncellendi */
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    /* Yeni arka plan rengi ve şeffaflık uygulandı: #2F15B0BA */
+    /* background: #2f15b0ba; */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: border-left 0.3s ease;
+  }
+
+  /* 💛 Income kartı (sarı sol border) */
+  .tr.income {
+    border-left: 3px solid var(--yellow);
+  }
+
+  /* ❤️ Expense kartı (kırmızı sol border) */
+  .tr.expense {
+    border-left: 3px solid var(--red);
+  }
+
+  .td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 10px 0;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    vertical-align: unset;
+    text-align: left;
+  }
+
+  .comment {
+    white-space: normal;
+    overflow: visible;
+    min-width: unset;
+    max-width: unset;
+    /* 💥 GÜNCELLEME: Uzun kelimeleri kartın genişliğine göre zorla kırar */
+    word-break: break-all;
+  }
+
+  .actions {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+  }
+
+  .type,
+  .sum {
+    text-align: left;
+  }
+
+  .editLabel {
+    display: block;
+    margin-left: 8px;
+    color: #ccc;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .iconButton {
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: #ccc;
+    padding: 6px 0;
+    height: 35px;
+    width: auto;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    transition: none;
+  }
+
+  .iconButton img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(1.5);
+  }
+
+  .deleteButton {
+    width: 90px;
+    height: 35px;
+    font-size: 16px;
+    padding: 0;
+  }
+}
+
+/* ======================================================
+  İZITOAST OVERRIDE (değişmedi)
+  ====================================================== */
 
 :global(.iziToast.dark-confirm-toast) {
   background-color: #1a0833 !important;

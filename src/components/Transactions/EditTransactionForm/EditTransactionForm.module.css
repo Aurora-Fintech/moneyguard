@@ -1,8 +1,13 @@
+:root {
+  --red: rgba(255, 134, 141, 1);
+  --yellow: rgba(255, 182, 39, 1);
+}
+
 /* --- FORM GENEL STİLLERİ --- */
 .editForm {
   display: flex;
   flex-direction: column;
-  gap: 40px; /* Form grupları arasındaki dikey boşluk */
+  gap: 40px;
 }
 
 /* Yükleme Mesajı */
@@ -12,29 +17,28 @@
   padding: 20px;
 }
 
-/* --- TİP SEÇİCİ (INCOME / EXPENSE) --- */
+/* --- INCOME / EXPENSE BAŞLIĞI --- */
 .editFormTypeSwitcher {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-family: var(--font-family-base);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .editFormTypeLabel {
   color: var(--font-color-white);
-  cursor: default;
-  transition: color 0.3s;
-  display: inline-block;
-  position: relative;
+  transition: color 0.3s ease;
 }
 
 .editFormTypeLabel:first-child::after {
-  content: "/";
-  margin-left: 5px;
+  content: " / ";
+  margin: 0 6px;
   color: var(--font-color-white-60);
 }
 
@@ -135,7 +139,6 @@
   margin-top: 50px;
 }
 
-/* Save / Delete butonları artık global class ile entegre */
 .editFormSaveButton,
 .editFormDeleteButton {
   width: 280px;
@@ -144,7 +147,6 @@
   font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 18px;
-  line-height: 1em;
   letter-spacing: 0.1em;
   box-shadow: var(--button-shadow);
   cursor: pointer;
@@ -162,7 +164,6 @@
   transform: scale(1.05);
 }
 
-/* Cancel Button */
 .editFormCancelButton {
   width: 280px;
   height: 50px;
@@ -172,7 +173,6 @@
   font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 18px;
-  line-height: 1em;
   letter-spacing: 0.1em;
   box-shadow: var(--button-shadow);
   transition: transform 0.3s ease;
