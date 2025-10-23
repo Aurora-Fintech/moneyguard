@@ -62,7 +62,14 @@
 }
 /* TABLET */
 @media (min-width: 768px){
-  
+  .tableHeader {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 48px; 
+  background: rgba(255, 255, 255, 0.2);
+  align-items: center;
+  padding-left: 20px;
+}
 }
 
 /* DESKTOP*/
