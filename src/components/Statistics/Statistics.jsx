@@ -14,6 +14,7 @@ export default function Statistics() {
   const year = useSelector((state) => state.transactions.selectedYear);
   const { categoriesSummary, expenseTotal, incomeTotal, balanceAfter } =
     useSelector(selectStatisticsSummary);
+
   const handlePeriodChange = (newMonth, newYear) => {
     dispatch(setPeriod({ month: newMonth, year: newYear }));
   };
@@ -23,20 +24,31 @@ export default function Statistics() {
       <div className={styles.header}>
         <h1 className={styles.title}>Statistics</h1>
       </div>
-      <div className={styles.periodSelectorWrapper}>
-        <PeriodSelector
-          month={month}
-          year={year}
-          onChange={handlePeriodChange}
-        />
-      </div>
-      <div className={styles.contentLayout}>
-        <StatisticsChart data={categoriesSummary} centerAmount={balanceAfter} />
-        <StatisticsTable
-          data={categoriesSummary}
-          expenseTotal={expenseTotal}
-          incomeTotal={incomeTotal}
-        />
+
+      <div className={styles.statisticContentLayout}>
+        {/* Chart solda (desktop/tablet'te), üstte (mobilde) */}
+        <div className={styles.chartWrapper}>
+          <StatisticsChart
+            data={categoriesSummary}
+            centerAmount={balanceAfter}
+          />
+        </div>
+
+        {/* Sağ tarafta ya da mobilde alt alta */}
+        <div className={styles.rightPanel}>
+          <div className={styles.periodAndTable}>
+            <PeriodSelector
+              month={month}
+              year={year}
+              onChange={handlePeriodChange}
+            />
+            <StatisticsTable
+              data={categoriesSummary}
+              expenseTotal={expenseTotal}
+              incomeTotal={incomeTotal}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
