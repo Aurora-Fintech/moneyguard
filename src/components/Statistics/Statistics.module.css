@@ -1,90 +1,108 @@
-/* Mobile-first: tüm öğeler alt alta */
+/* ------------------ Mobil (default) ------------------ */
 .statisticsContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
-/* İçerik: mobilde dikey */
+.header {
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
 .statisticContentLayout {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  flex-direction: column; /* Mobilde dikey */
+  align-items: center;
 }
-.title {
-  font-family: var(--font-family-base);
-  font-weight: 400;
-  font-size: 30px;
-  line-height: 100%;
-  letter-spacing: 0%;
-}
-/* Chart alanı (mobilde full width) */
+
+/* Chart alanı */
 .chartWrapper {
   width: 100%;
+  min-height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Sağ panel: period + table (mobilde alt alta) */
+/* Veri yoksa placeholder */
+.noDataPlaceholder {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* Sağ panel (Period + Table) */
 .rightPanel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.periodAndTable {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.periodAndTable {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* --------------------------
-   TABLET: min-width 768px
-   Chart solda, selector+table sağda
-   -------------------------- */
+/* ------------------ Tablet ve Desktop ------------------ */
 @media (min-width: 768px) {
   .statisticContentLayout {
-    flex-direction: row;
+    flex-direction: row; /* yan yana */
+    justify-content: space-between;
     align-items: flex-start;
-    margin-top: 50px;
-    gap: 50px;
+    gap: 60px;
+height: 100vh;
   }
 
-  /* Oranlar: chart %45, sağ panel %55 (esnek) */
   .chartWrapper {
-    flex: 0 0 45%;
-    max-width: 45%;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    min-height: 300px;
   }
 
   .rightPanel {
-    flex: 1 1 55%;
-    max-width: 55%;
+    flex: 1;
+    min-width: 350px;
+    align-items: flex-start;
   }
+
+  .periodAndTable {
+    gap: 24px;
+  }
+  .noDataPlaceholder {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  text-align: center;
+}
 }
 
-/* --------------------------
-   DESKTOP: min-width 1280px
-   Daha geniş chart alanı, daha büyük boşluklar
-   -------------------------- */
-@media (min-width: 1280px) {
-  .statisticsContainer {
-    padding: 32px 48px;
-    height: 100vh;
-    width: 715px;
-  }
-
-  .statisticContentLayout {
-    gap: 60px;
-  }
-
-  .chartWrapper {
-    flex: 0 0 48%;
-    max-width: 48%;
-  }
-
-  .rightPanel {
-    flex: 1 1 52%;
-    max-width: 52%;
+@media (min-width:1280px){
+  .statisticsContainer{
+    padding: 16px;
   }
 }
