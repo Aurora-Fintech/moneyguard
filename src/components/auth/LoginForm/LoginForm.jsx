@@ -56,11 +56,12 @@ const LoginForm = () => {
   const onSubmit = async (values) => {
     try {
       await dispatch(logIn(values)).unwrap();
-      console.log("Successfully Logged in");
+
       reset();
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch {
+      // Hata yönetimi Redux state'i (authError) tarafından yapılıyor.
+      // Bu catch bloğu, .unwrap() fırlattığında uygulamanın çökmesini engeller.
     }
   };
 
