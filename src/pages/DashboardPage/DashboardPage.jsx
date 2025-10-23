@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar.jsx";
 import styles from "./DashboardPage.module.css";
-import Header from "../../components/HeaderTemp/Header.jsx";
+import Header from "../../components/Header/Header.jsx";
 
 const DashboardPage = () => {
   return (
