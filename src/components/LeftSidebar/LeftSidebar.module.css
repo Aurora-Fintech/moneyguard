@@ -95,7 +95,7 @@
   .sidebar {
     flex-direction: column;
     width: 480px;
-    gap: 32px;
+    gap: 120px;
     height: auto;
     background: transparent;
     position: relative;

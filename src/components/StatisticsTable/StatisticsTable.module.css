@@ -1,9 +1,9 @@
 .tableContainer {
-  width: 100%;
+ width: 380px;
 }
 
 .tableHeader {
-  width: 395px;
+  width: 380px;
   height: 56px;
   display: flex;
   justify-content: space-between;
@@ -99,4 +99,12 @@
   color: #fff;
   text-align: center;
   padding: 20px;
+}
+@media (max-width:768px) {
+  .tableContainer{
+    width: 300px;
+  }
+  .tableHeader{
+    width: 300px;
+  }
 }
