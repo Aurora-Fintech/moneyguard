@@ -1,19 +1,65 @@
-.container {
-  background-color: rgba(255, 255, 255, 0.05);
+/* OVERLAY + DIALOG */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  /* daha açık mor & blur */
+  background: radial-gradient(
+      60% 60% at 50% 30%,
+      rgba(128, 90, 200, 0.35) 0%,
+      rgba(25, 20, 40, 0.6) 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(35, 25, 60, 0.55) 0%,
+      rgba(20, 15, 30, 0.75) 100%
+    );
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 16px;
-  border-radius: 16px;
+}
+
+/* Modal kart daha açık mor tonla */
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  border-radius: 20px;
+  padding: 24px 20px;
   background: linear-gradient(
-    45deg,
-    rgba(27, 0, 55, 1) 0%,
-    rgba(15, 15, 18, 1) 100%
+    145deg,
+    rgba(65, 40, 120, 1) 0%,
+    rgba(40, 25, 75, 1) 100%
   );
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  font-size: 24px;
+  line-height: 28px;
+  color: var(--font-color-white);
+  background: transparent;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.closeBtn:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .title {
+  margin-bottom: 25px;
   font-size: 24px;
   font-weight: 600;
   text-align: center;
-  color: var(--font-color-white);
+  color: #ffffff;
 }
 
 .switchWrapper {
@@ -21,6 +67,7 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
+  margin: 8px 0 20px;
 }
 
 .switchText {
@@ -39,7 +86,6 @@
   justify-content: center;
   cursor: pointer;
 }
-
 .switchButton {
   width: 36px;
   height: 36px;
@@ -47,25 +93,24 @@
   border: none;
   font-size: 20px;
   font-weight: 600;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   position: absolute;
   top: 0;
+  box-shadow: 0 6px 15px var(--yellow--plus-shadow);
 }
-
 .income {
   background-color: var(--yellow);
   color: var(--font-color-white);
   left: 0;
 }
-
 .expense {
   background-color: var(--red);
   color: var(--font-color-white);
   right: 0;
+  box-shadow: 0 6px 15px var(--red-minus-shadow);
 }
 
 .form {
@@ -75,35 +120,42 @@
 }
 
 .row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
 .inputGroup {
-  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .input,
-.select,
 .textarea {
   width: 100%;
   padding: 12px 0 8px 0;
   border: none;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
   background: transparent;
-  color: var(--font-color-white);
+  color: #ffffff;
   font-size: 16px;
   outline: none;
   font-family: var(--font-family-base);
   resize: none;
 }
-
 .input:focus,
-.select:focus,
 .textarea:focus {
-  border-color: var(--yellow);
+  border-bottom-color: var(--yellow);
+}
+.inputError {
+  border-bottom-color: var(--red) !important;
+}
+
+.errorText {
+  margin-top: 6px;
+  color: var(--red);
+  font-size: 12px;
+  font-family: var(--font-family-base);
 }
 
 .buttonGroup {
@@ -111,15 +163,178 @@
   flex-direction: column;
   gap: 12px;
   align-items: center;
+  margin-top: 8px;
 }
 
-/* --- BUTONLAR GLOBAL CSS İLE UYUMLU --- */
 .submitBtn {
-  composes: form-button from global;
-  width: 280px; /* global width ile uyumlu */
+  width: 280px;
+}
+.cancelBtn {
+  width: 280px;
 }
 
-.cancelBtn {
-  composes: form-button-register from global;
-  width: 280px; /* global width ile uyumlu */
+.react-datepicker__input-container input {
+  color: #fff !important;
+  font-weight: 500;
+}
+
+/* react-select renkleriyle uyumlu hale getirildi */
+.rs__control {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.rs__menu {
+  background: linear-gradient(
+    0deg,
+    rgba(110, 76, 190, 0.9) 0%,
+    rgba(95, 55, 160, 0.9) 50%,
+    rgba(120, 90, 200, 0.7) 100%
+  ) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Hover edilen kategori rengi #FF868D */
+.rs__option--is-focused {
+  background-color: rgba(255, 134, 141, 0.25) !important;
+  color: #ff868d !important;
+}
+
+/* Seçili kategori rengi */
+.rs__option--is-selected {
+  background: linear-gradient(
+    96.76deg,
+    #ffc727 -16.42%,
+    #9e40ba 97.04%,
+    #7000ff 150.71%
+  ) !important;
+  color: #fff !important;
+}
+
+/* Menü yazıları */
+.rs__single-value,
+.rs__placeholder {
+  color: #ffffff !important;
+}
+
+/* Calendar popup */
+.calendar {
+  background: linear-gradient(
+    180deg,
+    rgba(70, 45, 120, 0.95),
+    rgba(50, 30, 90, 0.95)
+  ) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* --------- RESPONSIVE ---------- */
+
+/* Mobile: sheet gibi tam ekran */
+@media (max-width: 767.98px) {
+  .overlay {
+    background: radial-gradient(
+        70% 70% at 50% 20%,
+        rgba(110, 76, 190, 0.4) 0%,
+        rgba(12, 9, 20, 0.75) 60%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(20, 15, 40, 0.8) 0%,
+        rgba(15, 10, 25, 0.9) 100%
+      );
+    backdrop-filter: blur(4px);
+  }
+
+  .modal {
+    max-width: 360px;
+    border-radius: 16px;
+    padding: 20px 16px;
+    background: linear-gradient(
+      145deg,
+      rgba(75, 45, 140, 1) 0%,
+      rgba(50, 30, 95, 1) 100%
+    );
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+  .submitBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1279.98px) {
+  .modal {
+    max-width: 520px;
+    padding: 28px 24px;
+  }
+  .submitBtn,
+  .cancelBtn {
+    width: 300px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1280px) {
+  .modal {
+    max-width: 640px;
+    padding: 32px 28px;
+  }
+  .submitBtn,
+  .cancelBtn {
+    width: 300px;
+  }
+}
+
+/* ---------- react-select HOVER GARANTİ Fallback ---------- */
+:global(.rs__option--is-focused) {
+  color: #ff868d !important;
+  background: rgba(255, 134, 141, 0.18) !important;
+}
+
+/* ---------- DatePicker gün görselleri ---------- */
+/* Genel gün yazısı daha aydınlık */
+:global(.react-datepicker__day) {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Ay dışı günler hafif kısık */
+:global(.react-datepicker__day--outside-month) {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* Gelecek günler (disabled) karartılmış ve tıklanamaz */
+:global(.react-datepicker__day--disabled) {
+  color: rgba(255, 255, 255, 0.28) !important;
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(30%);
+}
+
+/* Bugün (highlight) görünürlüğü */
+:global(.react-datepicker__day--today) {
+  border: 1px solid rgba(255, 199, 39, 0.65);
+  border-radius: 8px;
+}
+
+/* Seçili gün (okunaklı) */
+:global(.react-datepicker__day--selected),
+:global(.react-datepicker__day--keyboard-selected) {
+  background: linear-gradient(
+    96.76deg,
+    #ffc727 -16.42%,
+    #9e40ba 97.04%,
+    #7000ff 150.71%
+  ) !important;
+  color: #fff !important;
+  border-radius: 8px;
 }
