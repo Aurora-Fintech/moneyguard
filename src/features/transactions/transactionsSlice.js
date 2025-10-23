@@ -210,9 +210,6 @@ const transactionsSlice = createSlice({
           : [];
         saveToLocalStorage(state.transactionsList);
         state.balance = calculateBalance(state.transactionsList);
-        console.log("--- getTransactions.fulfilled ---");
-        console.log("Tüm İşlemler:", state.transactionsList);
-        console.log("Yeni Bakiye:", state.balance);
       })
       .addCase(getTransactions.rejected, (state, action) => {
         state.isLoading = false;
@@ -223,9 +220,6 @@ const transactionsSlice = createSlice({
         saveToLocalStorage(state.transactionsList);
         state.isModalOpen = false;
         state.balance = calculateBalance(state.transactionsList);
-        console.log("--- addNewTransaction.fulfilled ---");
-        console.log("Eklenen İşlem:", action.payload);
-        console.log("Yeni Bakiye:", state.balance);
       })
       .addCase(deleteTransactionThunk.fulfilled, (state, action) => {
         state.transactionsList = state.transactionsList.filter(
@@ -233,25 +227,46 @@ const transactionsSlice = createSlice({
         );
         saveToLocalStorage(state.transactionsList);
         state.balance = calculateBalance(state.transactionsList);
-        console.log("--- deleteTransactionThunk.fulfilled ---");
-        console.log("Silinen İşlem ID'si:", action.payload);
-        console.log("Yeni Bakiye:", state.balance);
-      }) // ✅ YENİ EXTRA REDUCER: İşlem Güncelleme Başarılı Oldu
+      })
+      // ✅ Transaction update (merge local + server data)
       .addCase(updateTransactionThunk.fulfilled, (state, action) => {
-        const updatedTransaction = action.payload; // İşlem listesinde ilgili ID'yi bul ve güncellenmiş işlemle değiştir
-
-        state.transactionsList = state.transactionsList.map((tx) =>
-          tx.id === updatedTransaction.id ? updatedTransaction : tx
+        const updatedFromServer = action.payload || {};
+        const arg = action.meta?.arg || {};
+        const idx = state.transactionsList.findIndex(
+          (tx) => tx.id === (updatedFromServer.id ?? arg.id)
         );
 
-        saveToLocalStorage(state.transactionsList);
-        state.isEditModalOpen = false; // Modalı kapat
-        state.editingTransaction = null; // Düzenleme işlemini sıfırla
-        state.balance = calculateBalance(state.transactionsList); // Bakiyeyi güncelle
+        if (idx !== -1) {
+          state.transactionsList[idx] = {
+            ...state.transactionsList[idx],
+            ...updatedFromServer,
+            amount:
+              arg.amount ??
+              updatedFromServer.amount ??
+              state.transactionsList[idx].amount,
+            transactionDate:
+              arg.transactionDate ??
+              updatedFromServer.transactionDate ??
+              state.transactionsList[idx].transactionDate,
+            type:
+              arg.type ??
+              updatedFromServer.type ??
+              state.transactionsList[idx].type,
+            comment:
+              arg.comment ??
+              updatedFromServer.comment ??
+              state.transactionsList[idx].comment,
+            categoryId:
+              (arg.type === "EXPENSE" ? arg.categoryId : null) ??
+              updatedFromServer.categoryId ??
+              state.transactionsList[idx].categoryId,
+          };
+        }
 
-        console.log("--- updateTransactionThunk.fulfilled ---");
-        console.log("Güncellenen İşlem:", updatedTransaction);
-        console.log("Yeni Bakiye:", state.balance);
+        saveToLocalStorage(state.transactionsList);
+        state.isEditModalOpen = false;
+        state.editingTransaction = null;
+        state.balance = calculateBalance(state.transactionsList);
       });
   },
 });
