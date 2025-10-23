@@ -3,9 +3,8 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 
-  padding: 20px;
   backdrop-filter: blur(100px);
   box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 0.1);
@@ -38,35 +37,9 @@
   flex-direction: column;
 }
 
-.inputContainer {
+.loginInputContainer {
   position: relative;
   width: 100%;
-}
-
-.loginFormInput {
-  width: 280px;
-  height: 35px;
-  border: none;
-  background-color: transparent;
-  border-bottom: 1px solid var(--font-color-white-40);
-  outline: none;
-  padding-left: 54.5px;
-
-  font-family: var(--font-family-base);
-  font-size: 18px;
-  color: var(--font-color-white-40);
-}
-
-.loginInputIcon {
-  margin-left: 13px;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-
-  width: 24px;
-  height: 24px;
-  pointer-events: none;
 }
 
 .loginButtonWrapper {
@@ -115,9 +88,10 @@
   bottom: 0;
 
   right: 12px;
-
+  transform: translateX(-50%);
+  cursor: pointer;
   display: flex;
-  align-items: center;
+
   color: var(--font-color-white-40);
   background-color: transparent;
 }
@@ -125,20 +99,73 @@
 @media (min-width: 768px) {
   .authCard {
     width: 533px;
-    min-height: 570px;
+    height: 570px;
   }
 
   .loginBackground {
-    background-image: url("../../../assets/images/tablet-login-background1x.webp");
     min-height: 100vh;
+
+    background-image: url("../../../assets/images/login-tablet-left-background1x.webp"),
+      url("../../../assets/images/login-tablet-right-background1x.webp");
+
+    background-position: left -10px top -160px, right 5px bottom -20px;
+    background-repeat: no-repeat, no-repeat;
+    background-size: auto 60%, auto 60%;
+    background-color: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   @media (min-resolution: 2dppx) {
     .loginBackground {
-      background-image: url("../../../assets/images/tablet-login-background2x.webp");
+      background-image: url("../../../assets/images/login-tablet-left-background2x.webp"),
+        url("../../../assets/images/login-tablet-right-background2x.webp");
     }
+  }
+
+  .backgroundBlurCommon {
+    position: fixed;
+    border-radius: 50%;
+  }
+
+  .loginFormBlurLgRgBt {
+    bottom: -225px;
+    right: -160px;
+
+    width: 595px;
+    height: 595px;
+    background: linear-gradient(220deg, #6d54eb 3.47%, #652392 90.06%);
+    filter: blur(300px);
+  }
+
+  .loginFormBlurSmRg {
+    bottom: 176px;
+    right: -50px;
+
+    width: 284px;
+    height: 284px;
+    background: #302e8e;
+    filter: blur(200px);
+  }
+
+  .loginFormBlurSmBt {
+    bottom: -100px;
+    right: 250px;
+
+    width: 220px;
+    height: 220px;
+    background: #6d1c77;
+    filter: blur(200px);
+  }
+
+  .loginFormBlurLgLtTp {
+    top: -245px;
+    left: -360px;
+
+    width: 713px;
+    height: 713px;
+    background: linear-gradient(220deg, #6d54eb 3.47%, #652392 90.06%);
+    filter: blur(300px);
   }
 
   .loginLogoIcon {
@@ -149,10 +176,6 @@
     font-size: 26px;
   }
 
-  .loginFormInput {
-    width: 409px;
-  }
-
   .loginButtonWrapper {
     margin: 0 auto;
   }
@@ -160,11 +183,67 @@
 
 @media (min-width: 1280px) {
   .loginBackground {
-    background-image: url("../../../assets/images/desktop-login-background1x.webp");
+    min-height: 100vh;
+
+    background-image: url("../../../assets/images/login-desktop-left-background1x.webp"),
+      url("../../../assets/images/login-desktop-right-background1x.webp");
+
+    background-position: left -15px top 3px, right -25px bottom 100px;
+    background-repeat: no-repeat, no-repeat;
+    background-size: auto 87%, auto 85%;
+    background-color: #000000;
   }
   @media (min-resolution: 2dppx) {
     .loginBackground {
-      background-image: url("../../../assets/images/desktop-login-background2x.webp");
+      background-image: url("../../../assets/images/login-desktop-left-background2x.webp"),
+        url("../../../assets/images/login-desktop-right-background2x.webp");
+    }
+  }
+
+  .loginFormBlurLgRgBt {
+    bottom: -100px;
+    right: -80px;
+  }
+
+  .loginFormBlurSmRg {
+    bottom: 300px;
+    right: 0px;
+  }
+
+  .loginFormBlurSmBt {
+    bottom: -5px;
+    right: 300px;
+  }
+
+  .loginFormBlurLgLtTp {
+    top: -190px;
+    left: -210px;
+  }
+
+  .loginFormBlurSmLtTp {
+    top: -70px;
+    left: -120px;
+
+    width: 284px;
+    height: 284px;
+    background: linear-gradient(46deg, #8e2e79 0%, #ab33ad 100%);
+    filter: blur(100px);
+  }
+}
+
+@media (min-width: 1440px) {
+  .loginBackground {
+    background-image: url("../../../assets/images/login-desktop-left-background1x.webp"),
+      url("../../../assets/images/login-desktop-right-background1x.webp");
+
+    background-position: left -15px top 3px, right -25px bottom 100px;
+
+    background-size: auto 87%, auto 100%;
+  }
+  @media (min-resolution: 2dppx) {
+    .loginBackground {
+      background-image: url("../../../assets/images/login-desktop-left-background2x.webp"),
+        url("../../../assets/images/login-desktop-right-background2x.webp");
     }
   }
 }

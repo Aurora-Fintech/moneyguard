@@ -15,6 +15,8 @@ import emailIcon from "../../../assets/icons/emailIcon.svg";
 import passwordIcon from "../../../assets/icons/passwordIcon.svg";
 import logoIcon from "../../../assets/icons/moneyGuardLogo.svg";
 import { Eye, EyeOff } from "lucide-react";
+import FormInput from "../FormInput/FormInput";
+import clsx from "clsx";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -65,8 +67,30 @@ const LoginForm = () => {
   // Şifre gösterme/gizleme
   const [showPassword, setShowPassword] = useState(false);
 
+  // Blurlar için
+  //  Lg => Large
+  // Sm => Small
+  // Rg => Right
+  // Lt => Left
+  // Tp => Top
+  // Bt => Bottom
   return (
     <div className={css.loginBackground}>
+      <div
+        className={clsx(css.loginFormBlurLgRgBt, css.backgroundBlurCommon)}
+      ></div>
+      <div
+        className={clsx(css.loginFormBlurSmRg, css.backgroundBlurCommon)}
+      ></div>
+      <div
+        className={clsx(css.loginFormBlurSmBt, css.backgroundBlurCommon)}
+      ></div>
+      <div
+        className={clsx(css.loginFormBlurLgLtTp, css.backgroundBlurCommon)}
+      ></div>
+      <div
+        className={clsx(css.loginFormBlurSmLtTp, css.backgroundBlurCommon)}
+      ></div>
       <div className={css.loginFormBlurCenter}></div>
 
       <div className={css.authCard}>
@@ -78,57 +102,34 @@ const LoginForm = () => {
         <h2 className={css.loginFormTitle}>Money Guard</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className={css.loginForm}>
-          <div className={css.loginInputWrapper}>
-            <div className={css.inputContainer}>
-              <label htmlFor={emailFieldId} className={css.visuallyHidden}>
-                E-mail
-              </label>
+          <FormInput
+            id={emailFieldId}
+            label="E-mail"
+            icon={emailIcon}
+            type="email"
+            placeholder="E-mail"
+            register={register("email")}
+            error={errors.email?.message}
+          />
 
-              <img
-                src={emailIcon}
-                alt="Email icon"
-                className={css.loginInputIcon}
-              />
-
-              <input
-                type="email"
-                id={emailFieldId}
-                placeholder="E-mail"
-                {...register("email")}
-                className={css.loginFormInput}
-              />
-            </div>
-            <p className={css.authErrorMessage}>{errors.email?.message}</p>
-          </div>
-
-          <div className={css.loginInputWrapper}>
-            <div className={css.inputContainer}>
-              <label htmlFor={passwordFieldId} className={css.visuallyHidden}>
-                Password
-              </label>
-
-              <img
-                src={passwordIcon}
-                alt="Password icon"
-                className={css.loginInputIcon}
-              />
-
-              <input
-                type={showPassword ? "text" : "password"}
-                id={passwordFieldId}
-                placeholder="Password"
-                {...register("password")}
-                className={css.loginFormInput}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className={css.showPasswordButton}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-            <p className={css.authErrorMessage}>{errors.password?.message}</p>
+          <div className={css.loginInputContainer}>
+            <FormInput
+              id={passwordFieldId}
+              label="Password"
+              icon={passwordIcon}
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              register={register("password")}
+              error={errors.password?.message}
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className={css.showPasswordButton}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
           {authError && <p className={css.authErrorMessage}>{authError}</p>}
