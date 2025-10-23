@@ -19,6 +19,11 @@ export default function Statistics() {
     dispatch(setPeriod({ month: newMonth, year: newYear }));
   };
 
+  const hasChartData =
+    categoriesSummary &&
+    Array.isArray(categoriesSummary) &&
+    categoriesSummary.length > 0;
+
   return (
     <div className={styles.statisticsContainer}>
       <div className={styles.header}>
@@ -26,15 +31,21 @@ export default function Statistics() {
       </div>
 
       <div className={styles.statisticContentLayout}>
-        {/* Chart solda (desktop/tablet'te), üstte (mobilde) */}
+        {/* Sol kısım: Chart alanı */}
         <div className={styles.chartWrapper}>
-          <StatisticsChart
-            data={categoriesSummary}
-            centerAmount={balanceAfter}
-          />
+          {hasChartData ? (
+            <StatisticsChart
+              data={categoriesSummary}
+              centerAmount={balanceAfter}
+            />
+          ) : (
+            <div className={styles.noDataPlaceholder}>
+              <p>No data available for this period</p>
+            </div>
+          )}
         </div>
 
-        {/* Sağ tarafta ya da mobilde alt alta */}
+        {/* Sağ panel: Period + Table */}
         <div className={styles.rightPanel}>
           <div className={styles.periodAndTable}>
             <PeriodSelector

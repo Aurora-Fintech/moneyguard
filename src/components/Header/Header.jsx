@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LogoutModal from '../LogoutModal/LogoutModal';
 import { selectUser } from '../../features/auth/authSelectors';
-import styles from './header.module.css';
+import styles from './Header.module.css';
 import logo from '../../assets/icons/logo.svg';
 import exitIcon from '../../assets/icons/exit.svg';
 import '../../styles/global.css';
