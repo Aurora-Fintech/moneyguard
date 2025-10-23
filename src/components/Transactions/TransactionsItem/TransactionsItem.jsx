@@ -53,22 +53,21 @@ const TransactionsItem = ({ transaction }) => {
   // Silme işlemi
   const handleDelete = () => {
     iziToast.show({
-      title: "Onay Gerekiyor",
-      message:
-        "Bu işlemi **kalıcı olarak** silmek istediğinizden emin misiniz?",
+      title: "Confirmation Required",
+      message: "Are you sure you want to **permanently delete** this item?",
       position: "center",
       timeout: false,
       close: true,
       overlay: true,
       id: "delete-confirm",
       zindex: 99999,
-      // ÖZEL STİL İÇİN EKLEDİK:
+      // CUSTOM STYLE:
       class: "dark-confirm-toast",
 
       buttons: [
         [
-          // EVET, SİL butonu
-          "<button class='delete-confirm-btn delete-btn'><b>Evet, Sil</b></button>",
+          // YES, DELETE button
+          "<button class='delete-confirm-btn delete-btn'><b>Yes, Delete</b></button>",
           async (instance, toast) => {
             instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
 
@@ -82,8 +81,8 @@ const TransactionsItem = ({ transaction }) => {
           true,
         ],
         [
-          // İPTAL butonu
-          "<button class='delete-confirm-btn cancel-btn'>İptal</button>",
+          // CANCEL button
+          "<button class='delete-confirm-btn cancel-btn'>Cancel</button>",
           (instance, toast) => {
             instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
           },

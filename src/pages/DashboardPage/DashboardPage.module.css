@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: auto; 
+  height: auto;
   align-items: center;
   box-sizing: border-box;
   gap: 16px;
@@ -22,7 +22,7 @@
 .rightSidebar {
   width: 320px;
   position: relative;
-  height: auto; 
+  height: auto;
   min-height: 100px;
 }
 
@@ -41,12 +41,12 @@
     max-width: 768px;
     margin: 0 auto;
     gap: 16px;
-    height: auto; 
+    height: auto;
   }
 
   .leftSidebar {
     width: 768px;
-    height: auto; 
+    height: auto;
   }
 }
 
@@ -69,7 +69,7 @@
 
   .leftSidebar {
     width: 480px;
-    height: auto; 
+    height: auto;
   }
 
   .rightSidebar {
@@ -90,10 +90,14 @@
 
 .mainArea {
   grid-column: 2;
-  padding: 0; 
-  margin: 0; 
-  height: auto; 
+  padding: 0;
+  margin: 0;
+  height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; 
+  justify-content: flex-start;
+}
+
+:global(._dashboardLayout_1e6xk_2) {
+  padding: 0 !important;
 }
