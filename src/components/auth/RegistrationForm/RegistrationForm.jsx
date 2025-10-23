@@ -105,15 +105,11 @@ const RegistrationForm = () => {
     try {
       await dispatch(registerUser(userData)).unwrap();
       reset();
-    } catch (error) {
-      const errorMessage =
-        error.message || "An error occurred. Please try again.";
-
-      if (errorMessage.includes("E-mail in use")) {
-        console.error("This email is already registered.");
-      } else {
-        console.error(`${error.message}`);
-      }
+    } catch {
+      // Hata yönetimi Redux thunk (registerUser operasyonu)
+      // ve Redux state (authError) tarafından yapılıyor.
+      // Bu catch bloğu, .unwrap() tarafından fırlatılan hatayı
+      // yakalayarak uygulamanın çökmesini engellemek için gereklidir.
     }
   };
 
