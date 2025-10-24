@@ -5,7 +5,6 @@ export const logIn = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
     try {
-      console.log("login request");
       const response = await userTransactionApi.post(
         "/api/auth/sign-in",
         credentials

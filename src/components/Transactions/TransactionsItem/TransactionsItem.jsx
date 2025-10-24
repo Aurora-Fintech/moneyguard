@@ -5,7 +5,6 @@ import {
   openEditModal,
 } from "../../../features/transactions/transactionsSlice";
 import styles from "./TransactionsItem.module.css";
-// iziToast import
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 import editIcon from "../../../assets/icons/editIcon.svg";
@@ -50,7 +49,6 @@ const TransactionsItem = ({ transaction }) => {
     });
   };
 
-  // Silme işlemi
   const handleDelete = () => {
     iziToast.show({
       title: "Confirmation Required",
@@ -61,16 +59,12 @@ const TransactionsItem = ({ transaction }) => {
       overlay: true,
       id: "delete-confirm",
       zindex: 99999,
-      // CUSTOM STYLE:
       class: "dark-confirm-toast",
-
       buttons: [
         [
-          // YES, DELETE button
           "<button class='delete-confirm-btn delete-btn'><b>Yes, Delete</b></button>",
           async (instance, toast) => {
             instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
-
             try {
               await dispatch(deleteTransactionThunk(transaction.id)).unwrap();
               showSuccessToast();
@@ -81,7 +75,6 @@ const TransactionsItem = ({ transaction }) => {
           true,
         ],
         [
-          // CANCEL button
           "<button class='delete-confirm-btn cancel-btn'>Cancel</button>",
           (instance, toast) => {
             instance.hide({ transitionOut: "fadeOutUp" }, toast, "button");
@@ -101,31 +94,56 @@ const TransactionsItem = ({ transaction }) => {
 
   const typeLower = transaction.type?.toLowerCase();
   const amount = transaction.amount ?? transaction.sum;
-  const category = expenseCategories.filter(
+  const category = expenseCategories.find(
     (cat) => cat.id === transaction.categoryId
-  )?.[0];
+  );
 
   return (
-    <tr className={styles.tr}>
-      <td className={styles.td}>{formattedDate}</td>
+    <tr
+      className={`${styles.tr} ${
+        typeLower === "income" ? styles.income : styles.expense
+      }`}
+    >
+      <td className={`${styles.td} ${styles.date}`}>
+        <span className={styles.mobileLabel}>Date:</span>
+        {formattedDate}
+      </td>
+
       <td
         className={`${styles.td} ${styles.type} ${
           typeLower === "income" ? styles.typeIncome : styles.typeExpense
         }`}
       >
+        <span className={styles.mobileLabel}>Type:</span>
         {typeLower === "income" ? "+" : "-"}
       </td>
+
       <td className={styles.td}>
+        <span className={styles.mobileLabel}>Category:</span>
         {typeLower === "expense" ? category?.name : null}
         {typeLower === "income" && (
           <div className={styles.incomeLabel}>Income</div>
         )}
       </td>
-      <td className={styles.td}>{transaction.comment || "-"}</td>
-      <td className={`${styles.td} ${styles.sum}`}>{Math.abs(amount)} ₺</td>
+
+      <td className={`${styles.td} ${styles.comment}`}>
+        <span className={styles.mobileLabel}>Comment:</span>
+        {transaction.comment || "-"}
+      </td>
+
+      <td
+        className={`${styles.td} ${styles.sum} ${
+          typeLower === "income" ? styles.sumIncome : styles.sumExpense
+        }`}
+      >
+        <span className={styles.mobileLabel}>Sum:</span>
+        {Math.abs(amount)}
+      </td>
+
       <td className={`${styles.td} ${styles.actions}`}>
         <button className={styles.iconButton} onClick={handleEdit}>
           <img src={editIcon} alt="Edit" />
+          <span className={styles.editLabel}>Edit</span>
         </button>
 
         <button

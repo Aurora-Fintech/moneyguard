@@ -63,6 +63,53 @@
   color: #ffffff;
 }
 
+/* ---------------------------------
+   YENİ EK BAŞLIK (INCOME/EXPENSE) - ALT ÇİZGİLER KALDIRILDI
+   --------------------------------- */
+.typeTitleGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px; /* Form grupları ile üst kısım arasına boşluk */
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.typeTitleGroup p {
+  /* padding-bottom ve border-bottom tamamen kaldırıldı */
+  padding-bottom: 0;
+  margin: 0;
+  transition: color 0.25s ease; /* Sadece renk geçişi korundu */
+  cursor: default; /* Edit form olduğu için tıklanamaz */
+}
+
+.typeSeparator {
+  color: var(--font-color-white); /* Ayırıcı rengi */
+  font-size: 18px;
+}
+
+/* Passive/Inactive Style */
+.typeInactive {
+  color: var(--font-color-white);
+  /* border-bottom kaldırıldı */
+  border-bottom: none;
+}
+
+/* Income Active Style */
+.incomeActive {
+  color: var(--yellow); /* Income yazı rengi */
+  /* Alt çizgi (border-bottom) kaldırıldı */
+  border-bottom: none;
+}
+
+/* Expense Active Style */
+.expenseActive {
+  color: var(--red); /* Expense yazı rengi */
+  /* Alt çizgi (border-bottom) kaldırıldı */
+  border-bottom: none;
+}
+
 /* =========================
    FORM GENEL
    ========================= */
@@ -117,7 +164,22 @@
 .react-datepicker__input-container input {
   color: #fff !important;
   font-weight: 500;
+  /* İkonun üstünü kapatmamak için input padding'i ayarlandı */
+  padding-right: 28px !important;
 }
+
+/* Takvim İkonu CSS'i: Sizin SVG'nizi konumlandırmak için */
+.calendarIcon {
+  position: absolute;
+  right: 30px;
+  top: 40%;
+  /* DatePicker input'unun padding-top/bottom'ını dengelemek için */
+  transform: translateY(calc(-50% + 2px));
+  pointer-events: none; /* İkonun tıklamayı engellemesini önler */
+  z-index: 2; /* Input'un üzerinde kalmasını sağlar */
+  opacity: 0.8;
+}
+/* --------------------------------- */
 
 /* =========================
    BUTON GRUBU (Global ile uyum)
@@ -128,6 +190,12 @@
   align-items: center;
   gap: 12px;
   margin-top: 8px;
+}
+.commentCounter {
+  text-align: right;
+  font-size: 12px;
+  color: var(--font-color-white-60);
+  margin-top: 4px;
 }
 
 /* JSX’te global class’ları eklediğimiz için sadece genişlik veriyoruz */

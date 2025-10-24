@@ -1,16 +1,69 @@
+/* ======================================================
+  TABLE CONTAINER GENİŞLİK AYARLARI
+  (Logo ve Exit ile hizalamak için güncellendi)
+  ====================================================== */
+.table-container {
+  margin: 0 auto; /* Ortala */
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* Masaüstü (769px ve üzeri) */
+@media (min-width: 769px) {
+  .table-container {
+    /* Üst kapsayıcının genişliğini takip edecek */
+  }
+}
+
+/* Tablet (705px–768px arası) */
+@media (min-width: 705px) and (max-width: 768px) {
+  .table-container {
+    /* Üst kapsayıcının genişliğini takip edecek */
+  }
+}
+
+/* Tablet ve Masaüstü: .actions hücresi ortalansın */
+@media (min-width: 705px) {
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    padding-right: 24px;
+    gap: 10px;
+  }
+}
+
+/* ======================================================
+  TABLO GENEL STİLLERİ
+  ====================================================== */
 .tr {
   border-bottom: 1px solid var(--font-grey-light);
+  vertical-align: middle;
 }
 
 .td {
-  padding: 10px 8px;
+  padding: 10px 24px;
   font-size: 14px;
-  vertical-align: top;
+  text-align: center;
+  vertical-align: middle;
+  word-break: break-word;
 }
 
+/* COMMENT ve CATEGORY sütunları */
+.comment,
+.category {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 150px;
+}
+
+/* ÖZEL SÜTUN HİZALAMALARI */
 .type {
   font-weight: 600;
   font-size: 16px;
+  text-align: center;
 }
 
 .typeIncome {
@@ -24,6 +77,15 @@
 .sum {
   font-weight: 600;
   font-size: 14px;
+  text-align: center;
+}
+
+.sumIncome {
+  color: var(--yellow);
+}
+
+.sumExpense {
+  color: var(--red);
 }
 
 .incomeLabel {
@@ -33,11 +95,17 @@
   margin-top: 4px;
 }
 
+/* ACTIONS HÜCRESİ */
 .actions {
   display: flex;
   align-items: center;
-  justify-content: center; /* veya 'flex-start' istersen sola hizalar */
-  gap: 10px; /* 🔹 butonlar arası boşluk */
+  justify-content: flex-end;
+  width: 100%;
+  padding-right: 24px;
+  padding-left: 0;
+  gap: 10px;
+  vertical-align: middle;
+  height: 100%;
 }
 
 .iconButton,
@@ -48,44 +116,13 @@
   cursor: pointer;
 }
 
-/* Ortak buton stilleri */
-.button {
-  composes: form-button from global;
-  padding: 4px 10px;
-  font-size: 14px;
-  font-weight: 500;
-
-  margin-right: 8px;
-  /* width: auto; */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-/* //Düzenleme butonu */
-.iconButton {
-  background: none; /* arkaplan yok */
-  border: none; /* border yok */
-  cursor: pointer;
-  padding: 4px; /* ikon etrafı boşluk */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 500;
-  margin-right: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+.editLabel {
+  display: none;
 }
 
-/* Düzenleme butonu (ikonlu) */
 .iconButton {
   background: none;
   border: none;
-  cursor: pointer;
   padding: 4px;
   display: inline-flex;
   align-items: center;
@@ -103,19 +140,137 @@
   height: 14px;
 }
 
-/* Sil butonu (gradient ve hover efektli) */
 .deleteButton {
   background: var(--button-gradient);
   border-radius: 20px;
   width: 69px;
   height: 29px;
   color: var(--font-color-white);
+  font-size: 14px;
+  letter-spacing: 0px;
 }
 
 /* ======================================================
-   İZITOAST CONFIRM DİALOG OVERRIDE STYLES 
-   ====================================================== */
+  MOBİL STİLLER (FULL-WIDTH KART)
+  ====================================================== */
+.td.date {
+  white-space: nowrap;
+}
 
+.mobileLabel {
+  display: none;
+  font-weight: 500;
+  color: #999;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .mobileLabel {
+    display: inline-block;
+  }
+
+  .td.date {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tr {
+    display: block;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 100%; /* Mobilde full width */
+    margin-left: 0;
+    margin-right: 0;
+    transition: border-left 0.3s ease;
+  }
+
+  .income {
+    border-left: 3px solid var(--yellow);
+  }
+
+  .expense {
+    border-left: 3px solid var(--red);
+  }
+
+  .td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 12px 0;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    vertical-align: unset;
+    text-align: left;
+  }
+
+  .comment {
+    white-space: normal;
+    overflow: visible;
+    min-width: unset;
+    max-width: unset;
+    word-break: break-word;
+  }
+
+  .actions {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+  }
+
+  .type,
+  .sum {
+    text-align: left;
+  }
+
+  .editLabel {
+    display: block;
+    margin-left: 8px;
+    color: #ccc;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .iconButton {
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: #ccc;
+    padding: 6px 0;
+    height: 35px;
+    width: auto;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    transition: none;
+  }
+
+  .iconButton img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(1.5);
+  }
+
+  .deleteButton {
+    width: 90px;
+    height: 35px;
+    font-size: 16px;
+    padding: 0;
+  }
+}
+
+/* ======================================================
+  İZITOAST OVERRIDE
+  ====================================================== */
 :global(.iziToast.dark-confirm-toast) {
   background-color: #1a0833 !important;
   background-image: linear-gradient(
@@ -157,7 +312,7 @@
   width: 100%;
 }
 
-/* Onay Butonlarının Temel Stili */
+/* Onay Butonları */
 :global(.delete-confirm-btn) {
   width: 100% !important;
   padding: 14px 20px !important;
@@ -174,7 +329,6 @@
   font-family: var(--font-family-base) !important;
 }
 
-/* EVET, SİL butonu */
 :global(.delete-btn) {
   background: var(--button-gradient) !important;
   color: var(--font-color-white) !important;
@@ -186,7 +340,6 @@
   box-shadow: 0 8px 20px rgba(255, 199, 39, 0.5);
 }
 
-/* İPTAL butonu */
 :global(.cancel-btn) {
   background-color: var(--font-color-white) !important;
   color: var(--font-color-purple) !important;
@@ -198,7 +351,6 @@
   transform: scale(1.05);
 }
 
-/* X Kapatma ikonu */
 :global(.iziToast.dark-confirm-toast .iziToast-close) {
   color: white !important;
   opacity: 0.8 !important;

@@ -11,8 +11,8 @@ const TransactionsList = () => {
     (state) => state.transactions
   );
 
-  if (error) return <div>An error occurred: {error}</div>;
-  if (isLoading) return <div>Loading transactions...</div>;
+  if (error) return <div>Hata oluştu: {error}</div>;
+  if (isLoading) return <div>İşlemler yükleniyor...</div>;
   if (!transactionsList || transactionsList.length === 0) {
     return <EmptyTransactions />;
   }

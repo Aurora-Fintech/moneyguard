@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -22,12 +28,12 @@ const validationSchema = Yup.object().shape({
     .positive("The amount must be positive.")
     .required("Amount is required."),
   date: Yup.date().required("Date is required."),
-  // Category is required only for expenses
   category: Yup.mixed().when("$isIncome", {
     is: false,
     then: (s) => s.required("Expense category is required."),
     otherwise: (s) => s.notRequired(),
   }),
+  comment: Yup.string().max(30, "Comment cannot exceed 30 characters."),
 });
 
 const AddTransactionForm = ({ onCancel }) => {
@@ -37,19 +43,22 @@ const AddTransactionForm = ({ onCancel }) => {
   );
 
   const [isIncome, setIsIncome] = useState(true);
+  const datePickerRef = useRef(null);
 
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
 
-  // ESC ile kapat
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onCancel?.();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onCancel]);
 
-  const toggleSwitch = () => setIsIncome((p) => !p);
+  const toggleSwitch = () => {
+    setIsIncome((p) => !p);
+  };
+
   const categoriesToShow = isIncome ? incomeCategories : expenseCategories;
   const options = useMemo(
     () =>
@@ -88,7 +97,23 @@ const AddTransactionForm = ({ onCancel }) => {
       zindex: 9999,
     });
 
-  // react-select custom styles (Global değişkenlerle)
+  const showCommentLimitToast = () => {
+    iziToast.show({
+      title: "Warning",
+      message: "Comment cannot exceed 30 characters",
+      position: "topRight",
+      timeout: 3000,
+      progressBar: true,
+      backgroundColor: "#FFAA33",
+      transitionIn: "fadeInRight",
+      transitionOut: "fadeOutRight",
+      layout: 2,
+      zindex: 9999,
+      maxWidth: 400,
+      padding: 20,
+    });
+  };
+
   const selectStyles = useMemo(
     () => ({
       container: (base) => ({ ...base, width: "100%" }),
@@ -150,7 +175,6 @@ const AddTransactionForm = ({ onCancel }) => {
     []
   );
 
-  // overlay click – modal dışına tıklayınca kapat
   const handleOverlayClick = useCallback(
     (e) => {
       if (e.target === e.currentTarget) onCancel?.();
@@ -174,7 +198,6 @@ const AddTransactionForm = ({ onCancel }) => {
         >
           ×
         </button>
-
         <h2 className={`${styles.title} transaction-header`}>
           Add transaction
         </h2>
@@ -188,7 +211,6 @@ const AddTransactionForm = ({ onCancel }) => {
           >
             Income
           </span>
-
           <div className={styles.switchBackground} onClick={toggleSwitch}>
             <button
               type="button"
@@ -203,7 +225,6 @@ const AddTransactionForm = ({ onCancel }) => {
               {isIncome ? "+" : "−"}
             </button>
           </div>
-
           <span
             className={styles.switchText}
             style={{
@@ -216,7 +237,7 @@ const AddTransactionForm = ({ onCancel }) => {
 
         <Formik
           initialValues={{
-            category: null, // react-select object
+            category: null,
             sum: "",
             date: new Date(),
             comment: "",
@@ -233,6 +254,12 @@ const AddTransactionForm = ({ onCancel }) => {
               const categoryId = isIncome
                 ? incomeCategories?.[0]?.id || null
                 : values.category?.value || null;
+
+              if (values.comment.length > 30) {
+                showCommentLimitToast();
+                setSubmitting(false);
+                return;
+              }
 
               const payload = {
                 transactionDate: values.date.toISOString(),
@@ -255,7 +282,7 @@ const AddTransactionForm = ({ onCancel }) => {
           }}
           context={{ isIncome }}
         >
-          {({ values, setFieldValue, errors, touched, isSubmitting }) => (
+          {({ values, setFieldValue, touched, errors, isSubmitting }) => (
             <Form className={styles.form}>
               {!isIncome && (
                 <div className={styles.inputGroup}>
@@ -297,8 +324,12 @@ const AddTransactionForm = ({ onCancel }) => {
                   )}
                 </div>
 
-                <div className={styles.inputGroup}>
+                <div
+                  className={styles.inputGroup}
+                  style={{ position: "relative" }}
+                >
                   <DatePicker
+                    ref={datePickerRef}
                     selected={values.date}
                     onChange={(date) => setFieldValue("date", date)}
                     dateFormat="dd.MM.yyyy"
@@ -309,6 +340,18 @@ const AddTransactionForm = ({ onCancel }) => {
                     }`}
                     calendarClassName={styles.calendar}
                   />
+                  <svg
+                    onClick={() => datePickerRef.current.setOpen(true)}
+                    className={styles.calendarIcon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1.5A1.5 1.5 0 0 1 16 2.5v11A1.5 1.5 0 0 1 14.5 15h-13A1.5 1.5 0 0 1 0 13.5v-11A1.5 1.5 0 0 1 1.5 1H3V.5a.5.5 0 0 1 .5-.5zM1 4v9.5a.5.5 0 0 0 .5.5H14.5a.5.5 0 0 0 .5-.5V4H1z" />
+                  </svg>
                   {touched.date && errors.date && (
                     <div className={styles.errorText}>{errors.date}</div>
                   )}
@@ -322,7 +365,43 @@ const AddTransactionForm = ({ onCancel }) => {
                   placeholder="Comment"
                   className={styles.textarea}
                   rows="2"
+                  value={values.comment}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    const MAX_LENGTH = 30;
+
+                    if (val.length <= MAX_LENGTH) {
+                      setFieldValue("comment", val);
+                    } else {
+                      // Klavye girişini engelle
+                      e.preventDefault();
+
+                      // Toast'u garanti göstermek için küçük timeout
+                      setTimeout(() => {
+                        iziToast.show({
+                          title: "Warning",
+                          message: "Comment cannot exceed 30 characters",
+                          position: "topRight",
+                          timeout: 3000,
+                          progressBar: true,
+                          backgroundColor: "#FFAA33",
+                          transitionIn: "fadeInRight",
+                          transitionOut: "fadeOutRight",
+                          layout: 2,
+                          zindex: 9999,
+                          maxWidth: 400,
+                          padding: 20,
+                        });
+                      }, 0);
+                    }
+                  }}
                 />
+                <div className={styles.commentCounter}>
+                  {values.comment.length}/30
+                </div>
+                {touched.comment && errors.comment && (
+                  <div className={styles.errorText}>{errors.comment}</div>
+                )}
               </div>
 
               <div className={styles.buttonGroup}>
