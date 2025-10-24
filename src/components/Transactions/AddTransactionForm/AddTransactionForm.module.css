@@ -125,9 +125,12 @@
   gap: 12px;
 }
 
+/* !!! GÜNCELLENDİ: Position relative ve alt boşluk eklendi !!! */
 .inputGroup {
   display: flex;
   flex-direction: column;
+  position: relative;
+  margin-bottom: 30px; /* Karakter sayacı ve hata mesajı için boşluk */
 }
 
 .input,
@@ -151,11 +154,26 @@
   border-bottom-color: var(--red) !important;
 }
 
+/* Hata mesajı için konumlandırma */
 .errorText {
+  position: absolute;
+  bottom: -18px;
+  left: 0;
   margin-top: 6px;
   color: var(--red);
   font-size: 12px;
   font-family: var(--font-family-base);
+  z-index: 10;
+}
+
+/* !!! YENİ EK: Karakter Sayacı Stili !!! */
+.commentCounter {
+  position: absolute;
+  right: 0;
+  bottom: -18px; /* Hata metni ile aynı hizaya yakın, sağa yaslı */
+  font-size: 12px;
+  color: var(--font-color-white-60);
+  z-index: 10;
 }
 
 .buttonGroup {
@@ -213,6 +231,7 @@
     #7000ff 150.71%
   ) !important;
   color: #fff !important;
+  border-radius: 8px;
 }
 
 /* Menü yazıları */
@@ -233,14 +252,20 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
+/* !!! GÜNCELLENDİ: Takvim simgesi, tıklanabilirliği desteklemek için !!! */
 .calendarIcon {
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none;
   color: rgba(255, 255, 255, 0.7);
   z-index: 2;
+  cursor: pointer;
+}
+
+/* Tarih inputu sağ boşluğu */
+.row .inputGroup .input {
+  padding-right: 40px; /* Takvim simgesi için yeterli boşluk */
 }
 
 /* --------- RESPONSIVE ---------- */
