@@ -281,6 +281,34 @@ const EditTransactionForm = () => {
             const today = new Date();
             return (
               <Form className={styles.editForm}>
+                {/* ---------------------------------
+                    EK BAŞLIK (INCOME/EXPENSE) START
+                    --------------------------------- */}
+                <div className={styles.typeTitleGroup}>
+                  <p
+                    className={
+                      values.type === "INCOME"
+                        ? styles.incomeActive
+                        : styles.typeInactive
+                    }
+                  >
+                    Income
+                  </p>
+                  <span className={styles.typeSeparator}>/</span>
+                  <p
+                    className={
+                      values.type === "EXPENSE"
+                        ? styles.expenseActive
+                        : styles.typeInactive
+                    }
+                  >
+                    Expense
+                  </p>
+                </div>
+                {/* ---------------------------------
+                    EK BAŞLIK (INCOME/EXPENSE) END
+                    --------------------------------- */}
+
                 {values.type === "EXPENSE" && (
                   <div className={styles.editFormGroup}>
                     <label className="select-category-txt">
