@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userTransactionApi, setToken } from "../../api/userTransactionApi2.js";
+import { userTransactionApi, setToken } from "../../api/userTransactionApi.js";
 
 export const logIn = createAsyncThunk(
   "auth/login",

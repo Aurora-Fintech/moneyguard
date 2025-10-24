@@ -4,7 +4,7 @@ import {
   createTransaction,
   deleteTransaction,
   updateTransaction,
-} from "../../api/userTransactionApi2.js";
+} from "../../api/userTransactionApi.js";
 
 // --- LocalStorage Yardımcıları ---
 const STORAGE_KEY = "transactions";

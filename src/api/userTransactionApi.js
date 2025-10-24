@@ -5,7 +5,7 @@ export const userTransactionApi = axios.create({
   baseURL: "https://wallet.b.goit.study/",
 });
 
-// Token ayarlama
+// Set Token
 export const setToken = (token) => {
   if (token) {
     userTransactionApi.defaults.headers.common[
@@ -16,9 +16,9 @@ export const setToken = (token) => {
   }
 };
 
-// --- İşlemler --- //
+// --- Transactions --- //
 
-// Tüm işlemleri çek
+// Fetch all transactions
 export const fetchAllTransactions = async (token) => {
   if (token) setToken(token);
 
@@ -26,18 +26,18 @@ export const fetchAllTransactions = async (token) => {
     const response = await userTransactionApi.get("api/transactions");
     return response.data;
   } catch (error) {
-    console.error("İşlemleri çekerken hata:", error.response || error);
+    console.error("Error fetching transactions:", error.response || error);
     throw error;
   }
 };
 
-// Yeni işlem ekle
+// Create a new transaction
 export const createTransaction = async (transactionData, token) => {
   if (token) setToken(token);
 
   const payload = {
     transactionDate: transactionData.transactionDate, // ISO string
-    type: transactionData.type, // "INCOME" veya "EXPENSE"
+    type: transactionData.type, // "INCOME" or "EXPENSE"
     categoryId: transactionData.categoryId,
     comment: transactionData.comment || "",
     amount: Number(transactionData.amount),
@@ -47,38 +47,35 @@ export const createTransaction = async (transactionData, token) => {
     const response = await userTransactionApi.post("api/transactions", payload);
     return response.data;
   } catch (error) {
-    console.error("İşlem eklerken hata:", error.response.data || error);
+    console.error("Error creating transaction:", error.response?.data || error);
     throw error;
   }
 };
 
-// ✅ YENİ İŞLEM: İşlem Güncelle
+// Update transaction
 export const updateTransaction = async (transactionData, token) => {
-  if (token) setToken(token); // ID'yi veriden ayırın, çünkü API genellikle ID'yi payload'da beklemez
+  if (token) setToken(token);
 
-  const { id: transactionId, ...updatePayload } = transactionData; // API'nin beklediği formatta payload'ı düzenleyin
+  const { id: transactionId, ...updatePayload } = transactionData;
 
   const payload = {
     ...updatePayload,
-    // amount'ı güncellerken sayı olduğundan emin olun
     amount: Number(updatePayload.amount),
-    // Diğer alanlar: transactionDate, type, categoryId, comment
   };
 
   try {
-    // PATCH metodunu kullanarak ilgili ID'deki işlemi güncelliyoruz
     const response = await userTransactionApi.patch(
       `api/transactions/${transactionId}`,
       payload
     );
-    return response.data; // Güncellenmiş işlem objesi dönmeli
+    return response.data;
   } catch (error) {
-    console.error("İşlem güncellerken hata:", error.response.data || error);
+    console.error("Error updating transaction:", error.response?.data || error);
     throw error;
   }
 };
 
-// İşlem sil
+// Delete transaction
 export const deleteTransaction = async (transactionId, token) => {
   if (token) setToken(token);
 
@@ -88,12 +85,12 @@ export const deleteTransaction = async (transactionId, token) => {
     );
     return response.data;
   } catch (error) {
-    console.error("İşlem silerken hata:", error.response || error);
+    console.error("Error deleting transaction:", error.response || error);
     throw error;
   }
 };
 
-// Kategorileri çek
+// Fetch categories
 export const fetchCategories = async (token) => {
   if (token) setToken(token);
 
@@ -101,7 +98,7 @@ export const fetchCategories = async (token) => {
     const response = await userTransactionApi.get("api/transaction-categories");
     return response.data;
   } catch (error) {
-    console.error("Kategorileri çekerken hata:", error.response || error);
+    console.error("Error fetching categories:", error.response || error);
     throw error;
   }
 };
