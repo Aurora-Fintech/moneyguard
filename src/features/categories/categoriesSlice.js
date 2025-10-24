@@ -16,8 +16,6 @@ export const getCategories = createAsyncThunk(
       // Token'ı Redux'tan çek
       const token = getState().auth?.token;
 
-      console.log("request*1: ", token);
-
       if (!token) {
         return rejectWithValue("Kullanıcı oturumu açmamış. Token yok.");
       }
