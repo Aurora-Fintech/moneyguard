@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -19,9 +19,7 @@ import PasswordStrengthBar from "react-password-strength-bar";
 import { Eye, EyeOff } from "lucide-react";
 import FormInput from "../FormInput/FormInput";
 import clsx from "clsx";
-import { clearAuthError } from "../../../features/auth/authSlice";
 
-// Validasyon Şeması
 const registerSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email address").required("Required"),
@@ -100,13 +98,6 @@ const RegistrationForm = () => {
 
     return { matchPercentage: finalPercentage, barColor: color };
   }, [passwordValue, confirmPasswordValue]);
-
-  // Hata state'ini temizle
-  useEffect(() => {
-    return () => {
-      dispatch(clearAuthError());
-    };
-  }, [dispatch]);
 
   const onSubmit = async (values) => {
     // eslint-disable-next-line no-unused-vars
