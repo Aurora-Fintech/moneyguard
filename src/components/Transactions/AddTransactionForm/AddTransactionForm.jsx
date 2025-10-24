@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
+import { RotatingLines } from "react-loader-spinner";
 
 import { getCategories } from "../../../features/categories/categoriesSlice";
 import { addNewTransaction } from "../../../features/transactions/transactionsSlice";
@@ -409,8 +410,19 @@ const AddTransactionForm = ({ onCancel }) => {
                   type="submit"
                   className={`${styles.submitBtn} form-button`}
                   disabled={isSubmitting}
+                  aria-busy={isSubmitting}
                 >
-                  ADD
+                  {isSubmitting ? (
+                    <RotatingLines
+                      width="20"
+                      strokeColor="#fff"
+                      strokeWidth="3"
+                      animationDuration="0.75"
+                      ariaLabel="adding"
+                    />
+                  ) : (
+                    "ADD"
+                  )}
                 </button>
                 <button
                   type="button"

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import TransactionsItem from "../TransactionsItem/TransactionsItem";
 import EmptyTransactions from "../EmptyTransactions/EmptyTransactions";
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction";
+import { RotatingLines } from "react-loader-spinner";
 import styles from "./TransactionsList.module.css";
 
 const TransactionsList = () => {
@@ -12,7 +13,6 @@ const TransactionsList = () => {
   );
 
   if (error) return <div>Hata oluştu: {error}</div>;
-  if (isLoading) return <div>İşlemler yükleniyor...</div>;
   if (!transactionsList || transactionsList.length === 0) {
     return <EmptyTransactions />;
   }
@@ -38,33 +38,47 @@ const TransactionsList = () => {
 
   return (
     <>
-      <table className={styles.table}>
-        <thead>
-          <tr className={styles.theadRow}>
-            <th
-              className={styles.th}
-              onClick={handleSortClick}
-              style={{ cursor: "pointer" }}
-            >
-              Date
-              <span className={styles.sortIcon}>
-                {sortOrder === "asc" ? "▲" : "▼"}
-              </span>
-            </th>
-            <th className={styles.th}>Type</th>
-            <th className={styles.th}>Category</th>
-            <th className={styles.th}>Comment</th>
-            <th className={styles.th}>Sum</th>
-            <th className={`${styles.th} ${styles.thCenter}`}></th>
-          </tr>
-        </thead>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.theadRow}>
+              <th
+                className={styles.th}
+                onClick={handleSortClick}
+                style={{ cursor: "pointer" }}
+              >
+                Date
+                <span className={styles.sortIcon}>
+                  {sortOrder === "asc" ? "▲" : "▼"}
+                </span>
+              </th>
+              <th className={styles.th}>Type</th>
+              <th className={styles.th}>Category</th>
+              <th className={styles.th}>Comment</th>
+              <th className={styles.th}>Sum</th>
+              <th className={`${styles.th} ${styles.thCenter}`}></th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {sortedTransactions.map((transaction) => (
-            <TransactionsItem key={transaction?.id} transaction={transaction} />
-          ))}
-        </tbody>
-      </table>
+          <tbody>
+            {sortedTransactions.map((transaction) => (
+              <TransactionsItem key={transaction?.id} transaction={transaction} />
+            ))}
+          </tbody>
+        </table>
+
+        {isLoading && (
+          <div className={styles.tableOverlay} aria-label="loading">
+            <RotatingLines
+              width="40"
+              strokeColor="#fff"
+              strokeWidth="3"
+              animationDuration="0.75"
+              ariaLabel="table-loading"
+            />
+          </div>
+        )}
+      </div>
 
       {isEditModalOpen && <ModalEditTransaction />}
     </>

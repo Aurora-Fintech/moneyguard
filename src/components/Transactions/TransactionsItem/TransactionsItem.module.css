@@ -9,20 +9,6 @@
   box-sizing: border-box;
 }
 
-/* Masaüstü (769px ve üzeri) */
-@media (min-width: 769px) {
-  .table-container {
-    /* Üst kapsayıcının genişliğini takip edecek */
-  }
-}
-
-/* Tablet (705px–768px arası) */
-@media (min-width: 705px) and (max-width: 768px) {
-  .table-container {
-    /* Üst kapsayıcının genişliğini takip edecek */
-  }
-}
-
 /* Tablet ve Masaüstü: .actions hücresi ortalansın */
 @media (min-width: 705px) {
   .actions {

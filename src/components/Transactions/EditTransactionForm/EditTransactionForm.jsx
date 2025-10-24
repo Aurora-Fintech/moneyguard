@@ -13,6 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+import { RotatingLines } from "react-loader-spinner";
 
 const EditTransactionForm = () => {
   const dispatch = useDispatch();
@@ -440,8 +441,19 @@ const EditTransactionForm = () => {
                     type="submit"
                     className={`${styles.editFormSaveButton} form-button`}
                     disabled={isSubmitting || isLoading}
+                    aria-busy={isSubmitting || isLoading}
                   >
-                    {isLoading ? "Saving..." : "SAVE"}
+                    {isSubmitting || isLoading ? (
+                      <RotatingLines
+                        width="20"
+                        strokeColor="#fff"
+                        strokeWidth="3"
+                        animationDuration="0.75"
+                        ariaLabel="saving"
+                      />
+                    ) : (
+                      "SAVE"
+                    )}
                   </button>
                   <button
                     type="button"

@@ -9,7 +9,8 @@ const ModalAddTransaction = () => {
 
   // Modal'ı kapatma fonksiyonu
   const handleClose = () => {
-    dispatch(toggleModal());
+    // Explicitly close the modal to avoid accidental reopen due to toggle
+    dispatch(toggleModal(false));
   };
 
   return (
