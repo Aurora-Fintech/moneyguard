@@ -3,7 +3,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // Yolu doğru kontrol edin: src/features/categories'den src/api/transactionsAPI.js'e
 // Dosya adının büyük/küçük harf duyarlılığını kontrol ederek aşağıdaki yoldan birini kullanın:
-import { fetchCategories } from "../../api/userTransactionApi2";
+import { fetchCategories } from "../../api/userTransactionApi";
 // VEYA: import { fetchCategories } from '../../api/TransactionsApi';
 
 // --------------------------------------------------------
