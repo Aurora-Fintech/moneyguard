@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar.jsx";
 import styles from "./DashboardPage.module.css";
 import Header from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
 
 const DashboardPage = () => {
   return (
@@ -19,6 +20,7 @@ const DashboardPage = () => {
           <Outlet />
         </main>
       </div>
+      <Footer />
     </div>
   );
 };
