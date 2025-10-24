@@ -1,14 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import RestrictedRoute from "./RestrictedRoute";
-
-import HomeTable from "../components/HomeTable/HomeTable";
-import Statistics from "../components/Statistics/Statistics";
 import { useDispatch } from "react-redux";
 import React, { Suspense, useEffect } from "react";
 import { refreshUser } from "../features/auth/authOperations";
 import { Oval } from "react-loader-spinner";
 
+// Lazy-loaded Sayfalar
 const LoginPage = React.lazy(() => import("../pages/LoginPage/LoginPage"));
 const RegistrationPage = React.lazy(() =>
   import("../pages/RegistrationPage/RegistrationPage")
@@ -18,6 +16,14 @@ const DashboardPage = React.lazy(() =>
 );
 const NotFoundPage = React.lazy(() =>
   import("../pages/NotFoundPage/NotFoundPage")
+);
+
+// İçerik bileşenleri
+const HomeTableLazy = React.lazy(() =>
+  import("../components/HomeTable/HomeTable")
+);
+const StatisticsLazy = React.lazy(() =>
+  import("../components/Statistics/Statistics")
 );
 
 const Loader = () => (
@@ -53,6 +59,7 @@ export default function AppRouter() {
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
+          {/* Login ve Register Rotaları */}
           <Route
             path="/login"
             element={
@@ -70,7 +77,7 @@ export default function AppRouter() {
             }
           />
 
-          {/* Dashboard + nested içerik */}
+          {/* Dashboard + Nested Rotalar */}
           <Route
             path="/dashboard/*"
             element={
@@ -79,12 +86,11 @@ export default function AppRouter() {
               </PrivateRoute>
             }
           >
-            {/* /dashboard -> HomeTable */}
-            <Route index element={<HomeTable />} />
-            {/* /dashboard/statistics -> Statistics */}
-            <Route path="statistics" element={<Statistics />} />
+            <Route index element={<HomeTableLazy />} />
+            <Route path="statistics" element={<StatisticsLazy />} />
           </Route>
 
+          {/* Diğer Rotalar */}
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
