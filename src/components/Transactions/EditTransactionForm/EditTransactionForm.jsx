@@ -385,6 +385,23 @@ const EditTransactionForm = () => {
                       className={`${styles.editFormInput} ${styles.editFormDateInput}`}
                       calendarClassName={styles.calendar}
                     />
+                    <svg
+                      className={styles.calendarIcon}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="var(--font-color-white-60)"
+                        strokeWidth="2"
+                        d="M7 11h10M7 15h10M5 5h14a2 2 0 0 1 2 2v12a2 
+         2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 
+         2-2Zm2-4v4m10-4v4"
+                      />
+                    </svg>
+
                     <ErrorMessage
                       name="transactionDate"
                       component="div"
@@ -401,6 +418,8 @@ const EditTransactionForm = () => {
                     className={styles.editFormInput}
                     rows="2"
                   />
+                  {/* --- Calendar icon --- */}
+
                   <ErrorMessage
                     name="comment"
                     component="div"

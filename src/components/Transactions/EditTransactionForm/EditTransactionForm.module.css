@@ -164,7 +164,22 @@
 .react-datepicker__input-container input {
   color: #fff !important;
   font-weight: 500;
+  /* İkonun üstünü kapatmamak için input padding'i ayarlandı */
+  padding-right: 28px !important;
 }
+
+/* Takvim İkonu CSS'i: Sizin SVG'nizi konumlandırmak için */
+.calendarIcon {
+  position: absolute;
+  right: 30px;
+  top: 40%;
+  /* DatePicker input'unun padding-top/bottom'ını dengelemek için */
+  transform: translateY(calc(-50% + 2px));
+  pointer-events: none; /* İkonun tıklamayı engellemesini önler */
+  z-index: 2; /* Input'un üzerinde kalmasını sağlar */
+  opacity: 0.8;
+}
+/* --------------------------------- */
 
 /* =========================
    BUTON GRUBU (Global ile uyum)
