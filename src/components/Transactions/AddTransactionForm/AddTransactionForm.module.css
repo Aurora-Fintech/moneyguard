@@ -125,9 +125,12 @@
   gap: 12px;
 }
 
+/* Input Group */
 .inputGroup {
   display: flex;
   flex-direction: column;
+  position: relative;
+  margin-bottom: 30px; /* Karakter sayacı ve hata mesajı için boşluk */
 }
 
 .input,
@@ -137,25 +140,49 @@
   border: none;
   border-bottom: 2px solid rgba(255, 255, 255, 0.4);
   background: transparent;
-  color: #ffffff;
+  color: #ffffff; /* input yazısı tam beyaz */
   font-size: 16px;
   outline: none;
   font-family: var(--font-family-base);
   resize: none;
 }
+
+/* Placeholder tam beyaz */
+.input::placeholder,
+.textarea::placeholder {
+  color: #ffffff;
+  opacity: 1;
+}
+
 .input:focus,
 .textarea:focus {
   border-bottom-color: var(--yellow);
 }
+
 .inputError {
   border-bottom-color: var(--red) !important;
 }
 
+/* Hata mesajı */
 .errorText {
+  position: absolute;
+  bottom: -18px;
+  left: 0;
   margin-top: 6px;
   color: var(--red);
   font-size: 12px;
   font-family: var(--font-family-base);
+  z-index: 10;
+}
+
+/* Karakter sayacı */
+.commentCounter {
+  position: absolute;
+  right: 0;
+  bottom: -18px;
+  font-size: 12px;
+  color: var(--font-color-white-60); /* soluk beyaz */
+  z-index: 10;
 }
 
 .buttonGroup {
@@ -173,12 +200,13 @@
   width: 280px;
 }
 
+/* React Datepicker */
 .react-datepicker__input-container input {
   color: #fff !important;
   font-weight: 500;
 }
 
-/* react-select renkleriyle uyumlu hale getirildi */
+/* React Select */
 .rs__control {
   background: transparent !important;
   border: none !important;
@@ -198,13 +226,11 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
-/* Hover edilen kategori rengi #FF868D */
 .rs__option--is-focused {
   background-color: rgba(255, 134, 141, 0.25) !important;
   color: #ff868d !important;
 }
 
-/* Seçili kategori rengi */
 .rs__option--is-selected {
   background: linear-gradient(
     96.76deg,
@@ -213,9 +239,9 @@
     #7000ff 150.71%
   ) !important;
   color: #fff !important;
+  border-radius: 8px;
 }
 
-/* Menü yazıları */
 .rs__single-value,
 .rs__placeholder {
   color: #ffffff !important;
@@ -233,9 +259,23 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
-/* --------- RESPONSIVE ---------- */
+.calendarIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  z-index: 2;
+  cursor: pointer;
+}
 
-/* Mobile: sheet gibi tam ekran */
+/* Tarih inputu sağ boşluğu */
+.row .inputGroup .input {
+  padding-right: 40px;
+}
+
+/* RESPONSIVE */
+/* Mobile */
 @media (max-width: 767.98px) {
   .overlay {
     background: radial-gradient(
@@ -295,24 +335,21 @@
   }
 }
 
-/* ---------- react-select HOVER GARANTİ Fallback ---------- */
+/* React Select Hover Fallback */
 :global(.rs__option--is-focused) {
   color: #ff868d !important;
   background: rgba(255, 134, 141, 0.18) !important;
 }
 
-/* ---------- DatePicker gün görselleri ---------- */
-/* Genel gün yazısı daha aydınlık */
+/* DatePicker */
 :global(.react-datepicker__day) {
   color: rgba(255, 255, 255, 0.95);
 }
 
-/* Ay dışı günler hafif kısık */
 :global(.react-datepicker__day--outside-month) {
   color: rgba(255, 255, 255, 0.35);
 }
 
-/* Gelecek günler (disabled) karartılmış ve tıklanamaz */
 :global(.react-datepicker__day--disabled) {
   color: rgba(255, 255, 255, 0.28) !important;
   opacity: 0.55;
@@ -320,13 +357,11 @@
   filter: grayscale(30%);
 }
 
-/* Bugün (highlight) görünürlüğü */
 :global(.react-datepicker__day--today) {
   border: 1px solid rgba(255, 199, 39, 0.65);
   border-radius: 8px;
 }
 
-/* Seçili gün (okunaklı) */
 :global(.react-datepicker__day--selected),
 :global(.react-datepicker__day--keyboard-selected) {
   background: linear-gradient(

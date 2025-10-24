@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
@@ -15,7 +16,6 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const EditTransactionForm = () => {
   const dispatch = useDispatch();
-
   const editingTransaction = useSelector(
     (state) => state.transactions.editingTransaction
   );
@@ -100,7 +100,6 @@ const EditTransactionForm = () => {
     });
   };
 
-  // react-select options + styles (hover color #FF868D)
   const categoryOptions = useMemo(
     () =>
       (expenseCategories || []).map((c) => ({
@@ -168,10 +167,9 @@ const EditTransactionForm = () => {
       },
       noOptionsMessage: (b) => ({ ...b, color: "var(--font-grey)" }),
     }),
-    []
+    [expenseCategories]
   );
 
-  // ESC ve overlay click ile kapat
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && dispatch(closeEditModal());
     window.addEventListener("keydown", onKey);
@@ -281,6 +279,30 @@ const EditTransactionForm = () => {
             const today = new Date();
             return (
               <Form className={styles.editForm}>
+                {/* Type selection */}
+                <div className={styles.typeTitleGroup}>
+                  <p
+                    className={
+                      values.type === "INCOME"
+                        ? styles.incomeActive
+                        : styles.typeInactive
+                    }
+                  >
+                    Income
+                  </p>
+                  <span className={styles.typeSeparator}>/</span>
+                  <p
+                    className={
+                      values.type === "EXPENSE"
+                        ? styles.expenseActive
+                        : styles.typeInactive
+                    }
+                  >
+                    Expense
+                  </p>
+                </div>
+
+                {/* Category select */}
                 {values.type === "EXPENSE" && (
                   <div className={styles.editFormGroup}>
                     <label className="select-category-txt">
@@ -318,6 +340,7 @@ const EditTransactionForm = () => {
                   </div>
                 )}
 
+                {/* Amount and Date */}
                 <div className={styles.editFormAmountDateGroup}>
                   <div className={styles.editFormGroup}>
                     <Field
@@ -352,19 +375,25 @@ const EditTransactionForm = () => {
                       }
                       dateFormat="dd.MM.yyyy"
                       maxDate={today}
-                      filterDate={(d) => d <= today}
                       placeholderText="Date"
                       className={`${styles.editFormInput} ${styles.editFormDateInput}`}
                       calendarClassName={styles.calendar}
                     />
-                    <ErrorMessage
-                      name="transactionDate"
-                      component="div"
-                      className={styles.editFormError}
-                    />
+                    {/* Calendar Icon */}
+                    <svg
+                      className={styles.calendarIcon}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1.5A1.5 1.5 0 0 1 16 2.5v11A1.5 1.5 0 0 1 14.5 15h-13A1.5 1.5 0 0 1 0 13.5v-11A1.5 1.5 0 0 1 1.5 1H3V.5a.5.5 0 0 1 .5-.5zM1 4v9.5a.5.5 0 0 0 .5.5H14.5a.5.5 0 0 0 .5-.5V4H1z" />
+                    </svg>
                   </div>
                 </div>
 
+                {/* Comment with character counter */}
                 <div className={styles.editFormGroup}>
                   <Field
                     as="textarea"
@@ -372,7 +401,32 @@ const EditTransactionForm = () => {
                     placeholder="Comment"
                     className={styles.editFormInput}
                     rows="2"
+                    value={values.comment}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val.length <= 30) {
+                        setFieldValue("comment", val);
+                      } else {
+                        iziToast.show({
+                          title: "Warning",
+                          message: "Comment cannot exceed 30 characters",
+                          position: "topRight",
+                          timeout: 3000,
+                          progressBar: true,
+                          backgroundColor: "#FFAA33",
+                          transitionIn: "fadeInRight",
+                          transitionOut: "fadeOutRight",
+                          layout: 2,
+                          zindex: 9999,
+                          maxWidth: 400,
+                          padding: 20,
+                        });
+                      }
+                    }}
                   />
+                  <div className={styles.commentCounter}>
+                    {values.comment.length}/30
+                  </div>
                   <ErrorMessage
                     name="comment"
                     component="div"
@@ -380,6 +434,7 @@ const EditTransactionForm = () => {
                   />
                 </div>
 
+                {/* Buttons */}
                 <div className={styles.editFormButtonGroup}>
                   <button
                     type="submit"
