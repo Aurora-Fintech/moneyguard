@@ -22,13 +22,8 @@ const handleAuthError = (error, thunkAPI) => {
       userMessage = "Password is incorrect";
     } else if (status === 404) {
       userMessage = "User with this email address not found.";
-    } else if (
-      status === 409 &&
-      backendMessage?.toLowerCase().includes("email already exists")
-    ) {
-      userMessage = "This email address is already in use.";
     } else if (status === 409) {
-      userMessage = "Data conflict. Please try again.";
+      userMessage = "This email address is already in use.";
     } else if (backendMessage) {
       userMessage = backendMessage;
     } else if (status === 500) {
