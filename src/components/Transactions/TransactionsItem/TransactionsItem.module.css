@@ -177,12 +177,12 @@
   }
 
   /* 💛 Income kartı (sarı sol border) */
-  .tr.income {
+  .income {
     border-left: 3px solid var(--yellow);
   }
 
   /* ❤️ Expense kartı (kırmızı sol border) */
-  .tr.expense {
+  .expense {
     border-left: 3px solid var(--red);
   }
 
