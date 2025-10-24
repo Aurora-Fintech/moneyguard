@@ -183,9 +183,7 @@
     border: none;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    width: 100%; /* Mobilde full width */
-    margin-left: 0;
-    margin-right: 0;
+    width: 300px;
     transition: border-left 0.3s ease;
   }
 

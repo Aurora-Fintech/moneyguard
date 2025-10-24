@@ -31,13 +31,6 @@
   margin-left: 6px; /* Date ile ok arasında boşluk */
 }
 
-/* ---------------- Tablet & Mobil ---------------- */
-@media (max-width: 1024px) {
-  .table {
-    max-width: 95%; /* Genişliği biraz daralt */
-  }
-}
-
 @media (max-width: 768px) {
   .table {
     max-width: 100%;
