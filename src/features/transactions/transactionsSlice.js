@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  fetchAllTransactions,
-  createTransaction,
-  deleteTransaction,
-  updateTransaction,
-} from "../../api/userTransactionApi.js";
+import { fetchAllTransactions, createTransaction, deleteTransaction, updateTransaction } from "../../api/userTransactionApi.js";
 
-// --- LocalStorage Yardımcıları ---
 const STORAGE_KEY = "transactions";
 
 const loadFromLocalStorage = () => {
@@ -26,7 +20,6 @@ const saveToLocalStorage = (transactions) => {
   }
 };
 
-// --- Bakiyeyi Hesaplama Yardımcısı ---
 const calculateBalance = (transactions) => {
   return transactions.reduce((acc, transaction) => {
     const amount = Number(transaction.amount);
@@ -34,9 +27,7 @@ const calculateBalance = (transactions) => {
   }, 0);
 };
 
-// --- YARDIMCI FONKSİYON: CategoryName Ekleme ---
 const addCategoryNameToTransaction = (transaction, categories) => {
-  // Sadece Gider işlemleri için ve categoryId varsa ekle
   if (transaction.type === "EXPENSE" && transaction.categoryId) {
     const category = categories.find(
       (cat) => String(cat.id) === String(transaction.categoryId)
@@ -49,22 +40,19 @@ const addCategoryNameToTransaction = (transaction, categories) => {
   return transaction;
 };
 
-// --- ASENKRON THUNK'LAR ---
 export const getTransactions = createAsyncThunk(
   "transactions/fetchAll",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const state = getState(); // State'i al
+      const state = getState();
       const token = state.auth?.token;
       if (!token) {
         return loadFromLocalStorage();
       }
 
-      const allExpenseCategories = state.categories.expenseCategories || []; // Kategorileri al
+      const allExpenseCategories = state.categories.expenseCategories || [];
 
       const data = await fetchAllTransactions(token);
-
-      // 💥 KÖKTEN ÇÖZÜM 1: Gelen tüm işlemlere categoryName ekle
       const transactionsWithNames = data.map((tx) =>
         addCategoryNameToTransaction(tx, allExpenseCategories)
       );
@@ -91,15 +79,8 @@ export const addNewTransaction = createAsyncThunk(
         newTransaction = data;
       }
 
-      // Kategori adını formdan almış olmalıyız (EditForm'daki gibi)
-      const allExpenseCategories =
-        getState().categories.expenseCategories || [];
-
-      // 💥 KÖKTEN ÇÖZÜM 2: Eklenen işleme categoryName ekle
-      newTransaction = addCategoryNameToTransaction(
-        newTransaction,
-        allExpenseCategories
-      );
+      const allExpenseCategories = getState().categories.expenseCategories || [];
+      newTransaction = addCategoryNameToTransaction(newTransaction, allExpenseCategories);
 
       return newTransaction;
     } catch (error) {
@@ -123,7 +104,6 @@ export const deleteTransactionThunk = createAsyncThunk(
   }
 );
 
-// ✅ GÜNCELLENMİŞ UPDATE THUNK'INIZ
 export const updateTransactionThunk = createAsyncThunk(
   "transactions/updateTransaction",
   async (transactionData, { getState, rejectWithValue }) => {
@@ -134,7 +114,6 @@ export const updateTransactionThunk = createAsyncThunk(
       let updatedTransaction = transactionData;
 
       if (token) {
-        // API çağrısı temizlenmiş payload ile
         const data = await updateTransaction(apiPayload, token);
         updatedTransaction = data;
       }
@@ -143,16 +122,8 @@ export const updateTransactionThunk = createAsyncThunk(
         updatedTransaction.id = transactionData.id;
       }
 
-      const allExpenseCategories =
-        getState().categories.expenseCategories || [];
-
-      // 💥 KÖKTEN ÇÖZÜM 3: Güncellenen işleme categoryName ekle
-      // API'den dönen objeye categoryName ekle. Bu, formdan gelen veriyi kullanmak yerine,
-      // API'den dönen categoryId'ye göre kategoriyi tekrar bulur.
-      updatedTransaction = addCategoryNameToTransaction(
-        updatedTransaction,
-        allExpenseCategories
-      );
+      const allExpenseCategories = getState().categories.expenseCategories || [];
+      updatedTransaction = addCategoryNameToTransaction(updatedTransaction, allExpenseCategories);
 
       return updatedTransaction;
     } catch (error) {
@@ -160,9 +131,6 @@ export const updateTransactionThunk = createAsyncThunk(
     }
   }
 );
-// ... (Reducer ve Action'lar aynı kalır)
-// Bu kısım aynı kaldığı için aşağıdaki kodu dosyanıza eklemeniz yeterli.
-
 const initialTransactions = loadFromLocalStorage();
 const today = new Date();
 const initialState = {

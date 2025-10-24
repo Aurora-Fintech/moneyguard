@@ -19,8 +19,8 @@ import { addNewTransaction } from "../../../features/transactions/transactionsSl
 import styles from "./AddTransactionForm.module.css";
 
 // Toast
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
+import { showSuccess, showError, showCommentLimit } from "../../../utils/toast";
+import selectStyles from "../../../utils/selectStyles";
 
 // Doğrulama
 const validationSchema = Yup.object().shape({
@@ -72,109 +72,7 @@ const AddTransactionForm = ({ onCancel }) => {
 
   const maxDate = new Date();
 
-  const showSuccessToast = () =>
-    iziToast.show({
-      title: "Success",
-      message: "Transaction added successfully",
-      position: "topRight",
-      timeout: 2800,
-      progressBar: true,
-      backgroundColor: "#4BB543",
-      transitionIn: "fadeInRight",
-      transitionOut: "fadeOutRight",
-      zindex: 9999,
-    });
-
-  const showErrorToast = (msg) =>
-    iziToast.show({
-      title: "Error",
-      message: msg || "Transaction could not be added",
-      position: "topRight",
-      timeout: 3200,
-      progressBar: true,
-      backgroundColor: "#FF4C4C",
-      transitionIn: "fadeInRight",
-      transitionOut: "fadeOutRight",
-      zindex: 9999,
-    });
-
-  const showCommentLimitToast = () => {
-    iziToast.show({
-      title: "Warning",
-      message: "Comment cannot exceed 30 characters",
-      position: "topRight",
-      timeout: 3000,
-      progressBar: true,
-      backgroundColor: "#FFAA33",
-      transitionIn: "fadeInRight",
-      transitionOut: "fadeOutRight",
-      layout: 2,
-      zindex: 9999,
-      maxWidth: 400,
-      padding: 20,
-    });
-  };
-
-  const selectStyles = useMemo(
-    () => ({
-      container: (base) => ({ ...base, width: "100%" }),
-      control: (base, state) => ({
-        ...base,
-        minHeight: 44,
-        background: "transparent",
-        border: "none",
-        boxShadow: "none",
-        borderBottom: `2px solid rgba(255,255,255,${
-          state.isFocused ? 1 : 0.3
-        })`,
-        borderRadius: 0,
-        cursor: "pointer",
-      }),
-      valueContainer: (b) => ({ ...b, padding: "4px 0 8px 0" }),
-      placeholder: (b) => ({
-        ...b,
-        color: "var(--font-color-white-60)",
-        fontFamily: "var(--font-family-base)",
-      }),
-      singleValue: (b) => ({
-        ...b,
-        color: "var(--font-color-white)",
-        fontFamily: "var(--font-family-base)",
-      }),
-      indicatorsContainer: (b) => ({ ...b, color: "var(--font-color-white)" }),
-      dropdownIndicator: (b, s) => ({
-        ...b,
-        transition: "transform .2s ease",
-        transform: s.selectProps.menuIsOpen ? "rotate(180deg)" : "none",
-      }),
-      menuPortal: (b) => ({ ...b, zIndex: 10000 }),
-      menu: (b) => ({
-        ...b,
-        background: "var(--dropdown-color-gradient)",
-        borderRadius: 16,
-        boxShadow: "0 12px 24px rgba(0,0,0,.35)",
-        overflow: "hidden",
-        backdropFilter: "blur(6px)",
-      }),
-      menuList: (b) => ({ ...b, padding: 8, maxHeight: 240 }),
-      option: (base, state) => {
-        const isHover = state.isFocused && !state.isSelected;
-        return {
-          ...base,
-          borderRadius: 12,
-          color: isHover ? "#FF868D" : "var(--font-color-white)",
-          background: state.isSelected
-            ? "linear-gradient(96.76deg,#ffc727 -16.42%,#9e40ba 97.04%,#7000ff 150.71%)"
-            : isHover
-            ? "rgba(255, 134, 141, 0.18)"
-            : "transparent",
-          cursor: "pointer",
-        };
-      },
-      noOptionsMessage: (b) => ({ ...b, color: "var(--font-grey)" }),
-    }),
-    []
-  );
+  
 
   const handleOverlayClick = useCallback(
     (e) => {
@@ -257,7 +155,7 @@ const AddTransactionForm = ({ onCancel }) => {
                 : values.category?.value || null;
 
               if (values.comment.length > 30) {
-                showCommentLimitToast();
+                showCommentLimit();
                 setSubmitting(false);
                 return;
               }
@@ -271,12 +169,12 @@ const AddTransactionForm = ({ onCancel }) => {
               };
 
               await dispatch(addNewTransaction(payload)).unwrap();
-              showSuccessToast();
+              showSuccess('Transaction added successfully');
               resetForm();
               onCancel?.();
             } catch (err) {
               console.error(err);
-              showErrorToast(err?.message);
+              showError(err?.message || 'Transaction could not be added');
             } finally {
               setSubmitting(false);
             }
@@ -379,20 +277,7 @@ const AddTransactionForm = ({ onCancel }) => {
 
                       // Toast'u garanti göstermek için küçük timeout
                       setTimeout(() => {
-                        iziToast.show({
-                          title: "Warning",
-                          message: "Comment cannot exceed 30 characters",
-                          position: "topRight",
-                          timeout: 3000,
-                          progressBar: true,
-                          backgroundColor: "#FFAA33",
-                          transitionIn: "fadeInRight",
-                          transitionOut: "fadeOutRight",
-                          layout: 2,
-                          zindex: 9999,
-                          maxWidth: 400,
-                          padding: 20,
-                        });
+                        showCommentLimit();
                       }, 0);
                     }
                   }}
