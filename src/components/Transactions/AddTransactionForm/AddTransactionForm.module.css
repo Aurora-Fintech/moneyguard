@@ -233,6 +233,16 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
+.calendarIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.7);
+  z-index: 2;
+}
+
 /* --------- RESPONSIVE ---------- */
 
 /* Mobile: sheet gibi tam ekran */
