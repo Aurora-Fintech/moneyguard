@@ -1,0 +1,249 @@
+.footer {
+  width: 100%;
+  padding: 20px 15px;
+  background: linear-gradient(270.02deg, #2e1746 3.2%, #2e225f 99.98%);
+}
+.footerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.logoText {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--font-color-white);
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.2em;
+  color: var(--font-color-white-60);
+  text-align: center;
+}
+
+.studentLink {
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.studentLink:hover,
+.studentLink:focus {
+  color: var(--font-color-white);
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  padding: 40px 20px 20px 20px;
+  border-radius: 20px;
+
+  background: var(--dropdown-color-gradient);
+  border: 1px solid var(--form-borders);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  color: var(--font-color-white-60);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.closeButton:hover {
+  color: var(--font-color-white);
+}
+
+.modalHeader {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1em;
+  text-align: center;
+  color: var(--font-color-white);
+  margin-bottom: 20px;
+}
+
+.studentCard {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.studentName {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--font-color-white);
+  margin-bottom: 5px;
+}
+
+.studentTitle {
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--yellow);
+  margin-bottom: 10px;
+
+  min-height: 1.2em;
+  line-height: 1.2em;
+}
+
+.studentCounter {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  color: var(--font-grey);
+  margin-bottom: 20px;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.socialLink {
+  width: 100%;
+  max-width: 220px;
+  height: 45px;
+  border-radius: 20px;
+  background: var(--button-gradient);
+  color: var(--font-color-white);
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--button-shadow);
+  transition: all 0.5s ease;
+}
+
+.socialLink:hover,
+.socialLink:focus {
+  transform: scale(1.05);
+  background-size: 200%;
+  background-position: right center;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid var(--font-color-white-40);
+}
+
+.navButton {
+  background: transparent;
+  color: var(--yellow);
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navButton:hover {
+  background-color: var(--form-effects);
+  color: var(--font-color-white);
+}
+
+@media (min-width: 768px) {
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 32px;
+  }
+  .footerWrapper {
+    max-width: 768px;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .infoContainer {
+    flex-direction: row;
+    gap: 20px;
+    font-size: 16px;
+  }
+
+  .modalHeader {
+    font-size: 30px;
+  }
+
+  .linksContainer {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .socialLink {
+    width: 150px;
+  }
+
+  .navButton {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .footer {
+    padding: 20px 40px;
+  }
+
+  .modalHeader {
+    font-size: 30px;
+  }
+
+  .footerWrapper {
+    max-width: 1280px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

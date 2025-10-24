@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logIn, register, refreshUser,logout} from "./authOperations";
+import { logIn, register, refreshUser, logout } from "./authOperations";
 
 // Yardımcı reducer fonksiyonlar
 
@@ -54,7 +54,11 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearAuthError(state) {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Login durumları
@@ -75,5 +79,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, handleLogoutFulfilled);
   },
 });
+
+export const { clearAuthError } = authSlice.actions;
 
 export default authSlice.reducer;
