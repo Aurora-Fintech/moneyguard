@@ -27,12 +27,14 @@ const StatisticsLazy = React.lazy(() =>
 );
 
 const Loader = () => (
-  <div style={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100vh",
-  }}>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
+    }}
+  >
     <Oval
       height={80}
       width={80}
