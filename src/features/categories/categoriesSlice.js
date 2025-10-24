@@ -1,40 +1,23 @@
-// src/features/categories/categoriesSlice.js
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// Yolu doğru kontrol edin: src/features/categories'den src/api/transactionsAPI.js'e
-// Dosya adının büyük/küçük harf duyarlılığını kontrol ederek aşağıdaki yoldan birini kullanın:
 import { fetchCategories } from "../../api/userTransactionApi";
-// VEYA: import { fetchCategories } from '../../api/TransactionsApi';
 
-// --------------------------------------------------------
-// ASENKRON THUNK: Kategori Verisini Çekme
-// --------------------------------------------------------
 export const getCategories = createAsyncThunk(
   "categories/fetchCategories",
   async (_, { getState, rejectWithValue }) => {
     try {
-      // Token'ı Redux'tan çek
       const token = getState().auth?.token;
 
       if (!token) {
         return rejectWithValue("Kullanıcı oturumu açmamış. Token yok.");
       }
 
-      // API'ı çağır
       const data = await fetchCategories(token);
-
-      // Backend'den gelen veriyi döndür
       return data;
     } catch (error) {
-      // Hata durumunda mesajı döndür
       return rejectWithValue(error.message);
     }
   }
 );
-
-// --------------------------------------------------------
-// SLICE: Kategorileri Yönetme
-// --------------------------------------------------------
 const initialState = {
   allCategories: [],
   expenseCategories: [],
@@ -56,8 +39,6 @@ const categoriesSlice = createSlice({
       .addCase(getCategories.fulfilled, (state, action) => {
         state.isLoading = false;
         state.allCategories = action.payload;
-
-        // Veriyi türe göre ayır ('EXPENSE' ve 'INCOME' [cite: image_e0385c])
         state.expenseCategories = action.payload.filter(
           (cat) => cat.type === "EXPENSE"
         );
