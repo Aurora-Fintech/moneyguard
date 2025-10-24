@@ -2,38 +2,33 @@
   TABLE CONTAINER GENİŞLİK AYARLARI
   (Logo ve Exit ile hizalamak için güncellendi)
   ====================================================== */
-
 .table-container {
-  margin: 62 auto; /* Ortala */
-  /* Kapsayıcının %100 genişliğinde olmasını sağlar */
+  margin: 0 auto; /* Ortala */
   width: 100%;
-  /* Logo ve Exit'in başladığı/bittiği noktalarla hizalamak için
-     yatayda 24px (tahmini gutter) padding eklenir. */
   padding: 0 24px;
-  /* Padding'in toplam genişliği bozmaması için */
   box-sizing: border-box;
 }
 
 /* Masaüstü (769px ve üzeri) */
 @media (min-width: 769px) {
   .table-container {
-    /* Sabit max-width ayarları kaldırıldı.
-      Artık üst kapsayıcının (parent) içeriğini takip edecek. */
+    /* Üst kapsayıcının genişliğini takip edecek */
   }
 }
 
 /* Tablet (705px–768px arası) */
 @media (min-width: 705px) and (max-width: 768px) {
   .table-container {
-    /* Sabit max-width ayarları kaldırıldı. */
+    /* Üst kapsayıcının genişliğini takip edecek */
   }
 }
+
 /* Tablet ve Masaüstü: .actions hücresi ortalansın */
 @media (min-width: 705px) {
   .actions {
     display: flex;
-    align-items: center; /* Dikey ortalama */
-    justify-content: flex-end; /* Sağ hizalama */
+    align-items: center;
+    justify-content: flex-end;
     height: 100%;
     padding-right: 24px;
     gap: 10px;
@@ -43,10 +38,9 @@
 /* ======================================================
   TABLO GENEL STİLLERİ
   ====================================================== */
-
 .tr {
   border-bottom: 1px solid var(--font-grey-light);
-  vertical-align: middle; /* Hücreleri dikey ortala */
+  vertical-align: middle;
 }
 
 .td {
@@ -54,20 +48,18 @@
   font-size: 14px;
   text-align: center;
   vertical-align: middle;
-  word-break: break-word; /* Uzun kelime satırı kır */
+  word-break: break-word;
 }
 
-/* 🟢 COMMENT SÜTUNU (Metin Alt Satıra Geçecek) */
+/* COMMENT ve CATEGORY sütunları */
 .comment,
 .category {
-  white-space: pre-wrap; /* Alt satıra geçebilir */
-  word-break: break-word; /* Uzun kelimeler alt satıra geçer */
-  max-width: 150px; /* Genişliği sınırlı */
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 150px;
 }
 
-/* -----------------------------------------------------------
- * ÖZEL SÜTUN HİZALAMALARI
- * ----------------------------------------------------------- */
+/* ÖZEL SÜTUN HİZALAMALARI */
 .type {
   font-weight: 600;
   font-size: 16px;
@@ -103,6 +95,7 @@
   margin-top: 4px;
 }
 
+/* ACTIONS HÜCRESİ */
 .actions {
   display: flex;
   align-items: center;
@@ -130,7 +123,6 @@
 .iconButton {
   background: none;
   border: none;
-  cursor: pointer;
   padding: 4px;
   display: inline-flex;
   align-items: center;
@@ -159,11 +151,10 @@
 }
 
 /* ======================================================
-  MOBİL STİLLER
+  MOBİL STİLLER (FULL-WIDTH KART)
   ====================================================== */
-
 .td.date {
-  white-space: nowrap; /* Satır kırmayı engelle */
+  white-space: nowrap;
 }
 
 .mobileLabel {
@@ -178,30 +169,30 @@
   .mobileLabel {
     display: inline-block;
   }
+
   .td.date {
     white-space: nowrap;
-    overflow: hidden; /* taşan kısmı gizle */
-    text-overflow: ellipsis; /* taşarsa ... göster */
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .tr {
     display: block;
-    margin-bottom: 20px; /* 8px boşluk için güncellendi */
+    margin-bottom: 20px;
     padding: 15px;
     border: none;
     border-radius: 12px;
-    /* Yeni arka plan rengi ve şeffaflık uygulandı: #2F15B0BA */
-    /* background: #2f15b0ba; */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 100%; /* Mobilde full width */
+    margin-left: 0;
+    margin-right: 0;
     transition: border-left 0.3s ease;
   }
 
-  /* 💛 Income kartı (sarı sol border) */
   .income {
     border-left: 3px solid var(--yellow);
   }
 
-  /* ❤️ Expense kartı (kırmızı sol border) */
   .expense {
     border-left: 3px solid var(--red);
   }
@@ -210,7 +201,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 12px 0;
     border: none;
     width: 100%;
     font-size: 16px;
@@ -223,8 +214,7 @@
     overflow: visible;
     min-width: unset;
     max-width: unset;
-    /* 💥 GÜNCELLEME: Uzun kelimeleri kartın genişliğine göre zorla kırar */
-    word-break: break-all;
+    word-break: break-word;
   }
 
   .actions {
@@ -279,9 +269,8 @@
 }
 
 /* ======================================================
-  İZITOAST OVERRIDE (değişmedi)
+  İZITOAST OVERRIDE
   ====================================================== */
-
 :global(.iziToast.dark-confirm-toast) {
   background-color: #1a0833 !important;
   background-image: linear-gradient(
@@ -323,7 +312,7 @@
   width: 100%;
 }
 
-/* Onay Butonlarının Temel Stili */
+/* Onay Butonları */
 :global(.delete-confirm-btn) {
   width: 100% !important;
   padding: 14px 20px !important;
@@ -340,7 +329,6 @@
   font-family: var(--font-family-base) !important;
 }
 
-/* EVET, SİL butonu */
 :global(.delete-btn) {
   background: var(--button-gradient) !important;
   color: var(--font-color-white) !important;
@@ -352,7 +340,6 @@
   box-shadow: 0 8px 20px rgba(255, 199, 39, 0.5);
 }
 
-/* İPTAL butonu */
 :global(.cancel-btn) {
   background-color: var(--font-color-white) !important;
   color: var(--font-color-purple) !important;
@@ -364,7 +351,6 @@
   transform: scale(1.05);
 }
 
-/* X Kapatma ikonu */
 :global(.iziToast.dark-confirm-toast .iziToast-close) {
   color: white !important;
   opacity: 0.8 !important;
