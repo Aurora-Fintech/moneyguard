@@ -20,7 +20,7 @@ api.interceptors.request.use(
           config.headers.Authorization = `Bearer ${parsedToken}`;
         }
       } catch (error) {
-        console.error("Error parsing token:", error);
+        console.error("Token parsing error:", error);
       }
     }
     return config;
@@ -36,7 +36,7 @@ export const getCurrentUser = async () => {
 const CACHE_KEY = "currencyRatesCache";
 
 export const getCurrencyRates = async () => {
-  // 1. Yedek kurlar Number tipinde olmalı
+  // 1. Fallback exchange rates should be in Number type
   const fallbackRates = [
     { currencyCodeA: 840, currencyCodeB: 980, rateBuy: 32.5, rateSell: 32.7 },
     { currencyCodeA: 978, currencyCodeB: 980, rateBuy: 35.1, rateSell: 35.4 },
@@ -47,12 +47,13 @@ export const getCurrencyRates = async () => {
     if (cachedData) {
       const { timestamp, rates } = JSON.parse(cachedData);
 
+      // Use cached rates if cached less than 1 hour ago
       if (new Date().getTime() - timestamp < 3600000) {
         return rates;
       }
     }
   } catch {
-    console.error("localStorage Hatası, yedek kurlar kullanılıyor.");
+    console.error("localStorage error, using fallback exchange rates.");
     return fallbackRates;
   }
 
@@ -85,7 +86,7 @@ export const getCurrencyRates = async () => {
 
     return finalRates;
   } catch (error) {
-    console.error("Monobank API Hatası, yedek kurlar kullanılıyor:", error);
+    console.error("Monobank API error, using fallback exchange rates:", error);
     return fallbackRates;
   }
 };
