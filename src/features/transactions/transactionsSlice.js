@@ -199,6 +199,7 @@ const transactionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Global loading for fetch
       .addCase(getTransactions.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -215,11 +216,26 @@ const transactionsSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+      // Loading around add
+      .addCase(addNewTransaction.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(addNewTransaction.fulfilled, (state, action) => {
         state.transactionsList.unshift(action.payload);
         saveToLocalStorage(state.transactionsList);
         state.isModalOpen = false;
         state.balance = calculateBalance(state.transactionsList);
+        state.isLoading = false;
+      })
+      .addCase(addNewTransaction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Loading around delete
+      .addCase(deleteTransactionThunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
       })
       .addCase(deleteTransactionThunk.fulfilled, (state, action) => {
         state.transactionsList = state.transactionsList.filter(
@@ -227,8 +243,17 @@ const transactionsSlice = createSlice({
         );
         saveToLocalStorage(state.transactionsList);
         state.balance = calculateBalance(state.transactionsList);
+        state.isLoading = false;
+      })
+      .addCase(deleteTransactionThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       })
       // ✅ Transaction update (merge local + server data)
+      .addCase(updateTransactionThunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(updateTransactionThunk.fulfilled, (state, action) => {
         const updatedFromServer = action.payload || {};
         const arg = action.meta?.arg || {};
@@ -267,6 +292,11 @@ const transactionsSlice = createSlice({
         state.isEditModalOpen = false;
         state.editingTransaction = null;
         state.balance = calculateBalance(state.transactionsList);
+        state.isLoading = false;
+      })
+      .addCase(updateTransactionThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
