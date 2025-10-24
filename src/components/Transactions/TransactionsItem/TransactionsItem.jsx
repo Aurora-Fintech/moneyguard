@@ -104,7 +104,7 @@ const TransactionsItem = ({ transaction }) => {
         typeLower === "income" ? styles.income : styles.expense
       }`}
     >
-      <td className={styles.td}>
+      <td className={`${styles.td} ${styles.date}`}>
         <span className={styles.mobileLabel}>Date:</span>
         {formattedDate}
       </td>

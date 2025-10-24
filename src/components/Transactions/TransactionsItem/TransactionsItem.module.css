@@ -4,7 +4,7 @@
   ====================================================== */
 
 .table-container {
-  margin: 0 auto; /* Ortala */
+  margin: 62 auto; /* Ortala */
   /* Kapsayıcının %100 genişliğinde olmasını sağlar */
   width: 100%;
   /* Logo ve Exit'in başladığı/bittiği noktalarla hizalamak için
@@ -26,6 +26,17 @@
 @media (min-width: 705px) and (max-width: 768px) {
   .table-container {
     /* Sabit max-width ayarları kaldırıldı. */
+  }
+}
+/* Tablet ve Masaüstü: .actions hücresi ortalansın */
+@media (min-width: 705px) {
+  .actions {
+    display: flex;
+    align-items: center; /* Dikey ortalama */
+    justify-content: flex-end; /* Sağ hizalama */
+    height: 100%;
+    padding-right: 24px;
+    gap: 10px;
   }
 }
 
@@ -151,6 +162,10 @@
   MOBİL STİLLER
   ====================================================== */
 
+.td.date {
+  white-space: nowrap; /* Satır kırmayı engelle */
+}
+
 .mobileLabel {
   display: none;
   font-weight: 500;
@@ -162,6 +177,11 @@
 @media (max-width: 768px) {
   .mobileLabel {
     display: inline-block;
+  }
+  .td.date {
+    white-space: nowrap;
+    overflow: hidden; /* taşan kısmı gizle */
+    text-overflow: ellipsis; /* taşarsa ... göster */
   }
 
   .tr {
