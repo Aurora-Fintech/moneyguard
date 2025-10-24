@@ -1,24 +1,23 @@
+/* ---------------- Table Component CSS ---------------- */
 .table {
   width: 100%;
+  max-width: 1200px; /* Maksimum genişlik sınırı */
+  margin: 0 auto; /* Ortala */
   font-family: var(--font-family-base);
-
   border-collapse: collapse;
   text-align: left;
-  font-family: var(--font-family-base);
   color: var(--font-color-white);
 }
 
 .theadRow {
-  background-color: #523b7e99; /* başlık arka plan mor */
+  background-color: #523b7e99; /* Başlık arka plan mor */
 }
 
 .th {
-  font-family: var(--font-family-base);
   font-weight: 600;
   font-size: 16px;
   padding: 12px 24px;
-
-  color: var(--font-color-white); /* başlık yazısı beyaz */
+  color: var(--font-color-white);
   text-align: center;
 }
 
@@ -26,6 +25,37 @@
   text-align: center;
   padding: 32px;
 }
+
 .sortIcon {
   margin-left: 6px; /* Date ile ok arasında boşluk */
+}
+
+/* ---------------- Tablet & Mobil ---------------- */
+@media (max-width: 1024px) {
+  .table {
+    max-width: 95%; /* Genişliği biraz daralt */
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    max-width: 100%;
+    font-size: 14px; /* Yazı biraz küçülsün */
+  }
+
+  .theadRow {
+    display: none; /* Mobilde başlığı gizle */
+  }
+
+  .tr,
+  .td {
+    display: block;
+    width: 100%;
+  }
+
+  .td {
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--font-grey-light);
+  }
 }
