@@ -27,14 +27,12 @@ const StatisticsLazy = React.lazy(() =>
 );
 
 const Loader = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
-    }}
-  >
+  <div style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+  }}>
     <Oval
       height={80}
       width={80}
@@ -56,10 +54,10 @@ export default function AppRouter() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Suspense fallback={<Loader />}>
         <Routes>
-          {/* Login ve Register Rotaları */}
+          {/* Login ve Register */}
           <Route
             path="/login"
             element={
@@ -77,7 +75,7 @@ export default function AppRouter() {
             }
           />
 
-          {/* Dashboard + Nested Rotalar */}
+          {/* Dashboard + Nested */}
           <Route
             path="/dashboard/*"
             element={
@@ -90,7 +88,7 @@ export default function AppRouter() {
             <Route path="statistics" element={<StatisticsLazy />} />
           </Route>
 
-          {/* Diğer Rotalar */}
+          {/* Diğer */}
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
