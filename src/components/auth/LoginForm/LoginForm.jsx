@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -17,6 +17,7 @@ import logoIcon from "../../../assets/icons/moneyGuardLogo.svg";
 import { Eye, EyeOff } from "lucide-react";
 import FormInput from "../FormInput/FormInput";
 import clsx from "clsx";
+import { clearAuthError } from "../../../features/auth/authSlice";
 
 // Validasyon Şeması
 const loginSchema = Yup.object().shape({
@@ -25,7 +26,7 @@ const loginSchema = Yup.object().shape({
     .required("E-mail is required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
-    .max(12, "Password must be at most 12 characters")
+    .max(12, "Password must be at most 20 characters")
     .required("Password is required"),
 });
 
@@ -52,6 +53,13 @@ const LoginForm = () => {
     resolver: yupResolver(loginSchema),
     defaultValues: initialValues,
   });
+
+  // Hata state'ini temizle
+  useEffect(() => {
+    return () => {
+      dispatch(clearAuthError());
+    };
+  }, [dispatch]);
 
   const onSubmit = async (values) => {
     try {

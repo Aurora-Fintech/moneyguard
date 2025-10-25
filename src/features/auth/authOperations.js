@@ -1,6 +1,44 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { userTransactionApi, setToken } from "../../api/userTransactionApi.js";
 
+const handleAuthError = (error, thunkAPI) => {
+  let userMessage = "An error occurred, please try again."; // Varsayılan hata mesajı
+
+  if (error.response) {
+    const status = error.response.status;
+    const backendMessage = error.response.data?.message;
+
+    // Hata mesajları yönetimi
+    if (
+      status === 400 &&
+      backendMessage?.toLowerCase().includes("email in use")
+    ) {
+      userMessage = "This email address is already registered.";
+    } else if (status === 400) {
+      userMessage = "Invalid request. Please check your information.";
+    } else if (status === 401) {
+      userMessage = "Incorrect email or password, or your session has expired.";
+    } else if (status === 403) {
+      userMessage = "Password is incorrect";
+    } else if (status === 404) {
+      userMessage = "User with this email address not found.";
+    } else if (status === 409) {
+      userMessage = "This email address is already in use.";
+    } else if (backendMessage) {
+      userMessage = backendMessage;
+    } else if (status === 500) {
+      userMessage = "Server error. Please try again later.";
+    }
+  } else if (error.request) {
+    userMessage =
+      "Cannot reach the server. Please check your internet connection.";
+  } else {
+    userMessage = "Could not send request. Please try again.";
+  }
+
+  return thunkAPI.rejectWithValue(userMessage);
+};
+
 export const logIn = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
@@ -12,7 +50,7 @@ export const logIn = createAsyncThunk(
       setToken(response.data.token);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return handleAuthError(error, thunkAPI);
     }
   }
 );
@@ -29,9 +67,7 @@ export const register = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
-      );
+      return handleAuthError(error, thunkAPI);
     }
   }
 );
@@ -50,7 +86,7 @@ export const refreshUser = createAsyncThunk(
       const { data } = await userTransactionApi.get("/api/users/current");
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return handleAuthError(error, thunkAPI);
     }
   }
 );
@@ -61,7 +97,6 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     // removeToken();
     return data;
   } catch (error) {
-    console.error("logoutThunk hata:", error);
     return thunkAPI.rejectWithValue(
       error.response?.data?.message || error.message
     );
