@@ -16,6 +16,7 @@
   align-items: center;
   box-sizing: border-box;
   gap: 16px;
+  flex-grow: 1;
 }
 
 .leftSidebar,
