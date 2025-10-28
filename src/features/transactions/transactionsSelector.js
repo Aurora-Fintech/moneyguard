@@ -6,6 +6,53 @@ const selectAllCategories = (state) => state.categories.allCategories;
 const selectSelectedMonth = (state) => state.transactions.selectedMonth;
 const selectSelectedYear = (state) => state.transactions.selectedYear;
 
+// Safe date parsing that handles multiple formats
+const parseToLocalDate = (dateLike) => {
+  if (!dateLike) return null;
+  if (dateLike instanceof Date) return isNaN(dateLike.getTime()) ? null : dateLike;
+
+  if (typeof dateLike === "string") {
+    const str = dateLike.trim();
+
+    // ISO or with time component -> let Date parse it (handles Z and offsets)
+    if (str.includes("T")) {
+      const d = new Date(str);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    // YYYY-MM-DD -> construct with year, month-1, day to avoid TZ shifts
+    const ymd = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (ymd) {
+      const [, y, m, d] = ymd;
+      const dt = new Date(Number(y), Number(m) - 1, Number(d));
+      return isNaN(dt.getTime()) ? null : dt;
+    }
+
+    // dd.MM.yyyy -> legacy UI formatted string
+    const dmyDots = str.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+    if (dmyDots) {
+      const [, d, m, y] = dmyDots;
+      const dt = new Date(Number(y), Number(m) - 1, Number(d));
+      return isNaN(dt.getTime()) ? null : dt;
+    }
+
+    // dd/MM/yyyy -> fallback
+    const dmySlashes = str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (dmySlashes) {
+      const [, d, m, y] = dmySlashes;
+      const dt = new Date(Number(y), Number(m) - 1, Number(d));
+      return isNaN(dt.getTime()) ? null : dt;
+    }
+
+    // As a last resort, try native parsing
+    const fallback = new Date(str);
+    return isNaN(fallback.getTime()) ? null : fallback;
+  }
+
+  // Unsupported type
+  return null;
+};
+
 export const selectStatisticsSummary = createSelector(
   [
     selectTransactionsList,
@@ -36,26 +83,19 @@ export const selectStatisticsSummary = createSelector(
     let expenseTotal = 0;
 
     transactionsList.forEach((t) => {
-      const dateKey = t.date || t.transactionDate;
+      const dateKey = t.transactionDate || t.date;
 
-      const amount = t.amount;
-      const type = t.type?.toLowerCase() || "unknown";
+      const rawAmount = t.amount ?? t.sum ?? 0;
+      const amount = Number(rawAmount);
+      if (!Number.isFinite(amount)) return;
+
+      const type = (t.type || "").toString().toLowerCase();
       const isExpense = type === "expense";
+      const isIncome = type === "income";
       const categoryId = t.categoryId;
 
-      if (!dateKey) return;
-
-      let safeDateKey = dateKey;
-      if (
-        typeof dateKey === "string" &&
-        dateKey.length === 10 &&
-        !dateKey.includes("T")
-      ) {
-        safeDateKey = dateKey + "T00:00:00";
-      }
-
-      const transactionDate = new Date(safeDateKey);
-      if (isNaN(transactionDate.getTime())) return;
+      const transactionDate = parseToLocalDate(dateKey);
+      if (!transactionDate) return;
       const transactionMonth = Number(transactionDate.getMonth() + 1);
       const transactionYear = Number(transactionDate.getFullYear());
 
@@ -66,18 +106,14 @@ export const selectStatisticsSummary = createSelector(
         return;
       }
 
-      if (type === "income") {
+      if (isIncome) {
         incomeTotal += Math.abs(amount);
       } else if (isExpense) {
         expenseTotal += Math.abs(amount);
       }
 
-      const isCategorized = categoryId && categoryMap[categoryId];
-      const finalCategoryId = isCategorized
-        ? categoryId
-        : isExpense
-        ? "unknown_expense"
-        : "unknown_income";
+      const isCategorized = isExpense && categoryId && categoryMap[categoryId];
+      const finalCategoryId = isCategorized ? categoryId : "unknown_expense";
 
       if (isExpense) {
         const categoryInfo = isCategorized
@@ -96,6 +132,17 @@ export const selectStatisticsSummary = createSelector(
         categoriesSummary[finalCategoryId].total -= Math.abs(amount);
       }
     });
+
+    // If there are no expense categories but there is income, show income as a pseudo-category
+    if (Object.keys(categoriesSummary).length === 0 && incomeTotal > 0) {
+      categoriesSummary["__income__"] = {
+        id: "income_total",
+        name: "Income",
+        total: incomeTotal,
+        color: "#109618",
+        isExpense: false,
+      };
+    }
 
     const finalSummaryArray = Object.values(categoriesSummary).sort(
       (a, b) => Math.abs(b.total) - Math.abs(a.total)
