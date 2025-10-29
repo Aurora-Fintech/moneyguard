@@ -1,19 +1,71 @@
 .balanceContainer {
-  padding: 8px;
-  padding-left: 56px;
+  padding: 8px 12px 10px 56px;
   width: 300px;
-  height: 80px;
+  min-height: 80px;
   background: rgba(82, 59, 126, 0.6);
   box-shadow: 1px 9px 15px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 8px; /* kenar yumuşatma */
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subRates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+}
+
+.rateItem {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  opacity: 0.95;
+}
+
+.rateLabel {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.rateValue {
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+}
+
+.sep {
+  color: rgba(255, 255, 255, 0.55);
+  padding: 0 2px;
+}
+
+/* Variant colors */
+.rateUSD .rateLabel,
+.rateUSD .rateValue {
+  color: #10B981; /* emerald-500 */
+}
+
+.rateEUR .rateLabel,
+.rateEUR .rateValue {
+  color: #3B82F6; /* blue-500 */
+}
+
+.rateGOLD .rateLabel,
+.rateGOLD .rateValue {
+  color: #F59E0B; /* amber-500 */
+}
+
+.rateBTC .rateLabel,
+.rateBTC .rateValue {
+  color: #F7931A; /* BTC orange */
 }
 
 /* TABLET */
 @media (min-width: 768px){
     .balanceContainer{
     width: 336px;
-    height: 80px;
-}
+    min-height: 80px;
+    }
 }
 
 /* DESKTOP */

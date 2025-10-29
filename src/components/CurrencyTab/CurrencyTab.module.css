@@ -22,10 +22,24 @@
 }
 
 .currencyRow {
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr; 
-    margin-top: 8px;
-    padding-left: 20px;
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  margin-top: 8px;
+  padding: 8px 16px;
+}
+
+.valueCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trendUp {
+  color: #10B981; /* emerald-500 */
+}
+
+.trendDown {
+  color: #EF4444; /* red-500 */
 }
 
 .tableHeader {
@@ -34,7 +48,8 @@
   height: 50px; 
   background: rgba(255, 255, 255, 0.2);
   align-items: center;
-  padding-left: 20px;
+  padding: 0 16px;
+  margin-bottom: 8px;
 }
 
 
@@ -68,7 +83,8 @@
   height: 48px; 
   background: rgba(255, 255, 255, 0.2);
   align-items: center;
-  padding-left: 20px;
+  padding: 0 16px;
+  margin-bottom: 10px;
 }
 }
 
@@ -98,11 +114,10 @@
 }
 
 .currencyRow {
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr; 
-    padding: 10px 0;
-    margin-top: 24px;
-    padding-left: 84px;
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  padding: 10px 16px;
+  margin-top: 8px;
 }
 
 .tableHeader {
@@ -111,8 +126,8 @@
   height: 56px; 
   background: rgba(255, 255, 255, 0.2);
   align-items: center;
-  padding: 0 15px;
-  padding-left: 62px;
+  padding: 0 16px;
+  margin-bottom: 12px;
 }
 
 .currencyLoading {

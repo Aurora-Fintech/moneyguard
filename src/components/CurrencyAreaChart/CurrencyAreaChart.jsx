@@ -1,154 +1,122 @@
-import React, { useEffect, useState } from "react";
-import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, LabelList } from "recharts";
-import { getCurrencyRates } from "../../api/currencyApi.js";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  CartesianGrid,
+} from "recharts";
+import { fetchTryTimeseries } from "../../api/fiatApi.js";
 import styles from "./CurrencyAreaChart.module.css";
 
-const MOCK_RATES = [
-    { currencyCodeA: 840, rateBuy: 40.5, rateSell: 41.0 }, 
-    { currencyCodeA: 978, rateBuy: 43.5, rateSell: 44.0 } 
-];
+const COLORS = {
+  USDTRY: "#10B981", // emerald
+  EURTRY: "#3B82F6", // blue
+};
 
-const CustomDot = ({ cx, cy, value }) => {
-    
-    const val = Number(value);
+const formatTime = (ts) => {
+  const d = new Date(ts);
+  const h = d.getHours().toString().padStart(2, "0");
+  const m = d.getMinutes().toString().padStart(2, "0");
+  return `${h}:${m}`;
+};
 
-    if (cx === undefined || cy === undefined || isNaN(val)) {
-        return null;
-    }
+const numberFmt = (n) => {
+  if (!Number.isFinite(n)) return "-";
+  if (n >= 1000) return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  if (n >= 1) return n.toFixed(2);
+  return n.toFixed(4);
+};
 
-    return (
-        <g>
-            <circle 
-                cx={cx} 
-                cy={cy} 
-                r={5} 
-                fill="white" 
-                stroke="#FF868D" 
-                strokeWidth={2}
-                style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}
-            />
-            <text
-                x={cx}
-                y={cy - 15}
-                fontSize={12}
-                fontWeight="bold"
-                fill="#FF868D"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                style={{ 
-                    filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
-                    pointerEvents: 'none'
-                }}
-            >
-                {val.toFixed(2)}
-            </text>
-        </g>
-    );
+const CustomTooltip = ({ active, payload, label }) => {
+  if (!active || !payload || payload.length === 0) return null;
+  return (
+    <div style={{
+      background: "rgba(17,24,39,0.95)",
+      color: "#F9FAFB",
+      border: "1px solid rgba(255,255,255,0.08)",
+      borderRadius: 8,
+      padding: "8px 10px",
+      boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
+      fontSize: 12,
+    }}>
+      <div style={{ fontWeight: 600, marginBottom: 6, color: "#E5E7EB" }}>{label}</div>
+      {payload.map((p) => (
+        <div key={p.dataKey} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <span style={{ width: 10, height: 10, background: p.color, borderRadius: 2 }} />
+          <span style={{ minWidth: 60, color: "#E5E7EB" }}>{p.name}:</span>
+          <strong style={{ color: "#FFFFFF" }}>{numberFmt(p.value)} TRY</strong>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 const CurrencyAreaChart = () => {
-    const [currencyRates, setCurrencyRates] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null); 
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchRates = async () => {
-            setIsLoading(true);
-            setError(null); 
-            
-            let rates;
-            try {
-                rates = await getCurrencyRates();
-            } catch (err) {
-                console.error("API hatası! Geçici veri kullanılıyor. Hata:", err);
-                setError("API Rate Limit Hatası? Geçici veriler gösteriliyor."); 
-                rates = MOCK_RATES; 
-            } finally {
-                const processed = rates
-                    .filter(r => r.currencyCodeA === 840 || r.currencyCodeA === 978)
-                    .map(r => ({
-                        currency: r.currencyCodeA === 840 ? "USD" : "EUR",
-                        buy: parseFloat(r.rateBuy) || 0,
-                    }));
-                
-                if (processed.length === 0 && !error) {
-                    setError("Filtreleme sonrasında veri bulunamadı.");
-                }
-                
-                setCurrencyRates(processed);
-                setIsLoading(false);
-            }
-        };
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      try {
+        setLoading(true);
+        setError(null);
+        const rows = await fetchTryTimeseries(14);
+        if (mounted) setData(rows);
+      } catch (e) {
+        console.error(e);
+        if (mounted) setError("Failed to load fiat rates. Please try again later.");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-        fetchRates();
-    }, [error]);
+  const last = useMemo(() => (data.length ? data[data.length - 1] : null), [data]);
 
-    const data = currencyRates.map(r => ({ 
-        name: r.currency, 
-        buy: r.buy,
-        currency: r.currency
-    }));
-
-    return (
-        <div className={styles.currencyWidget}>
-            {error && <div className={styles.currencyError}>{error}</div>} 
-            
-            {isLoading ? (
-                <div className={styles.currencyLoading}>Loading rates...</div>
-            ) : (
-                <ResponsiveContainer width="100%" height="100%" className={styles.areaChart}>
-                    <AreaChart 
-                        data={data} 
-                        margin={{ top: 30, right: 30, left: 30, bottom: 20 }}
-                        style={{ background: 'transparent' }}
-                    >
-                        <defs>
-                            <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="#FF868D" stopOpacity={0.8} />
-                                <stop offset="50%" stopColor="#FF868D" stopOpacity={0.4} />
-                                <stop offset="100%" stopColor="#FF868D" stopOpacity={0.1} />
-                            </linearGradient>
-                            <linearGradient id="areaShadow" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="rgba(255,134,141,0.3)" />
-                                <stop offset="100%" stopColor="rgba(255,134,141,0)" />
-                            </linearGradient>
-                        </defs>
-
-                        <XAxis 
-                            dataKey="name" 
-                            hide
-                        />
-                        <YAxis 
-                            hide 
-                            domain={['dataMin - 0.5', 'dataMax + 0.5']} 
-                        />
-
-                        <Area
-                            type="monotone"
-                            dataKey="buy"
-                            stroke="#FF868D"
-                            strokeWidth={2}
-                            fill="url(#areaGradient)"
-                            dot={CustomDot} 
-                            activeDot={false}
-                        >
-                            <LabelList 
-                                dataKey="buy" 
-                                position="top" 
-                                style={{ 
-                                    fontSize: '12px', 
-                                    fontWeight: 'bold', 
-                                    fill: '#FF868D',
-                                    textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-                                }}
-                                formatter={(value) => value.toFixed(2)}
-                            />
-                        </Area>
-                    </AreaChart>
-                </ResponsiveContainer>
-            )}
+  return (
+    <div className={styles.currencyWidget}>
+      {error && <div className={styles.currencyError}>{error}</div>}
+      {loading ? (
+        <div className={styles.currencyLoading}>Loading rates...</div>
+      ) : (
+        <ResponsiveContainer width="100%" height="100%" className={styles.areaChart}>
+          <LineChart data={data} margin={{ top: 10, right: 12, left: 0, bottom: 4 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+            <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#6B7280" }} axisLine={false} tickLine={false} interval={5} />
+            <YAxis tick={{ fontSize: 10, fill: "#6B7280" }} axisLine={false} tickLine={false} tickFormatter={(v) => numberFmt(v)} />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend verticalAlign="top" align="left" wrapperStyle={{ fontSize: 12, paddingBottom: 6 }} />
+            <Line type="monotone" dataKey="USDTRY" name="USD/TRY" stroke={COLORS.USDTRY} dot={false} activeDot={{ r: 3 }} strokeWidth={2.25} isAnimationActive={false} />
+            <Line type="monotone" dataKey="EURTRY" name="EUR/TRY" stroke={COLORS.EURTRY} dot={false} activeDot={{ r: 3 }} strokeWidth={2.25} isAnimationActive={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
+      {last && (
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 6, fontSize: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ width: 8, height: 8, background: COLORS.USDTRY, borderRadius: 2 }} />
+            <span style={{ fontWeight: 600 }}>USD/TRY:</span>
+            <span>{numberFmt(last.USDTRY)} TRY</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ width: 8, height: 8, background: COLORS.EURTRY, borderRadius: 2 }} />
+            <span style={{ fontWeight: 600 }}>EUR/TRY:</span>
+            <span>{numberFmt(last.EURTRY)} TRY</span>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default CurrencyAreaChart;

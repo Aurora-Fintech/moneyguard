@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Navigation from "../../components/Navigation/Navigation.jsx";
 import CurrencyTab from "../../components/CurrencyTab/CurrencyTab.jsx";
 import CurrencyAreaChart from "../../components/CurrencyAreaChart/CurrencyAreaChart.jsx";
+import CryptoChart from "../../components/CryptoChart/CryptoChart.jsx";
 import Balance from "../../components/Balance/Balance.jsx";
 import styles from "./LeftSidebar.module.css";
 
@@ -44,6 +45,10 @@ export default function LeftSidebar() {
         >
           <CurrencyTab />
           <CurrencyAreaChart />
+          {/* Crypto chart: BTC/ETH/SOL/ADA in USDT, responsive */}
+          <div className={styles.card}>
+            <CryptoChart />
+          </div>
         </div>
       </div>
     </div>
