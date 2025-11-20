@@ -6,6 +6,7 @@ import { store, persistor } from "./app/store";
 import AppRouter from "./routes/AppRouter";
 import 'normalize.css';
 import "./styles/global.css";
+import "./utils/quietViteLogs";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

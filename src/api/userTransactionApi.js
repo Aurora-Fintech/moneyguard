@@ -1,8 +1,13 @@
 import axios from "axios";
 
+// Resolve API base URL: use env or relative in dev to leverage proxy
+const BASE_URL =
+  import.meta?.env?.VITE_API_BASE_URL ||
+  (import.meta.env.DEV ? "/" : "https://wallet.b.goit.study/");
+
 // Axios instance
 export const userTransactionApi = axios.create({
-  baseURL: "https://wallet.b.goit.study/",
+  baseURL: BASE_URL,
 });
 
 // Set Token
