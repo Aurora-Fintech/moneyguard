@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://wallet.b.goit.study/api";
+const ROOT = import.meta.env.DEV ? "/" : "https://wallet.b.goit.study/";
+const API_BASE_URL = `${ROOT.replace(/\/?$/, "")}/api`;
 const MONOBANK_CURRENCY_API = "https://api.monobank.ua/bank/currency";
 
 const api = axios.create({
