@@ -32,10 +32,6 @@ jobs:
 
       - name: Build
         run: npm run build   # Vite -> dist/
-        env:
-          # Set in repo settings → Secrets and variables → Actions
-          # Name: VITE_API_BASE_URL, Value: e.g. https://your-valid-backend/
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
       # SPA 404 fix: refresh’te 404 almamak için index.html’i 404.html olarak kopyala
       - name: Create SPA 404
