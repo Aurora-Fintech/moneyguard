@@ -30,8 +30,15 @@ const handleAuthError = (error, thunkAPI) => {
       userMessage = "Server error. Please try again later.";
     }
   } else if (error.request) {
-    userMessage =
-      "Cannot reach the server. Please check your internet connection.";
+    // Network-level failure: could be CORS, offline, or TLS (expired cert)
+    const msg = (error?.message || "").toUpperCase();
+    if (msg.includes("ERR_CERT") || msg.includes("CERT")) {
+      userMessage =
+        "Secure connection failed: The server's SSL certificate is invalid or expired.";
+    } else {
+      userMessage =
+        "Cannot reach the server. Please check your internet connection.";
+    }
   } else {
     userMessage = "Could not send request. Please try again.";
   }
