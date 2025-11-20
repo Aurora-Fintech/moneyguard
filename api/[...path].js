@@ -33,9 +33,7 @@ export default async function handler(req, res) {
   }
 
   const subpath = Array.isArray(req.query.path) ? `/${req.query.path.join('/')}` : "";
-  // Upstream expects /api prefix
-  const qs = req.url.includes('?') ? '?' + req.url.split('?')[1] : '';
-  const url = `${TARGET}/api${subpath}${qs}`;
+  const url = `${TARGET}${subpath}${req.url.includes('?') ? '?' + req.url.split('?')[1] : ''}`;
 
   const outgoingHeaders = {};
   for (const [k, v] of Object.entries(req.headers || {})) {
@@ -60,15 +58,14 @@ export default async function handler(req, res) {
     }
     res.setHeader("Access-Control-Allow-Origin", ALLOW_ORIGIN);
     res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Vary", "Origin");
 
     const body = typeof resp.data === "string" ? resp.data : JSON.stringify(resp.data);
     res.status(resp.status).send(body);
   } catch (e) {
-    res.status(502)
+    res
+      .status(502)
       .setHeader("Access-Control-Allow-Origin", ALLOW_ORIGIN)
-      .setHeader("Access-Control-Allow-Credentials", "true")
-      .setHeader("Vary", "Origin")
       .json({ message: "Proxy error", error: e.message });
   }
 }
+
