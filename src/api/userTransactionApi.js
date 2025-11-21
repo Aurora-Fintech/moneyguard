@@ -1,8 +1,10 @@
 import axios from "axios";
 
-// Axios instance
+// Minimal: relative in dev (uses Vite proxy), absolute in prod
+const BASE_URL = import.meta.env.DEV ? "/" : "https://wallet.b.goit.study/";
+
 export const userTransactionApi = axios.create({
-  baseURL: "https://wallet.b.goit.study/",
+  baseURL: BASE_URL,
 });
 
 // Set Token
